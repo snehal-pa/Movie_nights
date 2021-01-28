@@ -2,8 +2,7 @@ import React from "react";
 import GoogleLogin from "react-google-login"
 
 
-import {
-  Button,  
+import {  
   Container,  
   Row
 } from "reactstrap";
@@ -15,12 +14,11 @@ export default function Login() {
   const handleLogin = async googleData => {
     const res = await fetch("/storeauthcode", {
         method: "POST",
-        body: JSON.stringify({
-        token: googleData.tokenId
-      }),
+        body: googleData.tokenId,    
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/octet-stream; charset=utf-8',
+        'X-Requested-With': 'XMLHttpRequest',
+      },      
     })
     const data = await res.json()
     // store returned user somehow
