@@ -7,7 +7,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,16 +51,13 @@ public class AuthController {
         }
 
         // Store these 3 in your DB
-        String accessToken = tokenResponse.getAccessToken();
-        String refreshToken = tokenResponse.getRefreshToken();
-        Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
         // Debug purpose only
-        System.out.println("accessToken: " + accessToken);
-        System.out.println("refreshToken: " + refreshToken);
-        System.out.println("expiresAt: " + expiresAt);
+//        System.out.println("accessToken: " + accessToken);
+//        System.out.println("refreshToken: " + refreshToken);
+//        System.out.println("expiresAt: " + expiresAt);
 
-        authService.getInfoFromToken(tokenResponse);
+        authService.saveUserToDb(tokenResponse);
 
         return "OK";
     }
