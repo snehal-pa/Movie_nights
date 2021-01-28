@@ -40,8 +40,6 @@ public class AuthService {
         String refreshToken = tokenResponse.getRefreshToken();
         Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
-
-
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
         System.out.println("userId: " + userId);
         System.out.println("email: " + email);
@@ -52,8 +50,6 @@ public class AuthService {
 
         //create password by
         // from the user and a secret salt
-        // TODO: 28/01/2021
-
 
         String password = encoder.encode(email + "passwordSalt" + userId);
 

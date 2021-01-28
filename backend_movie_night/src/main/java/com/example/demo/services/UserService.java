@@ -11,8 +11,18 @@ public class UserService {
     private UserRepo userRepo;
 
 
-    public void registerUser(User user) {
-        userRepo.save(user);
+    public User registerUser(User user) {
+        var u = userRepo.findByEmail(user.getEmail());
+
+        if(u != null){
+            u.setAccessToken(user.getAccessToken());
+            u.setRefreshToken(user.getRefreshToken());
+            u.setExpiresAt(user.getExpiresAt());
+            u.setProfileUrl(user.getProfileUrl());
+            return userRepo.save(u);
+
+        }
+        return userRepo.save(user);
 
     }
 }
