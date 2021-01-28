@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import GoogleLogin from "react-google-login"
 
 
@@ -12,31 +12,61 @@ const CLIENT_ID = "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleuserc
 
 export default function Login() {
 
-  const handleLogin = async googleData => {
-    const res = await fetch("/storeauthcode", {
-        method: "POST",
-        body: JSON.stringify({
-        token: googleData.tokenId
-      }),
+  let auth2
+
+  useEffect(()=> {
+    window.gapi.load('auth2', function() {
+      auth2 = window.gapi.auth2.init({
+        client_id: CLIENT_ID,
+        scope: "https://www.googleapis.com/auth/calendar.events"
+      });
+    });
+  },[])
+
+  /*const handleLogin = async googleData => {
+    console.log(googleData)
+    const res = await fetch("http://localhost:8080/storeauthcode", {
+      method: "POST",
+        body: googleData.tokenId,
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/octet-stream; charset=utf-8',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     })
     const data = await res.json()
     // store returned user somehow
+  }*/
+
+  
+async function signInCallback(authResult) {
+  console.log('authResult', authResult);
+
+  if (authResult['code']) {
+
+    // Send the code to the server
+    let result = await fetch('http://localhost:8080/storeauthcode', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/octet-stream; charset=utf-8',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: authResult['code']
+    });
+    // etc...
+  } else {
+    // There was an error.
   }
+}
    
 
   return (       
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <GoogleLogin
-          clientId={CLIENT_ID}
-          buttonText="Log in with Google"
-          onSuccess={handleLogin}
-          onFailure={handleLogin}
-          
-        />
+       <Button onClick={()=>  auth2.grantOfflineAccess().then(signInCallback)} >
+          Login with Google
+       </Button>
+
+      
       </Row>
     </Container>
   )

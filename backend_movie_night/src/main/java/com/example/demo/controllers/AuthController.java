@@ -5,15 +5,16 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeToken
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.Value;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     @Value("${api.google.clientId}")
@@ -25,13 +26,19 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @RequestMapping(value = "/storeauthcode", method = RequestMethod.POST)
+
+
+    //@RequestMapping(value = "/storeauthcode", method = RequestMethod.POST)
+    @PostMapping("/storeauthcode")
     public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding) {
         if (encoding == null || encoding.isEmpty()) {
             // Without the `X-Requested-With` header, this request could be forged. Aborts.
             return "Error, wrong headers";
         }
-
+        System.out.println("here " + code);
+        System.out.println("jack " + JacksonFactory.getDefaultInstance());
+        System.out.println(CLIENT_ID);
+        System.out.println(CLIENT_SECRET);
         GoogleTokenResponse tokenResponse = null;
         try {
             tokenResponse = new GoogleAuthorizationCodeTokenRequest(
@@ -41,9 +48,10 @@ public class AuthController {
                     CLIENT_ID,
                     CLIENT_SECRET,
                     code,
-                    "http://localhost:8080") // Make sure you set the correct port
+                    "http://localhost:3000") // Make sure you set the correct port
                     .execute();
         } catch (IOException e) {
+            System.out.println("cathar");
             e.printStackTrace();
         }
 

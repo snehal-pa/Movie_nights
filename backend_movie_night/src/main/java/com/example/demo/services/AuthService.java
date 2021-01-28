@@ -2,9 +2,11 @@ package com.example.demo.services;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+@Service
 public class AuthService {
 
 
