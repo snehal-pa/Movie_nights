@@ -21,18 +21,5 @@ export default function App() {
   );
 }
 
-/*function App() {
-  return (
-    <div className="App">
-      <header>
-    
-      </header>
 
-    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
-      <script src="/main.js" defer></script>
-    <button id="signinButton">Link my Google Calendar</button>
-   
-    </div>
-  );
-}*/
 

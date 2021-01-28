@@ -22,20 +22,6 @@ export default function Login() {
     });
   },[])
 
-  /*const handleLogin = async googleData => {
-    console.log(googleData)
-    const res = await fetch("http://localhost:8080/storeauthcode", {
-      method: "POST",
-        body: googleData.tokenId,
-      headers: {
-        'Content-Type': 'application/octet-stream; charset=utf-8',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    })
-    const data = await res.json()
-    // store returned user somehow
-  }*/
-
   
 async function signInCallback(authResult) {
   console.log('authResult', authResult);
@@ -65,7 +51,6 @@ async function signInCallback(authResult) {
           Login with Google
        </Button>
 
-      
       </Row>
     </Container>
   )

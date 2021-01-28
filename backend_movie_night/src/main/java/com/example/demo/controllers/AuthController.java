@@ -35,10 +35,6 @@ public class AuthController {
             // Without the `X-Requested-With` header, this request could be forged. Aborts.
             return "Error, wrong headers";
         }
-        System.out.println("here " + code);
-        System.out.println("jack " + JacksonFactory.getDefaultInstance());
-        System.out.println(CLIENT_ID);
-        System.out.println(CLIENT_SECRET);
         GoogleTokenResponse tokenResponse = null;
         try {
             tokenResponse = new GoogleAuthorizationCodeTokenRequest(
