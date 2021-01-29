@@ -36,6 +36,6 @@ public class MovieController {
         }
         int upto = from + limit;
         movieService.saveMoviesToDb(from,upto);
-        return ResponseEntity.status(HttpStatus.OK).body("movie saved to db");
+        return ResponseEntity.status(HttpStatus.OK).body("movies saved to db");
     }
 }
