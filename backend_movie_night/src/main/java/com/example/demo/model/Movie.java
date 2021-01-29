@@ -16,7 +16,7 @@ public class Movie {
     private long id;
     private String title;
     private String genre;
-    private String length;
+    private int length;
     private String description;
     private String postPath;
     private String language;
