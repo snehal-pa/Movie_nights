@@ -6,21 +6,22 @@ import com.example.demo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
     @Autowired
     private UserRepo userRepo;
 
 
-    public void registerUser(User user) {
-        //Are user in database?
-        Optional<User> optional = Optional.ofNullable(userRepo.findByEmail(user.getEmail()));
+    public User registerUser(User user) {
+        var u = userRepo.findByEmail(user.getEmail());
 
-        if(!optional.isPresent()){
-            userRepo.save(user);
+        if (u != null) {
+            u.setAccessToken(user.getAccessToken());
+            u.setRefreshToken(user.getRefreshToken());
+            u.setExpiresAt(user.getExpiresAt());
+            u.setProfileUrl(user.getProfileUrl());
+            return userRepo.save(u);
         }
-
+        return userRepo.save(user);
     }
 }
