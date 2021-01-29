@@ -5,4 +5,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 public interface MovieRepo extends Neo4jRepository<Movie,Integer> {
 
+    Movie findByTitle(String title);
+
 }
