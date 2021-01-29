@@ -34,6 +34,15 @@ public class MovieController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(movies);
         }
+
+
+        if(genre != null && title ==null){
+            var movies = movieService.getMovieByGenre(genre);
+            if (movies.size() == 0){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(movies);
+        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
 
 

@@ -77,7 +77,26 @@ public class MovieService {
         }
     }
 
-    public List<Movie> getMovieByTitle(String title){
-        return movieRepo.findByTitle(title);
+    public List<Movie> getMovieByTitle(String title) {
+        return movieRepo.findByTitleContaining(title);
     }
+
+    public List<Movie> getMovieByGenre(String genre) {
+        return movieRepo.findByGenre(genre);
+//        var allMovies = movieRepo.findAll();
+//        List<Movie> filteredMovie = new ArrayList<>();
+//        for (Movie m : allMovies) {
+//            m.getGenre().forEach(g ->{
+//                if(g.toLowerCase().contains(genre.toLowerCase())){
+//                    filteredMovie.add(m);
+//                }
+//            });
+////            if (m.getGenre().contains(genre)) {
+////                filteredMovie.add(m);
+////            }
+//        }
+//        return filteredMovie;
+    }
+
+
 }
