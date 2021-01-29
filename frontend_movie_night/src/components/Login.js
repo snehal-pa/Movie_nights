@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
 import { Button } from "reactstrap";
 
 import { Container, Row } from "reactstrap";
