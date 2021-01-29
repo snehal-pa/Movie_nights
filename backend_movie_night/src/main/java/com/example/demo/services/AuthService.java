@@ -52,7 +52,6 @@ public class AuthService {
 
         //create password by
         // from the user and a secret salt
-        // TODO: 28/01/2021
 
 
         String password = encoder.encode(email + "passwordSalt" + userId);
