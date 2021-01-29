@@ -6,8 +6,12 @@ import com.example.demo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class UserService {
+
     @Autowired
     private UserRepo userRepo;
 
@@ -23,5 +27,9 @@ public class UserService {
             return userRepo.save(u);
         }
         return userRepo.save(user);
+    }
+
+    public Collection<User> getAll() {
+        return userRepo.findAll();
     }
 }

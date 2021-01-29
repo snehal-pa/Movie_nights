@@ -26,6 +26,12 @@ public class User {
     private String refreshToken;
     private Long expiresAt;
 
+    private List<User> users;
+
+    public List<User> getUsers(){
+        return users;
+    }
+
 
     public User(String name, String email, String profileUrl, String password, String accessToken, String refreshToken, Long expiresAt) {
         this.name = name;
