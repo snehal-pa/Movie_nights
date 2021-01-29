@@ -6,34 +6,5 @@
 </head>
 <body>
 <h1>API documentation goes here...</h1>
-<h1>Information</h1>
-<h3>Oauth2</h3>
-<p>OAuth 2 är ett auktoriseringsramverk som gör det möjligt
-    för applikationer att få begränsad åtkomst till
-    användarkonton exempelvis vårt Google konto</p>
-<h3>JWT</h3>
-<p> Json web token (JWT) används vid autentisering.
-    Vi använder JWT för att se att användare som är
-    inloggad har behörighet att skicka requests till servern. </p>
-<p><strong>JWT består av tre delar:</strong></p>
-<p>Header: Hashalgoritm </p>
-<p>Payload: Data i Json format  </p>
-<p>Signature: : Verifierar att användaren är den de säger
-    att det är, vilket leder till ökad säkerhet i applikationen</p>
-<p>En fördel med att använda JWT iIstället för att göra en session
-    och ställa in en cookie, är att med JWT skickar servern istället
-    en JSON-webbtoken.  Med denna token kan användaren göra det den vill göra
-    med servern (som den har behörighet att göra). Detta kan med fördel
-    användas vid exempelvis större applikationer som exempelvis en bank
-    som har användaren bankuppgiften på en server och pensionsparande på en annan.
-    Användaren an då använda samma JWT för att kunna komma år båda servrarna utan
-    att behöva logga in och ut.</p>
-<h3>HTTPS</h3>
-<p>Hypertext Transfer Protocol Secure (HTTPS)
-    är ett protokoll för krypterad transport av data
-    för HTTP-protokollet. Detta innebär att uppkopplingen mellan
-    användare och en hemsideserver är krypterad samt att information
-    som lösenord och annan viktig data är skyddade
-    och förblir privata för användaren. </p>
 </body>
 </html>
