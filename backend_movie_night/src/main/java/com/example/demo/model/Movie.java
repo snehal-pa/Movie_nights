@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Id;
 
+import java.util.List;
+
 
 @Node
 @Data
@@ -13,10 +15,10 @@ import org.springframework.data.neo4j.core.schema.Id;
 @AllArgsConstructor
 public class Movie {
     @Id
-    private long id;
+    private int id;
     private String title;
-    private String genre;
-    private String length;
+    private List<String> genre;
+    private int length;
     private String description;
     private String postPath;
     private String language;
