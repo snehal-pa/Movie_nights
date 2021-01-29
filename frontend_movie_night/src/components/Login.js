@@ -20,11 +20,10 @@ export default function Login() {
   }, []);
 
   async function signInCallback(authResult) {
-    console.log("authResult", authResult);
-
+   
     if (authResult["code"]) {
       // Send the code to the server
-      let result = await fetch("http://localhost:8080/storeauthcode", {
+      let result = await fetch("http://localhost:8080/api/storeauthcode", {
         method: "POST",
         headers: {
           "Content-Type": "application/octet-stream; charset=utf-8",
