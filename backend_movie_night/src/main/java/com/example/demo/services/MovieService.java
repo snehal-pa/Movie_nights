@@ -75,7 +75,9 @@ public class MovieService {
         } catch (Exception e) {
             return null;
         }
+    }
 
-
+    public List<Movie> getMovieByTitle(String title){
+        return movieRepo.findByTitle(title);
     }
 }

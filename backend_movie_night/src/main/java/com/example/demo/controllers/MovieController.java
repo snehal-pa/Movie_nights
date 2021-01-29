@@ -24,6 +24,22 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.OK).body(m);
 
     }
+
+    @GetMapping("/search")
+    public ResponseEntity getByGenreOrTitle(@RequestParam(required = false) String genre,@RequestParam(required = false) String title){
+        if(genre == null && title !=null){
+            var movies = movieService.getMovieByTitle(title);
+            if (movies.size() == 0){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(movies);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
+
+
+
+    }
+
     @GetMapping
     public List<Movie> getAllMovieFromDb(){
         return movieService.getAllMovies();
@@ -36,6 +52,6 @@ public class MovieController {
         }
         int upto = from + limit;
         movieService.saveMoviesToDb(from,upto);
-        return ResponseEntity.status(HttpStatus.OK).body("movie saved to db");
+        return ResponseEntity.status(HttpStatus.OK).body("movies saved to db");
     }
 }
