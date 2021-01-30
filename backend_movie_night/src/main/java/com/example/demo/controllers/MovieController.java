@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/rest/movies")
 public class MovieController {
     @Autowired
     private MovieService movieService;
