@@ -62,6 +62,7 @@ public class EventService {
             if(freeFriend == true){
                 friends.get(i).setAccessToken(null);
                 friends.get(i).setRefreshToken(null);
+                friends.get(i).setPassword(null);
                 availableFriends.add(friends.get(i));
             }
         }
