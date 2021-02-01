@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 
+import com.example.demo.model.MovieEvent;
 import com.example.demo.model.User;
 import com.example.demo.repository.MovieRepo;
 import com.example.demo.repository.UserRepo;
@@ -10,6 +11,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,4 +101,31 @@ public class EventService {
     }
 
 
+    public Event createNewEvent(MovieEvent movieEvent,String accessToken) {
+
+        GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
+        Calendar calendar = new Calendar.Builder(
+                new NetHttpTransport(),
+                JacksonFactory.getDefaultInstance(),
+                credentials)
+                .setApplicationName("Movie Nights")
+                .build();
+
+        Event newEvent = new Event();
+
+        EventDateTime eventStart = new EventDateTime().setDateTime(movieEvent.getStart());
+        EventDateTime eventEnd = new EventDateTime().setDateTime(movieEvent.getEnd());
+
+        newEvent.setSummary(movieEvent.getMovie().getTitle());
+        newEvent.setStart(eventStart);
+        newEvent.setEnd(eventEnd);
+
+        try {
+            calendar.events().insert("primary", newEvent).execute();
+            return newEvent;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

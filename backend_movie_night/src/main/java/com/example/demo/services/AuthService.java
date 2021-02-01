@@ -65,16 +65,4 @@ public class AuthService {
     }
 
 
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public BCryptPasswordEncoder getEncoder() {
-        return encoder;
-    }
 }
