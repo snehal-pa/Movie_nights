@@ -4,7 +4,6 @@ package com.example.demo.services;
 import com.example.demo.model.User;
 import com.example.demo.repository.MovieRepo;
 import com.example.demo.repository.UserRepo;
-import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,10 +37,8 @@ public class EventService {
     @Value("${api.google.clientSecret}")
     private String CLIENT_SECRET;
 
-    //Get movie
-    //Add movieLength on date!
-    //Check AccessToken, refresh
-    public List<User> checkFriendsEvents(DateTime date){
+
+    public List<User> checkFriendsEvents(DateTime startDate, DateTime endDate){
 
         List<User> friends = userRepo.findAll();
         System.out.println(friends);
@@ -62,10 +58,11 @@ public class EventService {
                     e.printStackTrace();
                 }
             }
-            Boolean freeFriend = getEvents(date, friends.get(i).getAccessToken());
+            Boolean freeFriend = getEventsFroAvailableFriends(startDate, endDate, friends.get(i).getAccessToken());
             if(freeFriend == true){
                 friends.get(i).setAccessToken(null);
                 friends.get(i).setRefreshToken(null);
+                friends.get(i).setPassword(null);
                 availableFriends.add(friends.get(i));
             }
         }
@@ -98,8 +95,7 @@ public class EventService {
     }
 
 
-
-    private boolean getEvents(DateTime startDate, String accessToken){
+    private boolean getEventsFroAvailableFriends(DateTime startDate, DateTime endDate, String accessToken){
         // Use an accessToken previously gotten to call Google's API
         GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
         Calendar calendar = new Calendar.Builder(
@@ -114,6 +110,7 @@ public class EventService {
             events = calendar.events().list("primary")
                     .setMaxResults(10)
                     .setTimeMin(startDate)
+                    .setTimeMax(endDate)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
@@ -133,9 +130,6 @@ public class EventService {
             return  false;
         }
     }
-
-    //What if event already started?
-    //check endTime of events
 
 
 }
