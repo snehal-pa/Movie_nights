@@ -16,13 +16,9 @@ export default function Login() {
       auth2 = window.gapi.auth2.init({
         client_id: CLIENT_ID,
         scope: "https://www.googleapis.com/auth/calendar.events",
-       
       });
     });
- 
   }, []);
- 
-
 
   async function signInCallback(authResult) {
    
@@ -36,6 +32,8 @@ export default function Login() {
         },
         body: authResult["code"],
       });
+
+
       // etc...
     } else {
       // There was an error.
