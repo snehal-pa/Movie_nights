@@ -13,7 +13,6 @@ import java.util.List;
 @Node
 @Data
 @NoArgsConstructor
-
 public class User {
     @Id
     @GeneratedValue
