@@ -13,8 +13,7 @@ import TopBar from './components/TopBar';
 export default function App() {
   return (    
      <Router>      
-       <TopBar/> 
-           
+       <TopBar/>            
       <Route path="/" exact>
         <Login />
       </Route>

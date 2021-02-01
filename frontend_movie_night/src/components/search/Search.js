@@ -1,4 +1,4 @@
-import { Container, InputGroup, Input, Media, Col, Row } from "reactstrap";
+import { Container, InputGroup, Input, Media, Col, Row, Button, Form, Label, FormGroup } from "reactstrap";
 import {useState} from 'react';
 
 
@@ -15,7 +15,7 @@ export default function Search() {
               <Input className="movie-search" placeholder="Search" onChange={e => {setSearchTerm(e.target.value)}} />
             </InputGroup>
           </Col>
-        </Row>
+        </Row>       
         <div className="movielist-box">
           <Row className="media-item">
             <Col lg="3" md="3" sm="12">
@@ -69,8 +69,8 @@ export default function Search() {
             <Col lg="12">
               <hr></hr>
             </Col>
-          </Row> 
-          </div>
+          </Row>           
+        </div>    
       </Container>
     );
   }
