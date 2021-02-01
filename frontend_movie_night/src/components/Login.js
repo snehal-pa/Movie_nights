@@ -9,15 +9,20 @@ const CLIENT_ID =
 
 export default function Login() {
   let auth2;
+  let gapi;
 
   useEffect(() => {
     window.gapi.load("auth2", function () {
       auth2 = window.gapi.auth2.init({
         client_id: CLIENT_ID,
         scope: "https://www.googleapis.com/auth/calendar.events",
+       
       });
     });
+ 
   }, []);
+ 
+
 
   async function signInCallback(authResult) {
    
@@ -35,6 +40,9 @@ export default function Login() {
     } else {
       // There was an error.
     }
+    
+  
+
   }
 
   return (
