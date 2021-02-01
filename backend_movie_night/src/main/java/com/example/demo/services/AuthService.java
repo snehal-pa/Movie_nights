@@ -15,7 +15,8 @@ public class AuthService {
     private UserService userService;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    private String accessToken;
+    private String refreshToken;
 
     public void saveUserToDb(GoogleTokenResponse tokenResponse) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
@@ -36,8 +37,8 @@ public class AuthService {
         String name = (String) payload.get("name");
         String pictureUrl = (String) payload.get("picture");
         String locale = (String) payload.get("locale");
-        String accessToken = tokenResponse.getAccessToken();
-        String refreshToken = tokenResponse.getRefreshToken();
+        accessToken = tokenResponse.getAccessToken();
+        refreshToken = tokenResponse.getRefreshToken();
         Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
 

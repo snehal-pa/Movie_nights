@@ -7,7 +7,7 @@ export default function Home() {
     
   
     return (
-      <Container >
+      <Container fluid={true}>
         <Row>
           <Col lg="8" md="12" sm="12">
             <Calendar/>
