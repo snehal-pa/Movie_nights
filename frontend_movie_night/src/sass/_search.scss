@@ -1,0 +1,22 @@
+@import 'variable-overrides';
+
+.movie-search{
+    border-radius: 2rem;
+}
+
+.media-item{
+    background:pink !important;
+    margin-top: 3px;
+      border-radius: 2rem;
+  
+}
+
+.container-search{
+    background-color: $dark_purple;
+    padding: 10%;    
+}
+
+.movie-poster{
+    width: 100px;
+    height: auto;
+}
