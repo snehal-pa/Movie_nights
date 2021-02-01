@@ -56,7 +56,7 @@ public class MovieController {
 
     @PostMapping("/{from}/{limit}")
     public ResponseEntity postMovies(@PathVariable int from,@PathVariable int limit ){
-        if(limit >200 || limit <= 0 ){
+        if(limit >200 || limit < 1 ){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("min limit is 1 and max limit is 200");
         }
         int upto = from + limit;

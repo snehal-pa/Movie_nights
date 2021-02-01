@@ -51,13 +51,6 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        // Store these 3 in your DB
-
-        // Debug purpose only
-//        System.out.println("accessToken: " + accessToken);
-//        System.out.println("refreshToken: " + refreshToken);
-//        System.out.println("expiresAt: " + expiresAt);
-
         authService.saveUserToDb(tokenResponse);
 
         return "OK";

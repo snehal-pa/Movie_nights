@@ -4,6 +4,7 @@ import com.example.demo.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 @Service
 public class AuthService {
+    private String accessToken;
     @Autowired
     private UserService userService;
 
@@ -36,7 +38,7 @@ public class AuthService {
         String name = (String) payload.get("name");
         String pictureUrl = (String) payload.get("picture");
         String locale = (String) payload.get("locale");
-        String accessToken = tokenResponse.getAccessToken();
+        accessToken = tokenResponse.getAccessToken();
         String refreshToken = tokenResponse.getRefreshToken();
         Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
@@ -60,5 +62,19 @@ public class AuthService {
 
         userService.registerUser(user);
 
+    }
+
+
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public BCryptPasswordEncoder getEncoder() {
+        return encoder;
     }
 }
