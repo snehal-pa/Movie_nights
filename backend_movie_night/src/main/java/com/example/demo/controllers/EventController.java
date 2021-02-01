@@ -37,9 +37,8 @@ public class EventController {
 
     @PostMapping
     private ResponseEntity postMovieToCalendar(@RequestBody MovieEvent movieEvent){
-        String accessToken ="";
 
-        Event movieEvent1= eventService.createNewEvent(movieEvent,accessToken);
+        Event movieEvent1= eventService.createNewEvent(movieEvent);
         if(movieEvent1 == null){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Fail to post event");
         }

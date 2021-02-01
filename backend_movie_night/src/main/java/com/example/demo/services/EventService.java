@@ -101,7 +101,8 @@ public class EventService {
     }
 
 
-    public Event createNewEvent(MovieEvent movieEvent,String accessToken) {
+    public Event createNewEvent(MovieEvent movieEvent) {
+        String accessToken="";
 
         GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
         Calendar calendar = new Calendar.Builder(
