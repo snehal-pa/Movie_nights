@@ -13,7 +13,7 @@ public interface UserRepo extends Neo4jRepository<User,Long> {
 
     User findByEmail(String email);
 
-    List<User> findAll();
+   // List<User> findAll();
 
 }
 

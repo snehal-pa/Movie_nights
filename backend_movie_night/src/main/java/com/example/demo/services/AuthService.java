@@ -12,7 +12,6 @@ import java.io.IOException;
 
 @Service
 public class AuthService {
-    private String accessToken;
     @Autowired
     private UserService userService;
 
@@ -38,7 +37,7 @@ public class AuthService {
         String name = (String) payload.get("name");
         String pictureUrl = (String) payload.get("picture");
         String locale = (String) payload.get("locale");
-        accessToken = tokenResponse.getAccessToken();
+        String accessToken = tokenResponse.getAccessToken();
         String refreshToken = tokenResponse.getRefreshToken();
         Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
