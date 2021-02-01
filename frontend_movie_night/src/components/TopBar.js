@@ -6,9 +6,9 @@ export default function Topbar(){
 
     return(
         <div>
-        <Navbar color="light" light expand="md">
+        <Navbar className="navbar-custom"  light expand="md">
           <NavbarBrand href="/">MovieNights</NavbarBrand>        
-            <Nav className="ml-auto" navbar>
+            <Nav className="ml-auto"  navbar>
               <NavItem>
               <NavLink tag={Link} to={"/"}>               
                   Login
@@ -22,7 +22,7 @@ export default function Topbar(){
              
               <NavItem>
                 <NavLink tag={Link} to={"/"}>  
-                <Badge className="mr-2">0</Badge>             
+                <Badge className="mr-2 top-bar-badge">0</Badge>             
                   Invitations
                 </NavLink>              
               </NavItem>

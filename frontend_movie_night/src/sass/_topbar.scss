@@ -1,6 +1,24 @@
+
+@import 'variable-overrides';
+
 .user-img{
     height: 25px;
     max-width: 25px;
     border-radius: 50%;    
     margin-right: 5px;
+}
+
+.navbar-custom{
+    background-color: $pink;    
+}
+
+
+
+.navbar-custom .navbar-brand, 
+        .navbar-custom .navbar-nav .nav-link { 
+            color: $white;
+        } 
+
+.top-bar-badge{
+    background-color: $purple;
 }
