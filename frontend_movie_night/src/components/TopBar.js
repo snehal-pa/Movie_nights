@@ -28,11 +28,12 @@ export default function Topbar(){
               </NavItem>
 
               <NavItem>
-                <NavLink tag={Link} to={"/"}>               
+                <NavLink tag={Link} to={"/"}>  
+                    <img className="user-img" src="https://www.seekpng.com/png/detail/428-4287240_no-avatar-user-circle-icon-png.png"></img>             
                   UserName
                 </NavLink>              
               </NavItem>
-              
+
               <NavItem>
                 <NavLink tag={Link} to={"/"}>               
                   Logout
