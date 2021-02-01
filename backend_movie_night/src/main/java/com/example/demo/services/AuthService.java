@@ -17,18 +17,16 @@ public class AuthService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-     private String refreshToken;
-     private Long expiresAt;
-     private String accessToken;
+    private String refreshToken;
+    private Long expiresAt;
+    private String accessToken;
 
 
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public Long getExpiresAt() {
-        return expiresAt;
-    }
+    public Long getExpiresAt() { return expiresAt; }
 
     public String getAccessToken() {
         return accessToken;
@@ -58,7 +56,6 @@ public class AuthService {
         expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
 
-
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
         System.out.println("userId: " + userId);
         System.out.println("email: " + email);
@@ -73,12 +70,11 @@ public class AuthService {
 
         String password = encoder.encode(email + "passwordSalt" + userId);
 
-        User user = new User(name,email,pictureUrl,password,accessToken,refreshToken,expiresAt);
+        User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
 
     }
-
 
 
 }
