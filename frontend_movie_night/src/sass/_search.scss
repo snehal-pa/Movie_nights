@@ -2,21 +2,41 @@
 
 .movie-search{
     border-radius: 2rem;
+    border-color: $purple;   
 }
 
-.media-item{
-    background:pink !important;
-    margin-top: 3px;
-      border-radius: 2rem;
-  
+.media-item{   
+    margin-top: 10px;    
+    color: $purple;  
 }
 
 .container-search{
-    background-color: $dark_purple;
-    padding: 10%;    
+    background-color: $white;
+    padding: 2% 5%  5%  5%;    
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    height: 90vh;    
+}
+
+.movielist-box{
+    margin-top: 30px;
 }
 
 .movie-poster{
     width: 100px;
-    height: auto;
+    max-height: 150px;
 }
+
+.media-heading{
+    text-align: left;    
+}
+
+.magenta{
+    background-color: $magenta;
+    border-color: $magenta;
+}
+
+
+
+/*.movielist-box{
+    overflow-y: auto;
+} */
