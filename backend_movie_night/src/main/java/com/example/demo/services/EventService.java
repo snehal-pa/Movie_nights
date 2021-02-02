@@ -19,17 +19,12 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+
 
 @Service
 public class EventService {
@@ -53,8 +48,6 @@ public class EventService {
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
 
         List<User> friends = userRepo.findAll();
-        System.out.println(friends);
-
         List<User> availableFriends = new ArrayList<>();
 
         for(int i= 0; i<friends.size(); i++){
@@ -78,7 +71,6 @@ public class EventService {
                 availableFriends.add(friends.get(i));
             }
         }
-
         return availableFriends;
     }
 
@@ -132,18 +124,14 @@ public class EventService {
         List<Event> items = events.getItems();
         if (items.isEmpty()) {
             System.out.println("No upcoming events found.");
-            System.out.println(true);
             return true;
         } else {
             System.out.println("Upcoming events");
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                System.out.println(start);
             }
-            System.out.println(false);
             return  false;
         }
-    }
+
+
 
     private Calendar getCalendar(String accessToken) {
         GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
