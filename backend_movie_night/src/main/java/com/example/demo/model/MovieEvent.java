@@ -12,6 +12,5 @@ public class MovieEvent {
     private Movie movie;
     private DateTime start;
     private DateTime end;
-
     private List<User> attendees;
 }

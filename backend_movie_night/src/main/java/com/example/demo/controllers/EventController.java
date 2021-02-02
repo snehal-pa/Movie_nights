@@ -57,9 +57,9 @@ public class EventController {
 
         Event movieEvent1= eventService.createNewEvent(movieEvent);
         if(movieEvent1 == null){
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Fail to post event");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Fail to post this event");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("event posted on calendar");
+        return ResponseEntity.status(HttpStatus.OK).body("The event posted on calendar");
     }
 
     @GetMapping("/myEvents")
