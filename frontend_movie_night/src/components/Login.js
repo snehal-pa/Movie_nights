@@ -35,7 +35,7 @@ export default function Login() {
         //console.log(result.status);
         var auth2 = window.gapi.auth2.getAuthInstance();
         var profile = auth2.currentUser.get().getBasicProfile();
-        console.log(profile.lt);
+        console.log(profile);
         console.log(profile.getName());
         console.log(profile.getEmail());
       }
