@@ -12,8 +12,7 @@ export default function Search() {
   async function fetchAllMovies(){
     let movies = await(
       await fetch("http://localhost:8080/rest/movies")
-    ).json();
-    console.log(movies)
+    ).json();    
     if (movies.error) {
       movies = [];
     }
@@ -24,6 +23,12 @@ export default function Search() {
     fetchAllMovies();
   }, []);
 
+  const selectMovie = (movie) => (e) =>{ 
+    e.preventDefault(); 
+    console.log(movie)
+  }
+ 
+
     return (
       <Container className="container-search mt-4">        
         <Row>
@@ -33,11 +38,11 @@ export default function Search() {
             </InputGroup>
           </Col>
         </Row>       
-        
+        <div className="movielist-box">
         {allMovies.map((movie) => 
-          (
-          <div className="movielist-box">
-            <Row className="media-item" key={movie.id}>
+          ( 
+            <div key={movie.id} onClick={selectMovie(movie)}>         
+            <Row className="media-item"> 
             <Col lg="3" md="3" sm="12">
               <Media>
                 <Media left middle href="#">
@@ -57,16 +62,17 @@ export default function Search() {
                 </Media>
               </Row>          
             </Col>                              
-          </Row>  
+          </Row> 
           <Row>
             <Col lg="12">
               <hr></hr>
             </Col>
-          </Row>           
-        </div>           
+          </Row> 
+          </div>       
           )
           )}
-         
+
+        </div>
             
       </Container>
     );
