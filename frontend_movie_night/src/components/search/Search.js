@@ -7,7 +7,6 @@ import { Context } from "../../App";
 export default function Search() {
 
   const[searchTerm, setSearchTerm] = useState('');
-
   const[ allMovies, setAllMovies] = useState([])
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState()
@@ -43,7 +42,12 @@ export default function Search() {
     setSelectedMovie(movie);       
     sendMovie(selectedMovie);   
   }
-  
+
+  const handleSearchInput = (e) =>{
+    const searchQuery = e.target.value
+    setSearchTerm(searchQuery)
+  }
+
 
   function sendMovie(){           
       updateContext({ showCreateInvitation: true }); 
@@ -60,7 +64,7 @@ export default function Search() {
           <Row>
             <Col lg="12" md="12" sm="12" >
               <InputGroup>
-                <Input className="movie-search" placeholder="Search" onChange={e => {setSearchTerm(e.target.value)}} />
+                <Input className="movie-search" placeholder="Search" value={searchTerm} onChange={handleSearchInput} />
               </InputGroup>
             </Col>
           </Row>   
