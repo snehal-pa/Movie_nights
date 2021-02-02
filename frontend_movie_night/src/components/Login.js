@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 //import GoogleLogin from "react-google-login";
-import { Button } from "reactstrap";
-
-import { Container, Row } from "reactstrap";
+import { Container, Row, Button } from "reactstrap";
+import { Context } from "../App";
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
 
 export default function Login() {
+  const [context, updateContext] = useContext(Context);
   let auth2;
   let gapi;
 
@@ -39,6 +39,10 @@ export default function Login() {
         console.log(profile);
         console.log(profile.getName());
         console.log(profile.getEmail());
+
+        updateContext({
+          loggedInUser: { name: profile.getName(), email: profile.getEmail() },
+        });
       }
 
       // etc...
