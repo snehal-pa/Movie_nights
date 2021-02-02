@@ -78,6 +78,7 @@ public class AuthService {
         System.out.println("name: " + name);
         System.out.println("pictureUrl: " + pictureUrl);
         System.out.println("locale: " + locale);
+        System.out.println("acccestoken: " + accessToken);
 
         //create password by
         // from the user and a secret salt
