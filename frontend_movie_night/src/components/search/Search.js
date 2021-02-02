@@ -11,6 +11,7 @@ export default function Search() {
 
   const[ allMovies, setAllMovies] = useState([])
   let [context, updateContext] = useContext(Context);
+  const [selectedMovie, setSelectedMovie] = useState()
 
   async function fetchAllMovies(){
     let movies = await(
@@ -23,20 +24,29 @@ export default function Search() {
   }
 
   useEffect(() => {
-    fetchAllMovies();
+    fetchAllMovies();    
   }, []);
 
   const selectMovie = (movie) => (e) =>{ 
     e.preventDefault(); 
-    updateContext({ showCreateInvitation: true });
     console.log(movie)
+    setSelectedMovie(movie);    
+    console.log("a" , setSelectedMovie)
+      
+    sendMovie(selectedMovie);   
+  }
+  
+
+  function sendMovie(){   
+     console.log(selectedMovie);   
+    updateContext({ showCreateInvitation: true }); 
   }
  
 
     return (
       <Container className="container-search mt-4">     
       {context.showCreateInvitation ? (
-        <CreateInvitation />
+        <CreateInvitation sendMovie={selectedMovie} />
       ) : ( 
         /* Search Box*/
         <div>
