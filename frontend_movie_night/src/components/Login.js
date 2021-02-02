@@ -20,7 +20,6 @@ export default function Login() {
   }, []);
 
   async function signInCallback(authResult) {
-   
     if (authResult["code"]) {
       // Send the code to the server
       let result = await fetch("http://localhost:8080/api/storeauthcode", {
@@ -31,6 +30,15 @@ export default function Login() {
         },
         body: authResult["code"],
       });
+
+      if (result.status == 200) {
+        //console.log(result.status);
+        var auth2 = window.gapi.auth2.getAuthInstance();
+        var profile = auth2.currentUser.get().getBasicProfile();
+        console.log(profile.lt);
+        console.log(profile.getName());
+        console.log(profile.getEmail());
+      }
       // etc...
     } else {
       // There was an error.
