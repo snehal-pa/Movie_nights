@@ -40,16 +40,11 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    //  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
+
 
     @GetMapping("/availablefriends")
 
     public ResponseEntity getAvailableFriends(@RequestParam(value="startdate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date startDate, @RequestParam(value="enddate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")Date endDate){
-
-    //public ResponseEntity getAvailableFriends(@RequestParam(value="startdate") DateTime startDate, @RequestParam(value="enddate") DateTime endDate){
-
-        System.out.println("DATE " + startDate);
-        System.out.println("DATE " + endDate);
 
         List<User> availableFriends = eventService.checkFriendsEvents(startDate, endDate);
 

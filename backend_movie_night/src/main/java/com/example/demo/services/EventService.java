@@ -142,7 +142,7 @@ public class EventService {
                 .setApplicationName("movie night")
                 .build();
     }
-    
+
 
     public Event createNewEvent(MovieEvent movieEvent) {
         String accessToken = authService.getAccessToken();
