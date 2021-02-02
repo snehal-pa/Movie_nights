@@ -19,11 +19,17 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class EventService {
@@ -44,7 +50,7 @@ public class EventService {
     private String CLIENT_SECRET;
 
 
-    public List<User> checkFriendsEvents(DateTime startDate, DateTime endDate){
+    public List<User> checkFriendsEvents(Date startDate, Date endDate){
 
         List<User> friends = userRepo.findAll();
         System.out.println(friends);
@@ -101,17 +107,21 @@ public class EventService {
     }
 
 
-    private boolean getEventsFroAvailableFriends(DateTime startDate, DateTime endDate, String accessToken){
+    private boolean getEventsFroAvailableFriends(Date startDate, Date endDate, String accessToken){
         // Use an accessToken previously gotten to call Google's API
         Calendar calendar = getCalendar(accessToken);
+
+        DateTime now = new DateTime(startDate);
+        DateTime end = new DateTime(endDate);
 
         Events events = null;
         try {
             events = calendar.events().list("primary")
                     .setMaxResults(10)
-                    .setTimeMin(startDate)
-                    .setTimeMax(endDate)
+                    .setTimeMin(now)
+                    .setTimeMax(end)
                     .setOrderBy("startTime")
+                    .setTimeZone("CET")
                     .setSingleEvents(true)
                     .execute();
         } catch (IOException e) {
@@ -126,6 +136,10 @@ public class EventService {
             return true;
         } else {
             System.out.println("Upcoming events");
+            for (Event event : items) {
+                DateTime start = event.getStart().getDateTime();
+                System.out.println(start);
+            }
             System.out.println(false);
             return  false;
         }
