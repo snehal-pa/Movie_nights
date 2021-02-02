@@ -47,7 +47,7 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.OK).body(availableFriends);
     }
 
-    @PostMapping
+    @PostMapping("/create_event")
     private ResponseEntity postMovieToCalendar(@RequestBody MovieEvent movieEvent){
 
         Event movieEvent1= eventService.createNewEvent(movieEvent);

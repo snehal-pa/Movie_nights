@@ -14,6 +14,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class EventService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private AuthService authService;
 
     @Value("${api.google.clientId}")
     private String CLIENT_ID;
@@ -99,13 +103,7 @@ public class EventService {
 
     private boolean getEventsFroAvailableFriends(DateTime startDate, DateTime endDate, String accessToken){
         // Use an accessToken previously gotten to call Google's API
-        GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
-        Calendar calendar = new Calendar.Builder(
-                new NetHttpTransport(),
-                JacksonFactory.getDefaultInstance(),
-                credentials)
-                .setApplicationName("movie night")
-                .build();
+        Calendar calendar = getCalendar(accessToken);
 
         Events events = null;
         try {
@@ -133,26 +131,53 @@ public class EventService {
         }
     }
 
-
-    public Event createNewEvent(MovieEvent movieEvent) {
-        String accessToken="";
-
+    private Calendar getCalendar(String accessToken) {
         GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
-        Calendar calendar = new Calendar.Builder(
+        return new Calendar.Builder(
                 new NetHttpTransport(),
                 JacksonFactory.getDefaultInstance(),
                 credentials)
-                .setApplicationName("Movie Nights")
+                .setApplicationName("movie night")
                 .build();
+    }
+
+
+    public Event createNewEvent(MovieEvent movieEvent) {
+        String accessToken = authService.getAccessToken();
+        if(authService.getExpiresAt()< System.currentTimeMillis()){
+            try {
+                accessToken = refreshAccessToken(authService.getRefreshToken());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Calendar calendar = getCalendar(accessToken);
 
         Event newEvent = new Event();
 
         EventDateTime eventStart = new EventDateTime().setDateTime(movieEvent.getStart());
         EventDateTime eventEnd = new EventDateTime().setDateTime(movieEvent.getEnd());
 
-        newEvent.setSummary(movieEvent.getMovie().getTitle());
+        newEvent.setSummary(movieEvent.getMovieName());
         newEvent.setStart(eventStart);
         newEvent.setEnd(eventEnd);
+
+        // set Event attendees
+        List<EventAttendee> eventAttendees = new ArrayList<>();
+        eventAttendees.add(new EventAttendee()
+                .setEmail(authService.getEmail())
+                .setDisplayName(authService.getName()));
+        if(!movieEvent.getAttendees().isEmpty()){
+            movieEvent.getAttendees().forEach(user -> {
+                EventAttendee e = new EventAttendee();
+                e.setEmail(user.getEmail()).setDisplayName(user.getName());
+                eventAttendees.add(e);
+            });
+        }
+        newEvent.setAttendees(eventAttendees);
+        //newEvent.getAttendees().notify();
+
 
         try {
             calendar.events().insert("primary", newEvent).execute();

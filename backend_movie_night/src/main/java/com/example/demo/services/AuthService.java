@@ -20,7 +20,22 @@ public class AuthService {
     private String refreshToken;
     private Long expiresAt;
     private String accessToken;
+    private String email;
+    private String name;
+    private String pictureUrl;
+    private String locale;
 
+    public String getLocale() {
+        return locale;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public String getRefreshToken() {
         return refreshToken;
@@ -46,11 +61,11 @@ public class AuthService {
         // Use THIS ID as a key to identify a google user-account.
         String userId = payload.getSubject();
 
-        String email = payload.getEmail();
+        email = payload.getEmail();
         boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-        String name = (String) payload.get("name");
-        String pictureUrl = (String) payload.get("picture");
-        String locale = (String) payload.get("locale");
+        name = (String) payload.get("name");
+        pictureUrl = (String) payload.get("picture");
+        locale = (String) payload.get("locale");
         accessToken = tokenResponse.getAccessToken();
         refreshToken = tokenResponse.getRefreshToken();
         expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);

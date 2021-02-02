@@ -25,6 +25,9 @@ public class MovieController {
 
     }
 
+
+    //http://localhost:8080/rest/movies/search?title={title}
+    //http://localhost:8080/rest/movies/search?genre={genre}
     @GetMapping("/search")
     public ResponseEntity getByGenreOrTitle(@RequestParam(required = false) String genre,@RequestParam(required = false) String title){
         if(genre == null && title !=null){

@@ -9,7 +9,7 @@ import java.util.List;
 public class MovieEvent {
 
     private int id;
-    private Movie movie;
+    private String movieName;
     private DateTime start;
     private DateTime end;
 
