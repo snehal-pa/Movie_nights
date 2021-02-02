@@ -28,18 +28,14 @@ export default function Search() {
   }, []);
 
   const selectMovie = (movie) => (e) =>{ 
-    e.preventDefault(); 
-    console.log(movie)
-    setSelectedMovie(movie);    
-    console.log("a" , setSelectedMovie)
-      
+    e.preventDefault();     
+    setSelectedMovie(movie);       
     sendMovie(selectedMovie);   
   }
   
 
-  function sendMovie(){   
-     console.log(selectedMovie);   
-    updateContext({ showCreateInvitation: true }); 
+  function sendMovie(){           
+      updateContext({ showCreateInvitation: true }); 
   }
  
 
