@@ -4,7 +4,6 @@ import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
 
 
-
 export default function Search() {
 
   const[searchTerm, setSearchTerm] = useState('');
@@ -12,6 +11,17 @@ export default function Search() {
   const[ allMovies, setAllMovies] = useState([])
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState()
+
+  async function postMoviesToDB(){
+    let moviesToBePostedToDB = await (
+      await fetch("http://localhost:8080/rest/movies/10/20"), {
+        method: 'POST',
+        mode: 'no-cors'
+        //headers: {  "Content-Type": "application/octet-stream; charset=utf-8",
+        //"X-Requested-With": "XMLHttpRequest" },
+      }
+    ).json();
+  }
 
   async function fetchAllMovies(){
     let movies = await(
@@ -24,7 +34,8 @@ export default function Search() {
   }
 
   useEffect(() => {
-    fetchAllMovies();    
+    fetchAllMovies();
+    postMoviesToDB();    
   }, []);
 
   const selectMovie = (movie) => (e) =>{ 

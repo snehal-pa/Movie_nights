@@ -9,7 +9,7 @@ const CLIENT_ID =
 
 export default function Login() {
   let auth2;
-  let gapi;
+ 
 
   useEffect(() => {
     window.gapi.load("auth2", function () {
