@@ -19,37 +19,29 @@ export default function MyCalendar() {
     //fetch events
     async function getEvents() {
         let events = await (await (await fetch("http://localhost:8080/api/myEvents")).json());
-        console.log("EVENTS unchanged time  ", events)
 
         if (!events.error) {
             events.forEach(event => {
-                event.start = convertDate(event.start)
-                event.end = convertDate(event.end)
+                event.start = convertDate(event.start.dateTime.value)
+                event.end = convertDate(event.end.dateTime.value)
 
                 setEvents(events);
-                console.log("MY SWEET EVENTS ", events)
             })
-
         } else {
-            console.log("error noo events ")
             myEvents = [];
         }
     }
 
-    function convertDate(date) {
-        console.log("DATE ", date)
-        let newDate = moment.utc(date).toDate()
-        console.log("NEW DATE ", newDate)
-        return newDate
+    function convertDate(date){
+        return new Date(moment.utc(date).toDate())
     }
-
 
         return (
             <Calendar
-                localizer={localizer}
-                events={myEvents}
-                startAccessor="start"
-                endAccessor="end"
+            localizer={localizer}
+            events={myEvents}
+            startAccessor="start"
+            endAccessor="end"
             />
         )
     

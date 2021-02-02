@@ -92,10 +92,7 @@ public class EventService {
         } else {
             System.out.println("Upcoming events");
 
-            String start;
-            String end;
-            String summary;
-            String 
+
             for (Event event : myEvents) {
                 DateTime start = event.getStart().getDateTime();
                 if (start == null) { // If it's an all-day-event - store the date instead
@@ -107,10 +104,6 @@ public class EventService {
                 }
 
                 event.getSummary();            // Title of calendar event
-                event.getStart().getDateTime(); // Start-time of event
-                event.getEnd().getDateTime();   // Start-time of event
-                event.getStart().getDate();     // Start-date (without time) of event
-                event.getEnd().getDate();
 
 
                 System.out.printf("EVENTS!!! %s (%s) -> (%s)\n", event.getSummary(), start, end);
