@@ -15,7 +15,7 @@ export default function Login() {
     window.gapi.load("auth2", function () {
       auth2 = window.gapi.auth2.init({
         client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/calendar.events",
+        scope: "https://www.googleapis.com/auth/calendar",
       });
     });
   }, []);

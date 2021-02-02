@@ -8,6 +8,7 @@ import com.example.demo.services.EventService;
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 
 import java.util.List;
@@ -65,5 +66,12 @@ public class EventController {
     public ResponseEntity<List<Event>> getMyEvents(){
         return ResponseEntity.ok(eventService.getMyEvents());
     }
+
+    @GetMapping("/myCalendar")
+    public ResponseEntity<String> getMyCalendar() throws IOException {
+        return ResponseEntity.ok(eventService.getMyCalendar());
+    }
+
+
 
 }

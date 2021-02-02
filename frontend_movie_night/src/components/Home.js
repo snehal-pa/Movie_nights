@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Search from './search/Search';
-import Calendar from './calendar/Calendar'
+import MyCalendar from "./calendar/MyCalendar";
 
 export default function Home() {
     
@@ -10,7 +10,7 @@ export default function Home() {
       <Container fluid={true}>
         <Row>
           <Col lg="8" md="12" sm="12">
-            <Calendar/>
+            <MyCalendar/>
             
           </Col>
           <Col lg="4" md="12" sm="12">
