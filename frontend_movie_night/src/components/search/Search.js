@@ -1,11 +1,22 @@
 import { Container, InputGroup, Input, Media, Col, Row, Button, Form, Label, FormGroup } from "reactstrap";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 
 
 export default function Search() {
 
   const[searchTerm, setSearchTerm] = useState('');
+
+  async function fetchAllMovies(){
+    let movies = await(
+      await fetch("http://localhost:8080/rest/movies")
+    ).json();
+    console.log(movies)
+  }
+
+  useEffect(() => {
+    fetchAllMovies();
+  });
 
     return (
       <Container className="container-search mt-4">        
