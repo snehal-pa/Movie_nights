@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -26,15 +27,14 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
-
     //@RequestMapping(value = "/storeauthcode", method = RequestMethod.POST)
     @PostMapping("/storeauthcode")
-    public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding) {
+    public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding, HttpServletRequest req) {
         if (encoding == null || encoding.isEmpty()) {
             // Without the `X-Requested-With` header, this request could be forged. Aborts.
             return "Error, wrong headers";
         }
+        System.out.println("here");
         GoogleTokenResponse tokenResponse = null;
         try {
             tokenResponse = new GoogleAuthorizationCodeTokenRequest(
@@ -51,7 +51,7 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        authService.saveUserToDb(tokenResponse);
+        authService.saveUserToDb(tokenResponse, req);
 
         return "OK";
     }

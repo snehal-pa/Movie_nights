@@ -5,15 +5,29 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Service
 public class AuthService {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -47,7 +61,7 @@ public class AuthService {
         return accessToken;
     }
 
-    public void saveUserToDb(GoogleTokenResponse tokenResponse) {
+    public void saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
         GoogleIdToken idToken = null;
         try {
@@ -87,8 +101,22 @@ public class AuthService {
 
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
+        securityLogin(email, password, req);
+
         userService.registerUser(user);
 
+    }
+
+    private void securityLogin(String email, String password, HttpServletRequest req) {
+        System.out.println("here");
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication auth = authenticationManager.authenticate(authReq);
+
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        HttpSession session = req.getSession(true);
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
     }
 
 
