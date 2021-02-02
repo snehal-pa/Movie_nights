@@ -1,9 +1,17 @@
-import { Container, InputGroup, Input, Media, Col, Row, Button, Form, Label, FormGroup } from "reactstrap";
+import {Input, Media, Col, Row, Button, Form, Label, FormGroup } from "reactstrap";
+import { Context } from "../App";
+import {useContext} from 'react';
 
 
 
 export default function CreateInvitation() {
+
+  let [context, updateContext] = useContext(Context);
  
+  function discard(e){
+    e.preventDefault(); 
+    updateContext({ showCreateInvitation: false});
+  }
 
     return (      
           <div className="invitation">
@@ -74,7 +82,7 @@ export default function CreateInvitation() {
               </Row>
               <Row>
                 <Col lg="6" sm="12">
-                <Button color="secondary" className="w-100">Discard</Button>
+                <Button color="secondary" className="w-100" onClick={discard}>Discard</Button>
                 </Col>
                 <Col lg="6" sm="12">
                 <Button className="w-100 magenta">Send</Button>
