@@ -18,27 +18,9 @@ export default function Login() {
         scope: "https://www.googleapis.com/auth/calendar.events",
       });
     });
-    console.log("AUTH2211 ", auth2)
   }, []);
 
-  var request = window.gapi.client.drive.about.get({ 'fields': 'user' });
-
-  // Execute the API request.
-  request.execute(function (response) {
-    console.log(response);
-  });
-
-
-  // Example 2: Use gapi.client.request(args) function
-  var request = gapi.client.request({
-    'method': 'GET',
-    'path': '/drive/v3/about',
-    'params': { 'fields': 'user' }
-  });
-  // Execute the API request.
-  request.execute(function (response) {
-    console.log("RESPONSE USER  ",response);
-  });
+  
 
 
 

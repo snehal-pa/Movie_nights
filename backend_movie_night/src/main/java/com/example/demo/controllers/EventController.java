@@ -60,4 +60,10 @@ public class EventController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("event posted on calendar");
     }
+
+    @GetMapping("/myEvents")
+    public ResponseEntity<List<Event>> getMyEvents(){
+        return ResponseEntity.ok(eventService.getMyEvents());
+    }
+
 }
