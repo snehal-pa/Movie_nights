@@ -2,11 +2,13 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.model.User;
+import com.example.demo.services.AuthService;
 import com.example.demo.services.EventService;
 
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -46,4 +48,10 @@ public class EventController {
 
         return ResponseEntity.status(HttpStatus.OK).body(availableFriends);
     }
+
+    @GetMapping("/myEvents")
+    public ResponseEntity<List<Event>> getMyEvents(@RequestParam(value="accessToken") String accessToken){
+        return ResponseEntity.ok(eventService.getMyEvents(accessToken));
+    }
+
 }

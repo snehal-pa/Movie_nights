@@ -15,7 +15,7 @@ public class AuthService {
     private UserService userService;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private String accessToken;
+    public String accessToken;
     private String refreshToken;
 
     public void saveUserToDb(GoogleTokenResponse tokenResponse) {
@@ -50,6 +50,7 @@ public class AuthService {
         System.out.println("name: " + name);
         System.out.println("pictureUrl: " + pictureUrl);
         System.out.println("locale: " + locale);
+        System.out.println("accesToken " + accessToken);
 
         //create password by
         // from the user and a secret salt

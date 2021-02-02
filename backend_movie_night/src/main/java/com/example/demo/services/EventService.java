@@ -43,29 +43,89 @@ public class EventService {
     @Value("${api.google.clientSecret}")
     private String CLIENT_SECRET;
 
+    public List<Event> getMyEvents() {
 
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
+        // Use an accessToken previously gotten to call Google's API
+
+        GoogleCredential credentials = new GoogleCredential().setAccessToken();
+        Calendar calendar = new Calendar.Builder(
+                new NetHttpTransport(),
+                JacksonFactory.getDefaultInstance(),
+                credentials)
+                .setApplicationName("Movie Nights")
+                .build();
+
+    /*
+            List the next 10 events from the primary calendar.
+        Instead of printing these with System out, you should of course store them in a database or in-memory variable to use for your application.
+*/
+
+
+//        event.getSummary()             // Title of calendar event
+//        event.getStart().getDateTime() // Start-time of event
+//        event.getEnd().getDateTime()   // Start-time of event
+//        event.getStart().getDate()     // Start-date (without time) of event
+//        event.getEnd().getDate()       // End-date (without time) of event
+
+
+        DateTime now = new DateTime(System.currentTimeMillis());
+        Events events = null;
+        try {
+            events = calendar.events().list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<Event> myEvents = events.getItems();
+
+        if (myEvents.isEmpty()) {
+            System.out.println("No upcoming events found.");
+        } else {
+            System.out.println("Upcoming events");
+            for (Event event : myEvents) {
+                DateTime start = event.getStart().getDateTime();
+                if (start == null) { // If it's an all-day-event - store the date instead
+                    start = event.getStart().getDate();
+                }
+                DateTime end = event.getEnd().getDateTime();
+                if (end == null) { // If it's an all-day-event - store the date instead
+                    end = event.getStart().getDate();
+                }
+                System.out.printf("%s (%s) -> (%s)\n", event.getSummary(), start, end);
+            }
+        }
+        return myEvents;
+    }
+
+
+    public List<User> checkFriendsEvents(DateTime startDate, DateTime endDate) {
 
         List<User> friends = userRepo.findAll();
         System.out.println(friends);
 
         List<User> availableFriends = new ArrayList<>();
 
-        for(int i= 0; i<friends.size(); i++){
+        for (int i = 0; i < friends.size(); i++) {
             //check if accessToken is valid
             Long tokenExpire = friends.get(i).getExpiresAt();
-            if(tokenExpire < System.currentTimeMillis()){
+            if (tokenExpire < System.currentTimeMillis()) {
                 //get a new accessToken
                 try {
-                   friends.get(i).setAccessToken(refreshAccessToken(friends.get(i).getRefreshToken()));
-                   friends.get(i).setExpiresAt(System.currentTimeMillis() + (3600 * 1000));
-                   userRepo.save(friends.get(i));
+                    friends.get(i).setAccessToken(refreshAccessToken(friends.get(i).getRefreshToken()));
+                    friends.get(i).setExpiresAt(System.currentTimeMillis() + (3600 * 1000));
+                    userRepo.save(friends.get(i));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             Boolean freeFriend = getEventsFroAvailableFriends(startDate, endDate, friends.get(i).getAccessToken());
-            if(freeFriend == true){
+            if (freeFriend == true) {
                 friends.get(i).setAccessToken(null);
                 friends.get(i).setRefreshToken(null);
                 friends.get(i).setPassword(null);
@@ -82,9 +142,12 @@ public class EventService {
             TokenResponse response =
                     new GoogleRefreshTokenRequest(new NetHttpTransport(), new JacksonFactory(),
                             refreshToken, CLIENT_ID, CLIENT_SECRET).execute();
+
             System.out.println("Access token: " + response.getAccessToken());
+
             return response.getAccessToken();
         } catch (TokenResponseException e) {
+
             if (e.getDetails() != null) {
                 System.err.println("Error: " + e.getDetails().getError());
                 if (e.getDetails().getErrorDescription() != null) {
@@ -97,11 +160,12 @@ public class EventService {
                 System.err.println(e.getMessage());
             }
         }
-       return null;
+        return null;
     }
 
 
     private boolean getEventsFroAvailableFriends(Date startDate, Date endDate, String accessToken){
+    private boolean getEventsFroAvailableFriends(DateTime startDate, DateTime endDate, String accessToken) {
         // Use an accessToken previously gotten to call Google's API
         GoogleCredential credentials = new GoogleCredential().setAccessToken(accessToken);
         Calendar calendar = new Calendar.Builder(
@@ -141,7 +205,7 @@ public class EventService {
                 System.out.println(start);
             }
             System.out.println(false);
-            return  false;
+            return false;
         }
     }
 
