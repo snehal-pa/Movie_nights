@@ -9,12 +9,13 @@ const CLIENT_ID =
 
 export default function Login() {
   let auth2;
+  let gapi;
 
   useEffect(() => {
     window.gapi.load("auth2", function () {
       auth2 = window.gapi.auth2.init({
         client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/calendar.events",
+        scope: "https://www.googleapis.com/auth/calendar",
       });
     });
   }, []);
@@ -39,6 +40,7 @@ export default function Login() {
         console.log(profile.getName());
         console.log(profile.getEmail());
       }
+
       // etc...
     } else {
       // There was an error.

@@ -1,12 +1,14 @@
 import {Input, Media, Col, Row, Button, Form, Label, FormGroup } from "reactstrap";
 import { Context } from "../App";
-import {useContext} from 'react';
+import React, {useContext} from 'react';
 
 
 
-export default function CreateInvitation() {
+export default function CreateInvitation(props) {
 
-  let [context, updateContext] = useContext(Context);
+  let [updateContext] = useContext(Context);
+
+ console.log(props.sendMovie)
  
   function discard(e){
     e.preventDefault(); 
@@ -20,19 +22,19 @@ export default function CreateInvitation() {
                 <Col lg="3" md="3" sm="12">
                   <Media>
                     <Media left middle href="#">
-                    <img  className="movie-poster" src="https://images-na.ssl-images-amazon.com/images/I/51JaPkQ-R-L._AC_.jpg" alt="Generic placeholder image" />
+                    <img  className="movie-poster" src={`https://image.tmdb.org/t/p/original/${props.sendMovie.postPath}`}  alt="Generic placeholder image" />
                   </Media>
                   </Media>
                 </Col>
                 <Col lg="9" md="9" sm="12">
                   <Row>
                     <Media body>
-                      <Media heading className="media-heading">Title</Media>          
+                      <Media heading className="media-heading">{props.sendMovie.title}</Media>          
                     </Media>
                   </Row>
                   <Row>
                     <Media>
-                      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+                      {props.sendMovie.description}
                     </Media>
                   </Row>          
                 </Col>                   
@@ -91,4 +93,4 @@ export default function CreateInvitation() {
           </Form>
           </div>         
     );
-  }
+  } 

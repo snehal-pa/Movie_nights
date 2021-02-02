@@ -1,0 +1,19 @@
+{
+  "name": "movie_nights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snehal-pa/Movie_nights.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snehal-pa/Movie_nights/issues"
+  },
+  "homepage": "https://github.com/snehal-pa/Movie_nights#readme"
+}

@@ -13,10 +13,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
-import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,77 @@ public class EventService {
 
     @Value("${api.google.clientSecret}")
     private String CLIENT_SECRET;
+
+    public String getMyCalendar() throws IOException {
+        Calendar myCalendar = getCalendar(authService.getAccessToken());
+
+        var cl = myCalendar.calendarList().get("calendarId").execute();
+
+//// Retrieve a specific calendar list entry
+//        CalendarListEntry calendarListEntry = null;
+//        try {
+//            calendarListEntry = myCalendar.calendarList().get("calendarId").execute();
+//        } catch (IOException e) {
+//            System.out.println("CANT GET ID!!! ");
+//            e.printStackTrace();
+//        }
+
+        //System.out.println(calendarListEntry.getSummary());
+
+        return cl.getSummary();
+    }
+
+    public List<Event> getMyEvents() {
+
+        Calendar myCalendar = getCalendar(authService.getAccessToken());
+
+    /*
+            List the next 10 events from the primary calendar.
+        Instead of printing these with System out, you should of course store them in a database or in-memory variable to use for your application.
+*/
+
+            // End-date (without time) of event
+
+
+        DateTime now = new DateTime(System.currentTimeMillis());
+        Events events = null;
+        try {
+            events = myCalendar.events().list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<Event> myEvents = events.getItems();
+
+        if (myEvents.isEmpty()) {
+            System.out.println("No upcoming events found.");
+        } else {
+            System.out.println("Upcoming events");
+
+
+            for (Event event : myEvents) {
+                DateTime start = event.getStart().getDateTime();
+                if (start == null) { // If it's an all-day-event - store the date instead
+                    start = event.getStart().getDate();
+                }
+                DateTime end = event.getEnd().getDateTime();
+                if (end == null) { // If it's an all-day-event - store the date instead
+                    end = event.getStart().getDate();
+                }
+
+                event.getSummary();            // Title of calendar event
+
+
+                System.out.printf("EVENTS!!! %s (%s) -> (%s)\n", event.getSummary(), start, end);
+            }
+        }
+        return myEvents;
+    }
 
 
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
@@ -187,4 +255,6 @@ public class EventService {
             return null;
         }
     }
+
+
 }
