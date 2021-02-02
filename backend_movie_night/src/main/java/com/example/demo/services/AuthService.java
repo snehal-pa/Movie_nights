@@ -4,6 +4,7 @@ import com.example.demo.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,36 @@ public class AuthService {
     private UserService userService;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private String accessToken;
+
     private String refreshToken;
+    private Long expiresAt;
+    private String accessToken;
+    private String email;
+    private String name;
+    private String pictureUrl;
+    private String locale;
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public Long getExpiresAt() { return expiresAt; }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
 
     public void saveUserToDb(GoogleTokenResponse tokenResponse) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
@@ -32,15 +61,14 @@ public class AuthService {
         // Use THIS ID as a key to identify a google user-account.
         String userId = payload.getSubject();
 
-        String email = payload.getEmail();
+        email = payload.getEmail();
         boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-        String name = (String) payload.get("name");
-        String pictureUrl = (String) payload.get("picture");
-        String locale = (String) payload.get("locale");
+        name = (String) payload.get("name");
+        pictureUrl = (String) payload.get("picture");
+        locale = (String) payload.get("locale");
         accessToken = tokenResponse.getAccessToken();
         refreshToken = tokenResponse.getRefreshToken();
-        Long expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
-
+        expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
 
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
@@ -57,9 +85,11 @@ public class AuthService {
 
         String password = encoder.encode(email + "passwordSalt" + userId);
 
-        User user = new User(name,email,pictureUrl,password,accessToken,refreshToken,expiresAt);
+        User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
 
     }
+
+
 }
