@@ -9,7 +9,7 @@ const CLIENT_ID =
 export default function Login() {
   const [context, updateContext] = useContext(Context);
   let auth2;
-  let gapi;
+  //let gapi;
 
   useEffect(() => {
     window.gapi.load("auth2", function () {
@@ -32,7 +32,7 @@ export default function Login() {
         body: authResult["code"],
       });
 
-      if (result.status == 200) {
+      /*if (result.status == 200) {
         //console.log(result.status);
         var auth2 = window.gapi.auth2.getAuthInstance();
         var profile = auth2.currentUser.get().getBasicProfile();
@@ -43,7 +43,7 @@ export default function Login() {
         updateContext({
           loggedInUser: { name: profile.getName(), email: profile.getEmail() },
         });
-      }
+      }*/
 
       // etc...
     } else {

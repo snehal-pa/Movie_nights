@@ -18,6 +18,8 @@ export default function MyCalendar() {
     let events = await await (
       await fetch("http://localhost:8080/api/myEvents")
     ).json();
+    console.log("my calendar");
+    console.log(events);
 
     if (!events.error) {
       events.forEach((event) => {
@@ -27,7 +29,7 @@ export default function MyCalendar() {
         setEvents(events);
       });
     } else {
-      setEvents([]);
+      setEvents("error");
     }
   }
 
@@ -36,11 +38,17 @@ export default function MyCalendar() {
   }
 
   return (
-    <Calendar
-      localizer={localizer}
-      events={myEvents}
-      startAccessor="start"
-      endAccessor="end"
-    />
+    <>
+      {myEvents === "error" ? (
+        <h5 className="text-center"> You have to login to see your events</h5>
+      ) : (
+        <Calendar
+          localizer={localizer}
+          events={myEvents}
+          startAccessor="start"
+          endAccessor="end"
+        />
+      )}
+    </>
   );
 }

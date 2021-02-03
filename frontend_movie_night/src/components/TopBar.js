@@ -1,23 +1,36 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavItem, NavLink, Nav, Badge, Navbar, NavbarBrand } from "reactstrap";
 import { NavLink as RRNavLink, Link } from "react-router-dom";
 import { Context } from "../App";
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
-  console.log("from topbar");
+  const [loggedInUser, setLoggedInUser] = useState(false);
 
-  console.log(context.loggedInUser);
+  useEffect(async () => {
+    getLoggedInUser();
+  }, [loggedInUser]);
 
-  /*async function logout() {
+  async function logout() {
     const result = await fetch("http://localhost:8080/api/logout");
-    console.log(result.status);
     if (result.status == 200) {
-      updateContext({
-        loggedInUser: false,
-      });
+      //updateContext({ loggedInUser: false });
+      setLoggedInUser(false);
     }
-  }*/
+  }
+
+  async function getLoggedInUser() {
+    let result = await fetch("http://localhost:8080/api/whoami");
+    let user = await result.json();
+    if (result.status == 404) {
+      //updateContext({ loggedInUser: false });
+      setLoggedInUser(false);
+      return;
+    }
+    //console.log(user);
+    //updateContext({ loggedInUser: user });
+    setLoggedInUser(user);
+  }
 
   return (
     <div>
@@ -48,12 +61,12 @@ export default function Topbar() {
                 className="user-img"
                 src="https://www.seekpng.com/png/detail/428-4287240_no-avatar-user-circle-icon-png.png"
               ></img>
-              {context.loggedInUser ? context.loggedInUser.name : ""}
+              {loggedInUser ? loggedInUser.name : "Username"}
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink tag={Link} to={"/"}>
+            <NavLink tag={Link} to={"/"} onClick={logout}>
               Logout
             </NavLink>
           </NavItem>

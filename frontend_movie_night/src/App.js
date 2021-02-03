@@ -24,19 +24,19 @@ export default function App() {
     });
 
   useEffect(() => {
-    (async () => {
-      let result = await fetch("http://localhost:8080/api/whoami");
-      if (result.status == 404) {
-        updateContext({ loggedInUser: false });
-        return;
-      }
-      let user = await result.json();
-
-      updateContext({
-        loggedInUser: user,
-      });
-    })();
+    //getLoggedInUser();
   }, []);
+
+  async function getLoggedInUser() {
+    let result = await fetch("http://localhost:8080/api/whoami");
+    let user = await result.json();
+    if (result.status == 404) {
+      updateContext({ loggedInUser: false });
+      return;
+    }
+    console.log(user);
+    updateContext({ loggedInUser: user });
+  }
 
   return (
     <Context.Provider value={[contextVal, updateContext]}>
