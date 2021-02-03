@@ -35,11 +35,6 @@ export default function App() {
           scope: "https://www.googleapis.com/auth/calendar",
         })
       );
-
-      // auth2 = window.gapi.auth2.init({
-      //   client_id: CLIENT_ID,
-      //   scope: "https://www.googleapis.com/auth/calendar",
-      // });
     });
 
     console.log("auth2:");

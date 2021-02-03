@@ -5,31 +5,12 @@ import { Context } from "../App";
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
-  const [loggedInUser, setLoggedInUser] = useState(false);
-
-  useEffect(async () => {
-    getLoggedInUser();
-  }, [loggedInUser]);
 
   async function logout() {
     const result = await fetch("http://localhost:8080/api/logout");
     if (result.status == 200) {
-      //updateContext({ loggedInUser: false });
-      setLoggedInUser(false);
+      updateContext({ loggedInUser: false });
     }
-  }
-
-  async function getLoggedInUser() {
-    let result = await fetch("http://localhost:8080/api/whoami");
-    let user = await result.json();
-    if (result.status == 404) {
-      //updateContext({ loggedInUser: false });
-      setLoggedInUser(false);
-      return;
-    }
-    //console.log(user);
-    //updateContext({ loggedInUser: user });
-    setLoggedInUser(user);
   }
 
   return (
@@ -60,12 +41,12 @@ export default function Topbar() {
               <img
                 className="user-img"
                 src={
-                  loggedInUser
-                    ? loggedInUser.profileUrl
+                  context.loggedInUser
+                    ? context.loggedInUser.profileUrl
                     : "https://www.seekpng.com/png/detail/428-4287240_no-avatar-user-circle-icon-png.png"
                 }
               ></img>
-              {loggedInUser ? loggedInUser.name : "Username"}
+              {context.loggedInUser ? context.loggedInUser.name : "Username"}
             </NavLink>
           </NavItem>
 

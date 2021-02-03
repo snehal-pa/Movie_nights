@@ -34,23 +34,26 @@ export default function Login(props) {
         body: authResult["code"],
       });
 
-      /*if (result.status == 200) {
-        //console.log(result.status);
-        var auth2 = window.gapi.auth2.getAuthInstance();
-        var profile = auth2.currentUser.get().getBasicProfile();
-        console.log(profile);
-        console.log(profile.getName());
-        console.log(profile.getEmail());
-
-        updateContext({
-          loggedInUser: { name: profile.getName(), email: profile.getEmail() },
-        });
-      }*/
-
-      // etc...
+      if (result.status == 200) {
+        //var profile = props.auth2.currentUser.get().getBasicProfile();
+        // console.log(profile.getName());
+        // console.log(profile.getEmail());
+        getLoggedInUser();
+      }
     } else {
       // There was an error.
     }
+  }
+
+  async function getLoggedInUser() {
+    let result = await fetch("http://localhost:8080/api/whoami");
+    let user = await result.json();
+    if (result.status == 404) {
+      updateContext({ loggedInUser: false });
+      return;
+    }
+    //console.log(user);
+    updateContext({ loggedInUser: user });
   }
 
   return (
@@ -58,6 +61,7 @@ export default function Login(props) {
       <Row className="justify-content-center">
         <Button
           onClick={() => props.auth2.grantOfflineAccess().then(signInCallback)}
+          //onClick={handleLogin}
         >
           Login with Google
         </Button>
