@@ -15,5 +15,7 @@
   "bugs": {
     "url": "https://github.com/snehal-pa/Movie_nights/issues"
   },
-  "homepage": "https://github.com/snehal-pa/Movie_nights#readme"
+  "homepage": "https://github.com/snehal-pa/Movie_nights#readme",
+  "dependencies": {},
+  "devDependencies": {}
 }
