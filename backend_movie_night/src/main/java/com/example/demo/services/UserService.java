@@ -34,4 +34,14 @@ public class UserService {
     }
 
 
+    public User getUserByEmail(String email) {
+        var user= userRepo.findByEmail(email);
+        if(user == null) return null;
+        user.setAccessToken(null);
+        user.setRefreshToken(null);
+        user.setPassword(null);
+        user.setExpiresAt(null);
+        return user;
+
+    }
 }

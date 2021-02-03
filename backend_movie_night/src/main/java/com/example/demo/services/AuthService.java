@@ -4,10 +4,8 @@ import com.example.demo.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 
 @Service
@@ -47,8 +45,18 @@ public class AuthService {
         return accessToken;
     }
 
-    public void saveUserToDb(GoogleTokenResponse tokenResponse) {
+    public String saveUserToDb(GoogleTokenResponse tokenResponse) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
+        if(tokenResponse == null){
+            name = null;
+            email=null;
+            pictureUrl=null;
+            accessToken= null;
+            refreshToken= null;
+            expiresAt = null;
+            locale = null;
+            return "";
+        }
         GoogleIdToken idToken = null;
         try {
             idToken = tokenResponse.parseIdToken();
@@ -83,14 +91,20 @@ public class AuthService {
         //create password by
         // from the user and a secret salt
 
-
         String password = encoder.encode(email + "passwordSalt" + userId);
 
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
+        return "OK";
+        //securityLogin(email,password,req);
 
     }
+
+    public User getLoginUser(){
+        return  userService.getUserByEmail(email);
+    }
+
 
 
 }

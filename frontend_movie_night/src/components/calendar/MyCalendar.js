@@ -1,51 +1,46 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-
 export default function MyCalendar() {
+  const [myEvents, setEvents] = useState([]);
+  moment.locale("en-GB");
+  const localizer = momentLocalizer(moment);
 
-    const [myEvents, setEvents] = useState([]);
-    moment.locale("en-GB");
-    const localizer = momentLocalizer(moment)
+  useEffect(() => {
+    getEvents();
+  }, []);
 
-    useEffect(() => {
-        getEvents();
-    
-    }, []);
+  //fetch events
+  async function getEvents() {
+    let events = await await (
+      await fetch("http://localhost:8080/api/myEvents")
+    ).json();
 
-    //fetch events
-    async function getEvents() {
-        let events = await (await (await fetch("http://localhost:8080/api/myEvents")).json());
+    if (!events.error) {
+      events.forEach((event) => {
+        event.start = convertDate(event.start.dateTime.value);
+        event.end = convertDate(event.end.dateTime.value);
 
-        if (!events.error) {
-            events.forEach(event => {
-                event.start = convertDate(event.start.dateTime.value)
-                event.end = convertDate(event.end.dateTime.value)
-
-                setEvents(events);
-            })
-        } else {
-            myEvents = [];
-        }
+        setEvents(events);
+      });
+    } else {
+      setEvents([]);
     }
+  }
 
-    function convertDate(date){
-        return new Date(moment.utc(date).toDate())
-    }
+  function convertDate(date) {
+    return new Date(moment.utc(date).toDate());
+  }
 
-        return (
-            <Calendar
-            localizer={localizer}
-            events={myEvents}
-            startAccessor="start"
-            endAccessor="end"
-            />
-        )
-    
-    }
-
-  
-
+  return (
+    <Calendar
+      localizer={localizer}
+      events={myEvents}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  );
+}

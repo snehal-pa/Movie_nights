@@ -8,9 +8,12 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 
 @RestController
@@ -52,9 +55,6 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        authService.saveUserToDb(tokenResponse);
-
-
         // Get profile info from ID token (Obtained at the last step of OAuth2)
         GoogleIdToken idToken = null;
         try {
@@ -69,7 +69,27 @@ public class AuthController {
 
         System.out.println("the user id" + userId);
 
+        return authService.saveUserToDb(tokenResponse);
 
-        return "OK";
+
     }
+
+    @GetMapping("/whoami")
+    public ResponseEntity getLoggedInUser(){
+        var user= authService.getLoginUser();
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("nobody is logged in");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(){
+        var response= authService.saveUserToDb(null);
+        if(response.isBlank()){
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully logout");
+        }
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("logout fail");
+    }
+
 }

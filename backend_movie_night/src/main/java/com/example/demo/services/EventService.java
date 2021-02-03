@@ -229,7 +229,7 @@ public class EventService {
         EventDateTime eventStart = new EventDateTime().setDateTime(movieEvent.getStart());
         EventDateTime eventEnd = new EventDateTime().setDateTime(movieEvent.getEnd());
 
-        newEvent.setSummary(movieEvent.getMovieName());
+        newEvent.setSummary(movieEvent.getMovie().getTitle());
         newEvent.setStart(eventStart);
         newEvent.setEnd(eventEnd);
 
@@ -246,11 +246,9 @@ public class EventService {
             });
         }
         newEvent.setAttendees(eventAttendees);
-        //newEvent.getAttendees().notify();
-
 
         try {
-            calendar.events().insert("primary", newEvent).execute();
+            calendar.events().insert("primary", newEvent).setSendNotifications(true).execute();
             return newEvent;
         } catch (IOException e) {
             e.printStackTrace();
