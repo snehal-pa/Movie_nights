@@ -10,12 +10,16 @@ import TopBar from "./components/TopBar";
 
 // create and export the context
 export const Context = createContext();
+const CLIENT_ID =
+  "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
 
 export default function App() {
   const [contextVal, setContext] = useState({
     showCreateInvitation: false,
     loggedInUser: false,
   });
+
+  const [auth2, setAuth2] = useState(null);
 
   const updateContext = (updates) =>
     setContext({
@@ -24,7 +28,26 @@ export default function App() {
     });
 
   useEffect(() => {
-    //getLoggedInUser();
+    window.gapi.load("auth2", function () {
+      setAuth2(
+        window.gapi.auth2.init({
+          client_id: CLIENT_ID,
+          scope: "https://www.googleapis.com/auth/calendar",
+        })
+      );
+
+      // auth2 = window.gapi.auth2.init({
+      //   client_id: CLIENT_ID,
+      //   scope: "https://www.googleapis.com/auth/calendar",
+      // });
+    });
+
+    console.log("auth2:");
+    console.log(auth2);
+  }, []);
+
+  useEffect(() => {
+    getLoggedInUser();
   }, []);
 
   async function getLoggedInUser() {
@@ -43,7 +66,7 @@ export default function App() {
       <Router>
         <TopBar />
         <Route path="/" exact>
-          <Login />
+          <Login auth2={auth2} />
         </Route>
         <Route path="/home" exact>
           <Home />

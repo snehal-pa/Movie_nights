@@ -59,7 +59,11 @@ export default function Topbar() {
             <NavLink tag={Link} to={"/"}>
               <img
                 className="user-img"
-                src="https://www.seekpng.com/png/detail/428-4287240_no-avatar-user-circle-icon-png.png"
+                src={
+                  loggedInUser
+                    ? loggedInUser.profileUrl
+                    : "https://www.seekpng.com/png/detail/428-4287240_no-avatar-user-circle-icon-png.png"
+                }
               ></img>
               {loggedInUser ? loggedInUser.name : "Username"}
             </NavLink>

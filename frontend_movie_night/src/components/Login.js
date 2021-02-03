@@ -6,18 +6,20 @@ import { Context } from "../App";
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
 
-export default function Login() {
+export default function Login(props) {
   const [context, updateContext] = useContext(Context);
-  let auth2;
+  //let auth2;
   //let gapi;
 
   useEffect(() => {
-    window.gapi.load("auth2", function () {
-      auth2 = window.gapi.auth2.init({
-        client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/calendar",
-      });
-    });
+    // window.gapi.load("auth2", function () {
+    //   auth2 = window.gapi.auth2.init({
+    //     client_id: CLIENT_ID,
+    //     scope: "https://www.googleapis.com/auth/calendar",
+    //   });
+    // });
+    // console.log("auth2:");
+    // console.log(auth2);
   }, []);
 
   async function signInCallback(authResult) {
@@ -54,7 +56,9 @@ export default function Login() {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Button onClick={() => auth2.grantOfflineAccess().then(signInCallback)}>
+        <Button
+          onClick={() => props.auth2.grantOfflineAccess().then(signInCallback)}
+        >
           Login with Google
         </Button>
       </Row>
