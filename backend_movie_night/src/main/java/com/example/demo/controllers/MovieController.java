@@ -48,9 +48,6 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.OK).body(movies);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
-
-
-
     }
 
     @GetMapping

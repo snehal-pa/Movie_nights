@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import Search from './search/Search';
 import MyCalendar from "./calendar/MyCalendar";
+import Sidebox from "./Sidebox";
 
 export default function Home() {
     
@@ -14,7 +14,7 @@ export default function Home() {
             
           </Col>
           <Col lg="4" md="12" sm="12">
-            <Search/>
+            <Sidebox />
           </Col>
         </Row>              
       </Container>
