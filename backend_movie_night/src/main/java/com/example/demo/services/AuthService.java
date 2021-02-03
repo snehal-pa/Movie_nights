@@ -27,7 +27,7 @@ public class AuthService {
     private UserService userService;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -96,15 +96,16 @@ public class AuthService {
         //create password by
         // from the user and a secret salt
 
+        System.out.println(email + "passwordSalt" + userId);
 
         String password = encoder.encode(email + "passwordSalt" + userId);
+
 
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         securityLogin(email, password, req);
 
         userService.registerUser(user);
-
     }
 
     private void securityLogin(String email, String password, HttpServletRequest req) {
@@ -117,6 +118,8 @@ public class AuthService {
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+
+
     }
 
 
