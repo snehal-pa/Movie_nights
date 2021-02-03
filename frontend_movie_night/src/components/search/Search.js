@@ -1,4 +1,4 @@
-import { Container, InputGroup, Input, Media, Col, Row} from "reactstrap";
+import { Container, InputGroup, Input, Media, Col, Row, Card, CardImg} from "reactstrap";
 import {useState, useEffect, useContext} from 'react';
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
@@ -79,25 +79,22 @@ export default function Search() {
             (               
               <div key={movie.id} onClick={selectMovie(movie)}> {/* One Movie Box */}          
               <Row className="media-item"> 
-              <Col lg="3" md="3" sm="12">
-                <Media>
+              <Col>
+                <Card lg="3" md="3" sm="12">
                   <Media left middle href="#">
-                  <img  className="movie-poster" src={`https://image.tmdb.org/t/p/original/${movie.postPath}`} alt="Generic placeholder image" />
+                  <CardImg  className="movie-poster" src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}    alt="Generic placeholder image" />
                 </Media>
-                </Media>
+                </Card>
               </Col>
-              <Col lg="9" md="9" sm="12">
+              {/* <Col lg="9" md="9" sm="12">
                 <Row>
                   <Media body>
-                    <Media heading className="media-heading">{movie.title}</Media>          
+                  <Media heading className="media-heading">{movie.title}</Media>          
                   </Media>
                 </Row>
                 <Row>
-                  <Media>
-                  {movie.description}
-                  </Media>
                 </Row>          
-              </Col>                              
+              </Col>                               */}
             </Row> 
             <Row>
               <Col lg="12">
