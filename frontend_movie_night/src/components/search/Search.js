@@ -8,8 +8,7 @@ import { Context } from "../../App";
 export default function Search() {
 
   const[searchTerm, setSearchTerm] = useState('');
-
-  const[ allMovies, setAllMovies] = useState([])
+  const[ allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState()
 
@@ -24,20 +23,41 @@ export default function Search() {
   }
 
   useEffect(() => {
-    fetchAllMovies();    
-  }, []);
+    fetchAllMovies();
+  }, []);  
+  
+  function filter(){
+    let movieResults = allMovies.filter(movie =>
+      movie.title.toLowerCase().includes(searchTerm)
+    );
+    setAllMovies(movieResults);
+  }
+ 
 
   const selectMovie = (movie) => (e) =>{ 
     e.preventDefault();     
     setSelectedMovie(movie);       
     sendMovie(selectedMovie);   
   }
+
+  const  handleSearchInput =  (e) => {
+      setSearchTerm(e.target.value)
+      if(e.target.value !== ""){
+      filter()
+      console.log("the search term" + searchTerm)
+      }else fetchAllMovies()
+  };
   
 
   function sendMovie(){           
       updateContext({ showCreateInvitation: true }); 
   }
- 
+
+  const resetInputField = () =>{
+    setSearchTerm("");
+  }
+
+
 
     return (
       <Container className="container-search mt-4">     
@@ -49,7 +69,7 @@ export default function Search() {
           <Row>
             <Col lg="12" md="12" sm="12" >
               <InputGroup>
-                <Input className="movie-search" placeholder="Search" onChange={e => {setSearchTerm(e.target.value)}} />
+                <Input className="movie-search" placeholder="Search" value={searchTerm} onChange={handleSearchInput} />
               </InputGroup>
             </Col>
           </Row>   
