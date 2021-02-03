@@ -1,13 +1,23 @@
 @import 'variable-overrides';
 
+.sidebox-title{
+    margin-top: 10px;
+    color:  $purple !important; 
+}
+
 .movie-search{
     border-radius: 2rem;
     border-color: $purple;   
 }
 
-.media-item{   
-    margin-top: 10px;    
+.media-item{ 
+    padding: none;
+    margin: 10px; 
     color: $purple;  
+}
+
+.media-row {
+    justify-content: center;
 }
 
 .container-search{
@@ -22,8 +32,8 @@
 }
 
 .movie-poster{
-    width: 120px;
-    max-height: 150px;
+    width: 150px;
+    max-height: 200px;
 }
 
 .media-heading{
@@ -34,16 +44,3 @@
     background-color: $magenta;
     border-color: $magenta;
 }
-
-hr {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-
-
-/*.movielist-box{
-    overflow-y: auto;
-} */
