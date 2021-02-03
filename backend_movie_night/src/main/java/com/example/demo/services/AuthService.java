@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,9 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -96,14 +100,15 @@ public class AuthService {
         //create password by
         // from the user and a secret salt
 
-        System.out.println(email + "passwordSalt" + userId);
+        String pass = email + "passwordSalt" + userId;
+        //securityLogin(email, pass, req);
 
         String password = encoder.encode(email + "passwordSalt" + userId);
 
 
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
-        securityLogin(email, password, req);
+       securityLogin(email, password, req);
 
         userService.registerUser(user);
     }
@@ -112,7 +117,7 @@ public class AuthService {
         System.out.println("here");
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication auth = authenticationManager.authenticate(authReq);
+        Authentication auth = authenticationManager.authenticate(authReq); //credentials: protected, authenticated false, details null, not granted any authorities
 
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);

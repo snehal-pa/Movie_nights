@@ -30,9 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().deleteCookies("JSESSIONID")
@@ -49,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-        /*http
+      /*  http
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/").authenticated()
@@ -69,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(myUserDetailsService)
                 .passwordEncoder(myUserDetailsService.getEncoder());
     }
+
+
 
 
 }
