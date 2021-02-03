@@ -6,7 +6,7 @@ import React, {useContext} from 'react';
 
 export default function CreateInvitation(props) {
 
-  let [updateContext] = useContext(Context);
+  let [context, updateContext] = useContext(Context);
 
  console.log(props.sendMovie)
  
