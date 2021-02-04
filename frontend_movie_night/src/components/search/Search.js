@@ -1,8 +1,7 @@
 import {
   Container,
   InputGroup,
-  Input,
-  Media,
+  Input,  
   Col,
   Row,
   Card,
@@ -28,8 +27,17 @@ export default function Search() {
     setAllMovies(movies);
   }
 
+  async function postMovies(){
+    let result = await (
+      await fetch("http://localhost:8080/rest/movies/1/30", {
+        method: "POST",               
+      })
+    ).json();    
+  }
+
   useEffect(() => {
-    fetchAllMovies();
+    fetchAllMovies(); 
+    postMovies();   
   }, []);
 
   function filter() {
@@ -106,7 +114,7 @@ export default function Search() {
               ))}
             </Row>
           </Container>{" "}
-          /* Movie List Box End */
+          {/* Movie List Box End */}
         </Container> /* Search Box End */
       )}
     </Container>
