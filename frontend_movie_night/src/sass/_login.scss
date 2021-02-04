@@ -1,0 +1,44 @@
+@import 'variable-overrides';
+
+
+.login-card{
+    height: 15em;
+    background: linear-gradient(
+      to right bottom,
+       rgba(255, 255, 255, 0.7 ),
+       rgba(255, 255, 255, 0.4)
+        );
+        border-radius: 2rem;
+        border: 2px solid $white;
+}
+
+.login-button{
+    background-color: $purple;
+    border: $white;
+    border: 2px solid $white;
+
+}
+
+.login-button:hover{
+    background-color: $dark_purple;
+   
+}
+
+.icon-button{
+    height: 25px;
+    max-width: 25px;   
+    margin-right: 1px;
+
+}
+
+.card-title{
+    color: $purple;
+}
+
+.login-background{
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
+    height: 50em;
+    
+
+}

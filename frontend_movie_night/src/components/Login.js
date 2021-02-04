@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 //import GoogleLogin from "react-google-login";
-import { Button } from "reactstrap";
+import { Button, CardTitle } from "reactstrap";
 
-import { Container, Row } from "reactstrap";
+import { Container, Row, Col, CardBody, CardText,  Card, } from "reactstrap";
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
 
 export default function Login() {
   let auth2;
-  let gapi;
 
   useEffect(() => {
     window.gapi.load("auth2", function () {
@@ -48,11 +47,19 @@ export default function Login() {
   }
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Button onClick={() => auth2.grantOfflineAccess().then(signInCallback)}>
-          Login with Google
-        </Button>
+    <Container fluid className="login-background">
+  
+      <Row className="d-flex justify-content-center">
+        <Card className="login-card text-center mt-5">
+          <CardBody>
+            <CardTitle className="card-title" tag="h3"><strong className="login-text">LOGIN TO</strong> MOVIE NIGHTS</CardTitle>
+            <CardText className="text-muted" tag="h6">to get access to thousands of  movies to watch with your friends </CardText>
+            <Button  className="login-button mt-3" onClick={() => auth2.grantOfflineAccess().then(signInCallback)}>
+            <img className="icon-button" src="http://pngimg.com/uploads/google/google_PNG19635.png"></img>
+          Sign in with Google
+          </Button>
+        </CardBody>
+        </Card> 
       </Row>
     </Container>
   );
