@@ -27,12 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/whoami")
-    public ResponseEntity whoAmI(){
-        var u = userService.findCurrentUser();
-        if(u == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(u);
+    public User whoAmI(){
+        return userService.findCurrentUser();
     }
 }
