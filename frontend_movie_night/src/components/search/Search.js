@@ -1,8 +1,7 @@
 import {
   Container,
   InputGroup,
-  Input,
-  Media,
+  Input,  
   Col,
   Row,
   Card,
@@ -115,7 +114,7 @@ export default function Search() {
               ))}
             </Row>
           </Container>{" "}
-          /* Movie List Box End */
+          {/* Movie List Box End */}
         </Container> /* Search Box End */
       )}
     </Container>
