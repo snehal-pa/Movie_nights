@@ -10,7 +10,6 @@ import java.util.TimeZone;
 public class BackendMovieNightApplication {
 
 	public static void main(String[] args) {
-       // TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		SpringApplication.run(BackendMovieNightApplication.class, args);
 
 

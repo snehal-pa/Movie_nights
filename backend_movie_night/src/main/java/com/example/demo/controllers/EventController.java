@@ -34,7 +34,6 @@ import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 import static java.time.temporal.WeekFields.ISO;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class EventController {
 
@@ -42,7 +41,7 @@ public class EventController {
     private EventService eventService;
 
 
-
+//http://localhost:8080/api/availablefriends?startdate=2021-02-02T10:00:00&enddate=2021-02-02T14:00:00
     @GetMapping("/availablefriends")
 
     public ResponseEntity getAvailableFriends(@RequestParam(value="startdate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date startDate, @RequestParam(value="enddate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")Date endDate){

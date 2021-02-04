@@ -35,10 +35,10 @@ public class EventService {
     @Autowired
     private AuthService authService;
 
-    @Value("${api.google.clientId}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String CLIENT_ID;
 
-    @Value("${api.google.clientSecret}")
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String CLIENT_SECRET;
 
     public String getMyCalendar() throws IOException {

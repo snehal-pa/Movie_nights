@@ -10,7 +10,7 @@
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
-    "react-big-calendar": "^0.31.0",
+    "react-amazing-proxy": "^1.0.63",
     "react-dom": "^17.0.1",
     "react-google-calendar-api": "^1.2.1",
     "react-google-login": "^5.2.2",
@@ -20,7 +20,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node node_modules/react-amazing-proxy/start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -12,29 +12,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class AuthController {
 
-    @Value("${api.google.clientId}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String CLIENT_ID;
 
-    @Value("${api.google.clientSecret}")
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String CLIENT_SECRET;
 
     @Autowired
     private AuthService authService;
 
-
-
-    //@RequestMapping(value = "/storeauthcode", method = RequestMethod.POST)
     @PostMapping("/storeauthcode")
-    public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding) {
+    public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding, HttpServletRequest req) {
         if (encoding == null || encoding.isEmpty()) {
             // Without the `X-Requested-With` header, this request could be forged. Aborts.
             return "Error, wrong headers";
@@ -55,26 +52,12 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        // Get profile info from ID token (Obtained at the last step of OAuth2)
-        GoogleIdToken idToken = null;
-        try {
-            idToken = tokenResponse.parseIdToken();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        GoogleIdToken.Payload payload = idToken.getPayload();
-
-        // Use THIS ID as a key to identify a google user-account.
-        String userId = payload.getSubject();
-
-        System.out.println("the user id" + userId);
-
-        return authService.saveUserToDb(tokenResponse);
-
+        authService.saveUserToDb(tokenResponse, req);
+        return "OK";
 
     }
 
-    @GetMapping("/whoami")
+   /* @GetMapping("/whoami")
     public ResponseEntity getLoggedInUser(){
         var user= authService.getLoginUser();
         if(user == null){
@@ -90,6 +73,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body("Successfully logout");
         }
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("logout fail");
-    }
+    }*/
 
 }

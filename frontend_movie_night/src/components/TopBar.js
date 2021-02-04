@@ -4,6 +4,11 @@ import { NavLink as RRNavLink, Link } from "react-router-dom";
 
 export default function Topbar(){
 
+  const logout = () => {
+    fetch("/logout"); 
+  console.log("logingout");
+}
+
     return(
         <div>
         <Navbar className="navbar-custom"  light expand="md">
@@ -35,7 +40,7 @@ export default function Topbar(){
               </NavItem>
 
               <NavItem>
-                <NavLink tag={Link} to={"/"}>               
+                <NavLink onClick = {logout} tag={Link} to={"/"}>               
                   Logout
                 </NavLink>              
               </NavItem>         
