@@ -20,7 +20,7 @@ export default function Search() {
 
   async function fetchAllMovies() {
     let movies = await (
-      await fetch("http://localhost:8080/rest/movies")
+      await fetch("/rest/movies")
     ).json();
     if (movies.error) {
       movies = [];

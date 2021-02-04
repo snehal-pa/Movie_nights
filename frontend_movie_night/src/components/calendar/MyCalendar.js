@@ -16,7 +16,7 @@ export default function MyCalendar() {
   //fetch events
   async function getEvents() {
     let events = await await (
-      await fetch("http://localhost:8080/api/myEvents")
+      await fetch("/api/myEvents")
     ).json();
 
     if (!events.error) {
