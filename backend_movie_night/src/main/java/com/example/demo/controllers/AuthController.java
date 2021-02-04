@@ -57,22 +57,6 @@ public class AuthController {
 
     }
 
-   /* @GetMapping("/whoami")
-    public ResponseEntity getLoggedInUser(){
-        var user= authService.getLoginUser();
-        if(user == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("nobody is logged in");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(user);
-    }
 
-    @GetMapping("/logout")
-    public ResponseEntity logout(){
-        var response= authService.saveUserToDb(null);
-        if(response.isBlank()){
-            return ResponseEntity.status(HttpStatus.OK).body("Successfully logout");
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("logout fail");
-    }*/
 
 }
