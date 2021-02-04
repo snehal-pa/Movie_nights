@@ -14,7 +14,6 @@ import java.io.IOException;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class AuthController {
 
@@ -27,14 +26,12 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    //@RequestMapping(value = "/storeauthcode", method = RequestMethod.POST)
     @PostMapping("/storeauthcode")
     public String storeauthcode(@RequestBody String code, @RequestHeader("X-Requested-With") String encoding, HttpServletRequest req) {
         if (encoding == null || encoding.isEmpty()) {
             // Without the `X-Requested-With` header, this request could be forged. Aborts.
             return "Error, wrong headers";
         }
-        System.out.println("here");
         GoogleTokenResponse tokenResponse = null;
         try {
             tokenResponse = new GoogleAuthorizationCodeTokenRequest(

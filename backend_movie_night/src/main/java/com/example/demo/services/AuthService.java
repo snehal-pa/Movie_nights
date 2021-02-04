@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.configs.MyUserDetailsService;
 import com.example.demo.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
@@ -11,8 +12,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,7 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -88,7 +92,6 @@ public class AuthService {
         refreshToken = tokenResponse.getRefreshToken();
         expiresAt = System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000);
 
-
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
         System.out.println("userId: " + userId);
         System.out.println("email: " + email);
@@ -97,27 +100,19 @@ public class AuthService {
         System.out.println("pictureUrl: " + pictureUrl);
         System.out.println("locale: " + locale);
 
-        //create password by
-        // from the user and a secret salt
 
         String pass = email + "passwordSalt" + userId;
-        //securityLogin(email, pass, req);
-
-        String password = encoder.encode(email + "passwordSalt" + userId);
-
-
+        String password = encoder.encode(pass);
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
-       securityLogin(email, password, req);
-
         userService.registerUser(user);
+        securityLogin(email, pass, req);
     }
 
     private void securityLogin(String email, String password, HttpServletRequest req) {
-        System.out.println("here");
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication auth = authenticationManager.authenticate(authReq); //credentials: protected, authenticated false, details null, not granted any authorities
+        Authentication auth = authenticationManager.authenticate(authReq);
 
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);

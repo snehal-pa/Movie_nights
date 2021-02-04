@@ -30,17 +30,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .cors()
-                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/rest/**", "/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/rest/whoami", "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/rest/**", "/api/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout().deleteCookies("JSESSIONID")
+                .logout().invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                //.logoutUrl("/perform-logout")
 
-                .and()
-                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
+
+                //.and()
+                //.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
 
                 //.and()
                 //.defaultSuccessUrl("/homepage.html", true)
@@ -49,19 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
         ;
 
-
-
-      /*  http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/rest/**", "/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
-                .and();
-               // .formLogin()
-                //.loginPage("/login").permitAll();
-                //.defaultSuccessUrl("/homepage.html", true)
-                .and()
-                .logout().deleteCookies("JSESSIONID")*/
 
     }
 

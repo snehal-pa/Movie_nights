@@ -33,7 +33,6 @@ import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 import static java.time.temporal.WeekFields.ISO;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class EventController {
 

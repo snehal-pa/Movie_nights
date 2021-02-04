@@ -53,6 +53,6 @@ public class MyUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .build();
+                .roles("USER").build();
     }
 }

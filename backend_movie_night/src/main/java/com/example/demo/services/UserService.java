@@ -17,16 +17,12 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
-
     public User findCurrentUser() {
         // the login session is stored between page reloads,
         // and we can access the current authenticated user with this
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepo.findByEmail(email);
     }
-
 
     public User registerUser(User user) {
         var u = userRepo.findByEmail(user.getEmail());

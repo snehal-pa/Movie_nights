@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/rest")
 public class UserController {
 
@@ -28,7 +27,6 @@ public class UserController {
 
     @GetMapping("/whoami")
     public User whoAmI(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepo.findByEmail(email);
+        return userService.findCurrentUser();
     }
 }

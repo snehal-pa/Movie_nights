@@ -10,7 +10,12 @@ const CLIENT_ID =
 export default function Login() {
   let auth2;
 
+  const whoamI = async ()=> {
+    let res = await fetch ("/rest/whoami")
+    console.log(await res.json())
+  }
   useEffect(() => {
+    whoamI()
     window.gapi.load("auth2", function () {
       auth2 = window.gapi.auth2.init({
         client_id: CLIENT_ID,
@@ -23,7 +28,7 @@ export default function Login() {
    
     if (authResult["code"]) {
       // Send the code to the server
-      let result = await fetch("http://localhost:8080/api/storeauthcode", {
+      let result = await fetch("/api/storeauthcode", {
         method: "POST",
         headers: {
           "Content-Type": "application/octet-stream; charset=utf-8",
