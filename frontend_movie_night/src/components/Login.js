@@ -33,9 +33,6 @@ export default function Login() {
         })
       );
     });
-
-    console.log("auth2:");
-    console.log(auth2);
   }, []);
 
   async function signInCallback(authResult) {
