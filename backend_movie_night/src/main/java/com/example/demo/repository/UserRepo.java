@@ -19,7 +19,7 @@ public interface UserRepo extends Neo4jRepository<User,Long> {
     //@Query("MATCH (u:{name: User.getEmail})-[f:IS_FRIENDS_WITH]->(yourFriends) RETURN u, yourFriends")
     //Collection<User> getAllFriends(String email);
 
-   // List<User> findAll();
+   List<User> findAll();
 
 }
 
