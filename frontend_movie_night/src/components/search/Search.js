@@ -11,27 +11,58 @@ import {
 import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
+import axios from 'axios'
 import ReactPaginate from 'react-paginate';
 
 export default function Search() {
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
 
-  async function fetchAllMovies() {
-    let movies = await (
-      await fetch("http://localhost:8080/rest/movies")
-    ).json();
-    if (movies.error) {
-      movies = [];
-    }
-    setAllMovies(movies);
-  }
+  //for pagination
+  const [offset, setOffset] = useState(0);
+  //const [data, setData] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
+  const [perPage] = useState(10);
+  const [pageCount, setPageCount] = useState(0)
+
+  const getMovies = async() => {
+    const res = await axios.get(`http://localhost:8080/rest/movies`)
+    const allMovies = res.data;
+              const slice = allMovies.slice(offset, offset + perPage)
+              const movieData = slice.map(movie => <Card
+                className="media-item"
+                key={movie.id}
+                onClick={selectMovie(movie)}
+              >
+                <CardImg
+                  className="movie-poster"
+                  src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
+                  alt="Generic placeholder image"
+                />
+              </Card>)
+              setAllMovies(movieData)
+              setPageCount(Math.ceil(allMovies.length / perPage))
+}
+const handlePageClick = (e) => {
+  const selectedPage = e.selected;
+  setOffset(selectedPage + 1)
+};
+
+  // async function fetchAllMovies() {
+  //   let movies = await (
+  //     await fetch("http://localhost:8080/rest/movies")
+  //   ).json();
+  //   if (movies.error) {
+  //     movies = [];
+  //   }
+  //   setAllMovies(movies);
+  // }
 
   useEffect(() => {
-    fetchAllMovies();
-  }, []);
+    getMovies();
+  }, [offset]);
 
   function filter() {
     let movieResults = allMovies.filter((movie) =>
@@ -51,7 +82,7 @@ export default function Search() {
     if (e.target.value !== "") {
       filter();
       console.log("the search term" + searchTerm);
-    } else fetchAllMovies();
+    } else getMovies();
   };
 
   function sendMovie() {
@@ -88,23 +119,26 @@ export default function Search() {
             
           <Container className="movielist-box">
             <Row className="mx-auto">
-              {allMovies.map((movie) => (
                 <Row sm="2" md="3" lg="3">
                   <Col>
-                    <Card
-                      className="media-item"
-                      key={movie.id}
-                      onClick={selectMovie(movie)}
-                    >
-                      <CardImg
-                        className="movie-poster"
-                        src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
-                        alt="Generic placeholder image"
-                      />
-                    </Card>
+                    
+                  {allMovies}
+       <ReactPaginate
+                    previousLabel={"prev"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
+                    
+
                   </Col>
                 </Row>
-              ))}
             </Row>
           </Container>{" "}
           /* Movie List Box End */
