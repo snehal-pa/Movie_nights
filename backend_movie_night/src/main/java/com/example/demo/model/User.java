@@ -33,7 +33,7 @@ public class User {
         return users;
     }
 
-    @Relationship(type= "FRIEND", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type= "IS_FRIENDS_WITH", direction = Relationship.Direction.OUTGOING)
     private List<User> friends;
 
 
