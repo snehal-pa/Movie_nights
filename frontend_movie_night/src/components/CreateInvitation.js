@@ -1,4 +1,4 @@
-import {Input, Media, Col, Row, Button, Label, FormGroup } from "reactstrap";
+import {Container, Input, Card, CardBody, CardImg, CardTitle, CardSubtitle, CardText, Col, Row, Button, Label, FormGroup } from "reactstrap";
 import { Context } from "../App";
 import React, {useContext, useState} from 'react';
 import moment from "moment";
@@ -71,32 +71,26 @@ export default function CreateInvitation(props) {
     return (      
           <div className="invitation">
               <Row className="media-item">
-                <Col lg="3" md="4" sm="6">
-                  <Media>
-                    <Media left middle href="#">
-                    <img  className="movie-poster" src={`https://image.tmdb.org/t/p/original/${props.sendMovie.postPath}`}  alt="Generic placeholder image" />
-                  </Media>
-                  </Media>
-                </Col>
-                <Col lg="9" md="8" sm="6">
-                  <Row>
-                    <Media body>
-                      <Media heading className="media-heading">{props.sendMovie.title}</Media>          
-                    </Media>
-                  </Row>
-                  <Row>
-                    <Media>
-                      {props.sendMovie.description}
-                    </Media>
-                  </Row>          
-                </Col>                   
-              </Row>  
-              <Row>
-                <Col lg="12">
-                  <hr></hr>
-                </Col>
-              </Row> 
-              <Row>
+                <Card>
+                  <CardImg src={`https://image.tmdb.org/t/p/original/${props.sendMovie.backdropPath}`}></CardImg>
+                  <CardBody className="text-center"> 
+                  <Row><img className="avatar" src={`https://image.tmdb.org/t/p/original/${props.sendMovie.postPath}`}></img>  </Row>     
+                  <Row className="off-row">
+                    <Col lg="2"></Col>
+                    <Col lg="6"><CardTitle className="movie-title text-left">{props.sendMovie.title}</CardTitle></Col>
+                    <Col lg="4">
+                      <Row className="justify-content-end pb-1"><CardSubtitle className="movie-genre text-muted">{props.sendMovie.genre[0]}</CardSubtitle></Row>
+                      <Row className="justify-content-end"><CardSubtitle className="movie-releasedate text-muted">{props.sendMovie.releaseDate}</CardSubtitle></Row>
+                    </Col>       
+                    </Row>                
+                    <Row>
+                    <CardText className="p-1">{props.sendMovie.description}</CardText> 
+                    </Row>               
+                                    
+                    </CardBody>
+                  </Card>
+                </Row>
+              <Row className="mt-2">
                 <Col lg="6" sm="12">
                   <FormGroup>
                     <Label for="startDate">Date</Label>
@@ -138,14 +132,24 @@ export default function CreateInvitation(props) {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row>
+                 
+              <Row>       
+                <Container className="vbottom"> 
+                  <Row >
+                    <Col lg="12">
+                      <hr></hr>
+                  </Col>
+              </Row> 
+                <Row>
                 <Col lg="6" sm="12">
                 <Button color="secondary" className="w-100" onClick={discard}>Discard</Button>
                 </Col>
                 <Col lg="6" sm="12">
                 <Button className="w-100 magenta" onClick={postEvent}>Send</Button>
-                </Col >
-              </Row>          
+                </Col>
+                </Row>   
+                </Container>
+              </Row>     
           </div>         
     );
   } 
