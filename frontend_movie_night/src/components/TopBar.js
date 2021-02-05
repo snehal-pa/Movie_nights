@@ -16,15 +16,12 @@ export default function Topbar() {
   };
 
   return (
+
     <div>
+       {!context.loggedInUser == false  ?( 
       <Navbar className="navbar-custom" light expand="md">
-        <NavbarBrand href="/">MovieNights</NavbarBrand>
+        <NavbarBrand href="/home">MovieNights</NavbarBrand>
         <Nav className="ml-auto" navbar>
-          <NavItem>
-            <NavLink tag={Link} to={"/"}>
-              Login
-            </NavLink>
-          </NavItem>
           <NavItem>
             <NavLink tag={Link} to={"/home"}>
               Home
@@ -59,6 +56,7 @@ export default function Topbar() {
           </NavItem>
         </Nav>
       </Navbar>
+       ) : ("") }
     </div>
   );
 }

@@ -57,8 +57,12 @@ public class MovieService {
 
             int length = (int) movieMap.get("runtime");
             String description = (String) movieMap.get("overview");
-            String postPath = (String) movieMap.get("poster_path");
+            String postPath2 = (String) movieMap.get("poster_path");
+            String postpath = (String) "https://image.tmdb.org/t/p/original" + movieMap.get("poster_path");
             String language = (String) movieMap.get("original_language");
+            String backdropPath2 = (String) movieMap.get("backdrop_path");
+            String backdropPath = (String) "https://image.tmdb.org/t/p/original" + movieMap.get("backdrop_path");
+            String releaseDate = (String) movieMap.get("release_date");
 
             System.out.println("id - " + id);
             System.out.println("title - " + title);
@@ -66,10 +70,12 @@ public class MovieService {
             genre.forEach(System.out::println);
             System.out.println("length - " + length);
             System.out.println("desc - " + description);
-            System.out.println("postpath - " + postPath);
+            //System.out.println("postpath - " + postPath);
             System.out.println("laguage - " + language);
+            //System.out.println(postPahth2);
+            //System.out.println(backdropPath2);
 
-            Movie movie = new Movie(id, title, genre, length, description, postPath, language);
+            Movie movie = new Movie(id, title, genre, length, description, postpath, language , backdropPath, releaseDate);
             return movie;
 
         } catch (Exception e) {

@@ -1,8 +1,7 @@
 import {
   Container,
   InputGroup,
-  Input,
-  Media,
+  Input,  
   Col,
   Row,
   Card,
@@ -17,6 +16,7 @@ export default function Search() {
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
+   
 
   async function fetchAllMovies() {
     let movies = await (
@@ -28,8 +28,17 @@ export default function Search() {
     setAllMovies(movies);
   }
 
+  async function postMovies(){
+    let result = await (
+      await fetch("/rest/movies/1/30", {
+        method: "POST",               
+      })
+    ).json();    
+  }
+
   useEffect(() => {
-    fetchAllMovies();
+    fetchAllMovies(); 
+    postMovies();   
   }, []);
 
   function filter() {
@@ -97,7 +106,7 @@ export default function Search() {
                     >
                       <CardImg
                         className="movie-poster"
-                        src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
+                        src={`${movie.postPath}`}
                         alt="Generic placeholder image"
                       />
                     </Card>
@@ -106,7 +115,7 @@ export default function Search() {
               ))}
             </Row>
           </Container>{" "}
-          /* Movie List Box End */
+          {/* Movie List Box End */}
         </Container> /* Search Box End */
       )}
     </Container>

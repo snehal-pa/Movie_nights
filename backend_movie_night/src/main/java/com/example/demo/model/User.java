@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,5 +43,36 @@ public class User {
         this.refreshToken = refreshToken;
         this.expiresAt = expiresAt;
     }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+   /* @JsonIgnore
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    @JsonProperty
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    @JsonIgnore
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    @JsonProperty
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }*/
+
 
 }
