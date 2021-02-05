@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -56,18 +57,15 @@ public class UserService {
 
     public void saveFriends(List<User> friends) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(userEmail);
         var user = userRepo.findByEmail(userEmail);
-        for (int i = 0; i < friends.size(); i++) {
-            System.out.println(friends.get(i).getEmail());
-        }
 
         for (int i = 0; i < friends.size(); i++) {
-
             if (user != null) {
                 user.setFriends(friends);
                 userRepo.save(user);
             }
         }
     }
+
+
 }

@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/rest/whoami", "/").permitAll()
-                .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
+                //.antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/api/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
                 .anyRequest().authenticated()
