@@ -30,7 +30,7 @@ export default function Search() {
 
   async function postMovies(){
     let result = await (
-      await fetch("/rest/movies/1/50", {
+      await fetch("/rest/movies/1/30", {
         method: "POST",               
       })
     ).json();    
@@ -106,7 +106,7 @@ export default function Search() {
                     >
                       <CardImg
                         className="movie-poster"
-                        src={`https://image.tmdb.org/t/p/original${movie.postPath}`}
+                        src={`${movie.postPath}`}
                         alt="Generic placeholder image"
                       />
                     </Card>

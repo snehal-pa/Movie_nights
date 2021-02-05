@@ -25,7 +25,7 @@ export default function App() {
 
   useEffect(() => {
     whoamI();
-  });
+  },[]);
 
   const whoamI = async () => {
     let res = await fetch("/rest/whoami");
