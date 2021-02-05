@@ -37,7 +37,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public Collection<User> getAll() {
+    public List<User> getAll() {
         return userRepo.findAll();
     }
 
