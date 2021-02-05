@@ -22,6 +22,8 @@ public class Movie {
     private String description;
     private String postPath;
     private String language;
+    private String backdropPath;
+    private String releaseDate;
 
 
 

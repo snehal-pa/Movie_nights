@@ -59,6 +59,8 @@ public class MovieService {
             String description = (String) movieMap.get("overview");
             String postPath = (String) movieMap.get("poster_path");
             String language = (String) movieMap.get("original_language");
+            String backdropPath = (String) movieMap.get("backdrop_path");
+            String releaseDate = (String) movieMap.get("release_date");
 
             System.out.println("id - " + id);
             System.out.println("title - " + title);
@@ -69,7 +71,7 @@ public class MovieService {
             System.out.println("postpath - " + postPath);
             System.out.println("laguage - " + language);
 
-            Movie movie = new Movie(id, title, genre, length, description, postPath, language);
+            Movie movie = new Movie(id, title, genre, length, description, postPath, language , backdropPath, releaseDate);
             return movie;
 
         } catch (Exception e) {
