@@ -5,15 +5,15 @@ import Select from "react-select";
 export default function AddFriends() {
 
     const [users, setUsers] = useState([]);
-    const [addFriends, setAddFriends] = useState([]);
+    const [selectedFriend, setAddFriends] = useState([]);
 
     const [modal, setModal] = useState(false);
 
     const toggle = () => setModal(!modal);
 
     const allUsers = users.map((user) => ({
-        value: user.email,
-        label: user.name,
+        value: user,
+        label: user.email,
       }));
 
 
@@ -23,10 +23,18 @@ export default function AddFriends() {
 
       async function sendFriends(e){
           e.preventDefault();
+          console.log("selectedFriend: " , selectedFriend)
+
+        const friendsValue = []
+        for(var i = 0; i < selectedFriend.length; i++) {
+            friendsValue.push(selectedFriend[i].value)
+        }
         
        let result = await (
           await fetch("rest/addfriends", {
-            method: "PUT",               
+            method: "PUT",           
+            body: JSON.stringify(friendsValue),
+            headers: { "Content-Type": "application/json" }     
           })
         ).json();   
         console.log(result);
