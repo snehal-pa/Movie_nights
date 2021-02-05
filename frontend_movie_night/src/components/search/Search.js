@@ -11,11 +11,10 @@ import {
 import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
-import axios from 'axios'
-import ReactPaginate from 'react-paginate';
+import axios from "axios";
+import ReactPaginate from "react-paginate";
 
 export default function Search() {
-
   const [searchTerm, setSearchTerm] = useState("");
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
@@ -24,31 +23,38 @@ export default function Search() {
   const [offset, setOffset] = useState(0);
   //const [data, setData] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
-  const [perPage] = useState(10);
-  const [pageCount, setPageCount] = useState(0)
+  const [perPage] = useState(9);
+  const [pageCount, setPageCount] = useState(0);
 
-  const getMovies = async() => {
-    const res = await axios.get(`http://localhost:8080/rest/movies`)
+  const getMovies = async () => {
+    const res = await axios.get(`http://localhost:8080/rest/movies`);
     const allMovies = res.data;
-              const slice = allMovies.slice(offset, offset + perPage)
-              const movieData = slice.map(movie => <Card
-                className="media-item"
-                key={movie.id}
-                onClick={selectMovie(movie)}
-              >
-                <CardImg
-                  className="movie-poster"
-                  src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
-                  alt="Generic placeholder image"
-                />
-              </Card>)
-              setAllMovies(movieData)
-              setPageCount(Math.ceil(allMovies.length / perPage))
-}
-const handlePageClick = (e) => {
-  const selectedPage = e.selected;
-  setOffset(selectedPage + 1)
-};
+    const slice = allMovies.slice(offset, offset + perPage);
+    const movieData = slice.map((movie) => (
+      <Row sm="2" md="3" lg="3">
+        <Col>
+      <Card
+        className="media-item"
+        key={movie.id}
+        onClick={selectMovie(movie)
+        }>
+        <CardImg
+          className="movie-poster"
+          src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
+          alt="Generic placeholder image"
+        />
+        </Card>
+        </Col>
+        </Row>
+    ));
+    setAllMovies(movieData);
+    setPageCount(Math.ceil(allMovies.length / perPage));
+  };
+
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    setOffset(selectedPage + 1);
+  };
 
   // async function fetchAllMovies() {
   //   let movies = await (
@@ -101,8 +107,10 @@ const handlePageClick = (e) => {
         /* Search Box*/
         <Container className="searchBox">
           <Row>
-              <Col lg="12" md="12" sm="12">
-                <h4 className="sidebox-title">Find a movie and invite friends for a movie night!</h4>
+            <Col lg="12" md="12" sm="12">
+              <h4 className="sidebox-title">
+                Find a movie and invite friends for a movie night!
+              </h4>
               <InputGroup>
                 <Input
                   className="movie-search"
@@ -112,18 +120,13 @@ const handlePageClick = (e) => {
                 />
               </InputGroup>
             </Col>
-            </Row>
-            
-
-            {/* Movie List Box */}
-            
+          </Row>
+          {/* Movie List Box */}
           <Container className="movielist-box">
             <Row className="mx-auto">
-                <Row sm="2" md="3" lg="3">
-                  <Col>
-                    
+              
                   {allMovies}
-       <ReactPaginate
+                  <ReactPaginate
                     previousLabel={"prev"}
                     nextLabel={"next"}
                     breakLabel={"..."}
@@ -134,15 +137,12 @@ const handlePageClick = (e) => {
                     onPageChange={handlePageClick}
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}
-                    activeClassName={"active"} />
-                    
-
-                  </Col>
-                </Row>
+                    activeClassName={"active"}
+                  />
+            
             </Row>
           </Container>{" "}
-          /* Movie List Box End */
-        </Container> /* Search Box End */
+        </Container> 
       )}
     </Container>
   );
