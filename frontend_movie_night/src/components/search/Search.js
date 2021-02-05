@@ -30,7 +30,7 @@ export default function Search() {
 
   async function postMovies(){
     let result = await (
-      await fetch("http://localhost:8080/rest/movies/1/30", {
+      await fetch("/rest/movies/1/30", {
         method: "POST",               
       })
     ).json();    

@@ -55,7 +55,7 @@ export default function CreateInvitation(props) {
     console.log("start: " , start)
     console.log("enddate: " , endDate)
     let result = await (
-      await fetch("http://localhost:8080/api/availablefriends?startdate=" + start + "&enddate=" + endDate)).json();    
+      await fetch("/api/availablefriends?startdate=" + start + "&enddate=" + endDate)).json();    
     console.log(result)   
     setAvailableFriends(result)    
   }
