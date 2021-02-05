@@ -31,6 +31,7 @@ public class UserService {
 
         if (u != null) {
             u.setAccessToken(user.getAccessToken());
+            u.setPassword(user.getPassword());
             u.setRefreshToken(user.getRefreshToken());
             u.setExpiresAt(user.getExpiresAt());
             u.setProfileUrl(user.getProfileUrl());
@@ -58,10 +59,12 @@ public class UserService {
     public void saveFriends(List<User> friends) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepo.findByEmail(userEmail);
+        System.out.println(user.getPassword());
 
         for (int i = 0; i < friends.size(); i++) {
             if (user != null) {
                 user.setFriends(friends);
+                user.setPassword(user.getPassword());
                 userRepo.save(user);
             }
         }

@@ -38,15 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .logout().invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                //.logoutUrl("/perform-logout")
-
-
-                //.and()
-                //.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
-
-                //.and()
-                //.defaultSuccessUrl("/homepage.html", true)
-
                 .and()
                 .csrf().disable()
         ;
