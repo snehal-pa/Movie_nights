@@ -16,6 +16,7 @@ export default function Search() {
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
+   
 
   async function fetchAllMovies() {
     let movies = await (

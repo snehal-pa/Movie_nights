@@ -3,6 +3,8 @@ import { Context } from "../App";
 import React, {useContext, useState} from 'react';
 import moment from "moment";
 import Select from "react-select";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -12,6 +14,7 @@ export default function CreateInvitation(props) {
   const [formData, setFormData] = useState({});
   const [availableFriends, setAvailableFriends] = useState([]);
   const [invitesList, setinvitesList] = useState([]);
+  const [show, setShow] = useState(false);
 
  
   function discard(e){
@@ -59,11 +62,13 @@ export default function CreateInvitation(props) {
 
   const searchFriends = (e) => {
     e.preventDefault();
-    const getStart = new Date(startDate + " " + startTime);
+    if(startDate !== undefined && startTime !== undefined){
+      const getStart = new Date(startDate + " " + startTime);
     const start = moment(getStart).format("YYYY-MM-DDTHH:mm:ss");
-    const endDate = moment(start).add(2, 'hours').format("YYYY-MM-DDTHH:mm:ss");
+    const endDate = moment(start).add(props.sendMovie.length, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
     getAvailableFriends(start, endDate);   
-    
+    setShow(true);
+    }       
   };
 
   
@@ -91,7 +96,7 @@ export default function CreateInvitation(props) {
                   </Card>
                 </Row>
               <Row className="mt-2">
-                <Col lg="6" sm="12">
+                <Col lg="5" sm="12">
                   <FormGroup>
                     <Label for="startDate">Date</Label>
                     <Input
@@ -105,7 +110,7 @@ export default function CreateInvitation(props) {
                     />
                   </FormGroup>      
                 </Col>
-                <Col lg="6" sm="12">
+                <Col lg="5" sm="12">
                   <FormGroup>
                     <Label for="startTime">Time</Label>
                     <Input
@@ -117,20 +122,20 @@ export default function CreateInvitation(props) {
                       placeholder="time placeholder"
                     />
                   </FormGroup>
+                </Col> 
+                <Col lg="2" sm="12">  
+                <br></br>              
+                <Button className="w-100 magenta mt-2" onClick={searchFriends}><FontAwesomeIcon icon={faSearch} /></Button>
                 </Col>
-              </Row>  
+              </Row>                           
               <Row>
-                <Col lg="12">
-                <Button className="w-100 magenta" onClick={searchFriends}>Search for available friends</Button>
-                </Col>
-              </Row>            
-              <Row>
-                <Col lg="12">
+                { show ? ( <Col lg="12">
                   <FormGroup>
                     <Label for="selectFriends">Invite your Friends</Label>                  
                     <Select  options={friends} onChange={handleInvites} isMulti/>             
                   </FormGroup>
-                </Col>
+                </Col> ) : null}
+               
               </Row>
                  
               <Row>       
