@@ -15,6 +15,8 @@ export default function CreateInvitation(props) {
   const [availableFriends, setAvailableFriends] = useState([]);
   const [invitesList, setinvitesList] = useState([]);
   const [show, setShow] = useState(false);
+  const [combStartDate, setstartDate] = useState();
+  const [combEndDateTime, setendDateTime] = useState();
 
  
   function discard(e){
@@ -34,7 +36,7 @@ export default function CreateInvitation(props) {
   } = formData;
 
   const friends = availableFriends.map((friend) => ({
-    value: friend.email,
+    value: friend,
     label: friend.name,
   }));
 
@@ -44,11 +46,15 @@ export default function CreateInvitation(props) {
 
   async function postEvent(){
     console.log("invitelist: " , invitesList)
-   /* let result = await (
-      await fetch("http://localhost:8080/api/create_event", {
-        method: "POST",               
+    let movieEvent = { movie : props.sendMovie, start : combStartDate, end : combEndDateTime, attendees : invitesList }
+    let result = await (
+      await fetch("/api/create_event", {
+        method: "POST",      
+        body: JSON.stringify(movieEvent),
+        headers: { "Content-Type": "application/json" } 
       })
-    ).json();   */ 
+    ).json();    
+    console.log(result);
   }
 
   async function getAvailableFriends(start, endDate){
@@ -63,9 +69,11 @@ export default function CreateInvitation(props) {
   const searchFriends = (e) => {
     e.preventDefault();
     if(startDate !== undefined && startTime !== undefined){
-      const getStart = new Date(startDate + " " + startTime);
+    const getStart = new Date(startDate + " " + startTime);
     const start = moment(getStart).format("YYYY-MM-DDTHH:mm:ss");
+    setstartDate(start)
     const endDate = moment(start).add(props.sendMovie.length, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
+    setendDateTime(endDate)
     getAvailableFriends(start, endDate);   
     setShow(true);
     }       
