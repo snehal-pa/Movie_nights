@@ -2,7 +2,6 @@ import {
   Container,
   InputGroup,
   Input,
-  Media,
   Col,
   Row,
   Card,
@@ -15,6 +14,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 
 export default function Search() {
+
   const [searchTerm, setSearchTerm] = useState("");
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
@@ -25,6 +25,10 @@ export default function Search() {
   const [allMovies, setAllMovies] = useState([]);
   const [perPage] = useState(9);
   const [pageCount, setPageCount] = useState(0);
+
+  useEffect(() => {
+    getMovies();
+  }, [offset]);
 
   const getMovies = async () => {
     const res = await axios.get(`http://localhost:8080/rest/movies`);
@@ -48,12 +52,14 @@ export default function Search() {
         </Row>
     ));
     setAllMovies(movieData);
+    console.log('all movies length: ', allMovies.length, 'per page: ', perPage);
     setPageCount(Math.ceil(allMovies.length / perPage));
+    console.log('page count ', pageCount);
   };
 
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
-    setOffset(selectedPage + 1);
+    setOffset(selectedPage * perPage);
   };
 
   // async function fetchAllMovies() {
@@ -65,10 +71,6 @@ export default function Search() {
   //   }
   //   setAllMovies(movies);
   // }
-
-  useEffect(() => {
-    getMovies();
-  }, [offset]);
 
   function filter() {
     let movieResults = allMovies.filter((movie) =>
