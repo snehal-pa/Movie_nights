@@ -32,5 +32,15 @@
     margin-left: -1rem;
   }
 
+  .noButton{
+    background-color: $pink;
+    border: 1px solid $pink;        
+    &:hover{
+      background-color: $pink;
+      border: 1px solid $pink;
+    }
+  }
+
+  
   
   
