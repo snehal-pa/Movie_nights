@@ -12,6 +12,7 @@ import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
 
 
+
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allMovies, setAllMovies] = useState([]);
@@ -83,6 +84,7 @@ export default function Search() {
                 <h4 className="sidebox-title">Find a movie and invite friends for a movie night!</h4>
               <InputGroup>
                 <Input
+                  id="movie-search"
                   className="movie-search"
                   placeholder="Search"
                   value={searchTerm}
@@ -109,8 +111,7 @@ export default function Search() {
                         className="movie-poster"
                         src={`${movie.postPath}` } 
                         alt={movie.title}
-                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')}
-                       
+                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
                       />
                     </Card>
                   </Col>

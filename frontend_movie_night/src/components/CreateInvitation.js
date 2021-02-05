@@ -4,7 +4,7 @@ import React, {useContext, useState} from 'react';
 import moment from "moment";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import {  faSearch } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -77,9 +77,9 @@ export default function CreateInvitation(props) {
           <div className="invitation">
               <Row className="media-item">
                 <Card>
-                  <CardImg src={`${props.sendMovie.backdropPath}`}></CardImg>
+                  <CardImg src={`${props.sendMovie.backdropPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} ></CardImg>
                   <CardBody className="text-center"> 
-                  <Row><img className="avatar" src={`${props.sendMovie.postPath}`}></img>  </Row>     
+                  <Row><img className="avatar" src={`${props.sendMovie.postPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} ></img>  </Row>     
                   <Row className="off-row">
                     <Col lg="2"></Col>
                     <Col lg="6"><CardTitle className="movie-title text-left">{props.sendMovie.title}</CardTitle></Col>
