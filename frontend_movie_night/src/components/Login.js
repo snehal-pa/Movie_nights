@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Button, CardTitle } from "reactstrap";
 import { Context } from "../App";
 
-import { Container, Row, Col, CardBody, CardText, Card } from "reactstrap";
+import { Container, Row, CardBody, CardText, Card } from "reactstrap";
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
