@@ -33,6 +33,9 @@ public class User {
         return users;
     }
 
+    @Relationship(type= "FRIEND", direction = Relationship.Direction.INCOMING)
+    private List<User> friends;
+
 
     public User(String name, String email, String profileUrl, String password, String accessToken, String refreshToken, Long expiresAt) {
         this.name = name;

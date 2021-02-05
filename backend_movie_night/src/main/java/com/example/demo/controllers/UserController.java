@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
@@ -29,5 +30,11 @@ public class UserController {
     @GetMapping("/whoami")
     public User whoAmI(){
         return userService.findCurrentUser();
+    }
+
+    @PutMapping("/addfriend")
+    ResponseEntity addFriends(@RequestBody List<User> friends){
+        userService.saveFriends(friends);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -52,4 +52,21 @@ public class UserService {
         return user;
 
     }
+
+    public void saveFriends(List<User> friends){
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(userEmail);
+
+
+
+        for(int i = 0; i < friends.size(); i++){
+            if(friends.get(i).getEmail() == userEmail){
+                var user = userRepo.findByEmail(userEmail);
+                if(user != null){
+
+                    
+                }
+            }
+        }
+    }
 }
