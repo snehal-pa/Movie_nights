@@ -31,8 +31,8 @@ export default function AddFriends() {
         }
         
        let result = await (
-          await fetch("rest/addfriends", {
-            method: "PUT",           
+          await fetch("/rest/addfriends", {
+            method: "POST",           
             body: JSON.stringify(friendsValue),
             headers: { "Content-Type": "application/json" }     
           })

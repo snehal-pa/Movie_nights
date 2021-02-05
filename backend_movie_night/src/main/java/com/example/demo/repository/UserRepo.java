@@ -15,7 +15,7 @@ public interface UserRepo extends Neo4jRepository<User,Long> {
     User findByEmail(String email);
 
    // CREATE (User)-[rel:IS_FRIENDS_WITH]->(User)
-    User updateFriends();
+   // User updateFriends();
 
    // List<User> findAll();
 

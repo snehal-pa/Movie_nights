@@ -32,7 +32,7 @@ public class UserController {
         return userService.findCurrentUser();
     }
 
-    @PutMapping("/addfriend")
+    @PostMapping("/addfriends")
     ResponseEntity addFriends(@RequestBody List<User> friends){
         userService.saveFriends(friends);
         return new ResponseEntity(HttpStatus.OK);
