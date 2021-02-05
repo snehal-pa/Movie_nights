@@ -18,7 +18,7 @@ export default function Topbar() {
   return (
 
     <div>
-       {!context.loggedInUser == false  ?( 
+       {!context.loggedInUser === false  ?( 
       <Navbar className="navbar-custom" light expand="md">
         <NavbarBrand href="/home">MovieNights</NavbarBrand>
         <Nav className="ml-auto" navbar>

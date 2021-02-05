@@ -11,11 +11,14 @@ import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
 
+
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
+
+
    
 
   async function fetchAllMovies() {
@@ -26,11 +29,12 @@ export default function Search() {
       movies = [];
     }
     setAllMovies(movies);
+    console.log(movies)
   }
 
   async function postMovies(){
     let result = await (
-      await fetch("/rest/movies/1/30", {
+      await fetch("/rest/movies/1/10", {
         method: "POST",               
       })
     ).json();    
@@ -66,10 +70,7 @@ export default function Search() {
     updateContext({ showCreateInvitation: true });
   }
 
-  const resetInputField = () => {
-    setSearchTerm("");
-  };
-
+  
   return (
     <Container className="container-search mt-4">
       {context.showCreateInvitation ? (
@@ -106,8 +107,10 @@ export default function Search() {
                     >
                       <CardImg
                         className="movie-poster"
-                        src={`${movie.postPath}`}
-                        alt="Generic placeholder image"
+                        src={`${movie.postPath}` } 
+                        alt={movie.title}
+                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')}
+                       
                       />
                     </Card>
                   </Col>
@@ -121,3 +124,5 @@ export default function Search() {
     </Container>
   );
 }
+
+
