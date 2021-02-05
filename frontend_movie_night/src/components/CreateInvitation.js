@@ -77,9 +77,9 @@ export default function CreateInvitation(props) {
           <div className="invitation">
               <Row className="media-item">
                 <Card>
-                  <CardImg src={`https://image.tmdb.org/t/p/original/${props.sendMovie.backdropPath}`}></CardImg>
+                  <CardImg src={`${props.sendMovie.backdropPath}`}></CardImg>
                   <CardBody className="text-center"> 
-                  <Row><img className="avatar" src={`https://image.tmdb.org/t/p/original/${props.sendMovie.postPath}`}></img>  </Row>     
+                  <Row><img className="avatar" src={`${props.sendMovie.postPath}`}></img>  </Row>     
                   <Row className="off-row">
                     <Col lg="2"></Col>
                     <Col lg="6"><CardTitle className="movie-title text-left">{props.sendMovie.title}</CardTitle></Col>

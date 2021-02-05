@@ -106,7 +106,7 @@ export default function Search() {
                     >
                       <CardImg
                         className="movie-poster"
-                        src={`https://image.tmdb.org/t/p/original/${movie.postPath}`}
+                        src={`${movie.postPath}`}
                         alt="Generic placeholder image"
                       />
                     </Card>
