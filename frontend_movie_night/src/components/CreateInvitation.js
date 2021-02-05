@@ -1,4 +1,4 @@
-import {Container, Input, Card, CardBody, CardImg, CardTitle, CardSubtitle, CardText, Col, Row, Button, Label, FormGroup } from "reactstrap";
+import {Container, Form, Input, Card, CardBody, CardImg, CardTitle, CardSubtitle, CardText, Col, Row, Button, Label, FormGroup } from "reactstrap";
 import { Context } from "../App";
 import React, {useContext, useState} from 'react';
 import moment from "moment";
@@ -36,7 +36,7 @@ export default function CreateInvitation(props) {
   } = formData;
 
   const friends = availableFriends.map((friend) => ({
-    value: friend,
+    value: friend,    
     label: friend.name,
   }));
 
@@ -44,9 +44,16 @@ export default function CreateInvitation(props) {
     setinvitesList(e);
   };
 
-  async function postEvent(){
+  async function save(e){
+    e.preventDefault(); 
     console.log("invitelist: " , invitesList)
-    let movieEvent = { movie : props.sendMovie, start : combStartDate, end : combEndDateTime, attendees : invitesList }
+    const friendsValue = []
+    for(var i = 0; i < invitesList.length; i++) {
+        friendsValue.push(invitesList[i].value)
+    }
+    console.log("friends: " , friendsValue)
+    let movieEvent = { movie : props.sendMovie, start : combStartDate, end : combEndDateTime, attendees : friendsValue }
+    console.log(movieEvent);
     let result = await (
       await fetch("/api/create_event", {
         method: "POST",      
@@ -55,6 +62,9 @@ export default function CreateInvitation(props) {
       })
     ).json();    
     console.log(result);
+
+    updateContext({ showCreateInvitation: false});
+    
   }
 
   async function getAvailableFriends(start, endDate){
@@ -83,6 +93,7 @@ export default function CreateInvitation(props) {
 
     return (      
           <div className="invitation">
+            <Form onSubmit={save}>
               <Row className="media-item">
                 <Card>
                   <CardImg src={`${props.sendMovie.backdropPath}`}></CardImg>
@@ -146,10 +157,6 @@ export default function CreateInvitation(props) {
                
               </Row>
 
-             
-
-             
-                 
               <Row>       
                 <Container className="vbottom"> 
                   <Row >
@@ -162,11 +169,12 @@ export default function CreateInvitation(props) {
                 <Button color="secondary" className="w-100" onClick={discard}>Discard</Button>
                 </Col>
                 <Col lg="6" sm="12">
-                <Button className="w-100 magenta" onClick={postEvent}>Send</Button>
+                <Button className="w-100 magenta" type="submit" value="save">Send</Button>
                 </Col>
                 </Row>   
                 </Container>
-              </Row>     
+              </Row>   
+              </Form>  
           </div>         
     );
   } 
