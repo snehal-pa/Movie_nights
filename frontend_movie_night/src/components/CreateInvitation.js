@@ -1,4 +1,4 @@
-import {Container, Input, Card, CardBody, CardImg, CardTitle, CardSubtitle, CardText, Col, Row, Button, Label, FormGroup } from "reactstrap";
+import {Container, Form, Input, Card, CardBody, CardImg, CardTitle, CardSubtitle, CardText, Col, Row, Button, Label, FormGroup } from "reactstrap";
 import { Context } from "../App";
 import React, {useContext, useState} from 'react';
 import moment from "moment";
@@ -15,6 +15,8 @@ export default function CreateInvitation(props) {
   const [availableFriends, setAvailableFriends] = useState([]);
   const [invitesList, setinvitesList] = useState([]);
   const [show, setShow] = useState(false);
+  const [combStartDate, setstartDate] = useState();
+  const [combEndDateTime, setendDateTime] = useState();
 
  
   function discard(e){
@@ -34,7 +36,7 @@ export default function CreateInvitation(props) {
   } = formData;
 
   const friends = availableFriends.map((friend) => ({
-    value: friend.email,
+    value: friend,    
     label: friend.name,
   }));
 
@@ -42,13 +44,27 @@ export default function CreateInvitation(props) {
     setinvitesList(e);
   };
 
-  async function postEvent(){
+  async function save(e){
+    e.preventDefault(); 
     console.log("invitelist: " , invitesList)
-   /* let result = await (
-      await fetch("http://localhost:8080/api/create_event", {
-        method: "POST",               
+    const friendsValue = []
+    for(var i = 0; i < invitesList.length; i++) {
+        friendsValue.push(invitesList[i].value)
+    }
+    console.log("friends: " , friendsValue)
+    let movieEvent = { movie : props.sendMovie, start : combStartDate, end : combEndDateTime, attendees : friendsValue }
+    console.log(movieEvent);
+    let result = await (
+      await fetch("/api/create_event", {
+        method: "POST",      
+        body: JSON.stringify(movieEvent),
+        headers: { "Content-Type": "application/json" } 
       })
-    ).json();   */ 
+    ).json();    
+    console.log(result);
+
+    updateContext({ showCreateInvitation: false});
+    
   }
 
   async function getAvailableFriends(start, endDate){
@@ -63,9 +79,11 @@ export default function CreateInvitation(props) {
   const searchFriends = (e) => {
     e.preventDefault();
     if(startDate !== undefined && startTime !== undefined){
-      const getStart = new Date(startDate + " " + startTime);
+    const getStart = new Date(startDate + " " + startTime);
     const start = moment(getStart).format("YYYY-MM-DDTHH:mm:ss");
+    setstartDate(start)
     const endDate = moment(start).add(props.sendMovie.length, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
+    setendDateTime(endDate)
     getAvailableFriends(start, endDate);   
     setShow(true);
     }       
@@ -75,6 +93,7 @@ export default function CreateInvitation(props) {
 
     return (      
           <div className="invitation">
+            <Form onSubmit={save}>
               <Row className="media-item">
                 <Card>
                   <CardImg src={`${props.sendMovie.backdropPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} ></CardImg>
@@ -138,10 +157,6 @@ export default function CreateInvitation(props) {
                
               </Row>
 
-             
-
-             
-                 
               <Row>       
                 <Container className="vbottom"> 
                   <Row >
@@ -154,11 +169,12 @@ export default function CreateInvitation(props) {
                 <Button color="secondary" className="w-100" onClick={discard}>Discard</Button>
                 </Col>
                 <Col lg="6" sm="12">
-                <Button className="w-100 magenta" onClick={postEvent}>Send</Button>
+                <Button className="w-100 magenta" type="submit" value="save">Send</Button>
                 </Col>
                 </Row>   
                 </Container>
-              </Row>     
+              </Row>   
+              </Form>  
           </div>         
     );
   } 
