@@ -33,7 +33,9 @@ public class EventService {
     private UserRepo userRepo;
 
     @Autowired
-    private AuthService authService;
+    private UserService userService;
+
+
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String CLIENT_ID;
@@ -42,35 +44,32 @@ public class EventService {
     private String CLIENT_SECRET;
 
     public String getMyCalendar() throws IOException {
-        Calendar myCalendar = getCalendar(authService.getAccessToken());
-
+        var currentUser = userService.findCurrentUser();
+        String accessToken = currentUser.getAccessToken();
+        if(currentUser.getExpiresAt()< System.currentTimeMillis()){
+            try {
+                accessToken = refreshAccessToken(currentUser.getRefreshToken());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Calendar myCalendar = getCalendar(accessToken);
         var cl = myCalendar.calendarList().get("calendarId").execute();
-
-//// Retrieve a specific calendar list entry
-//        CalendarListEntry calendarListEntry = null;
-//        try {
-//            calendarListEntry = myCalendar.calendarList().get("calendarId").execute();
-//        } catch (IOException e) {
-//            System.out.println("CANT GET ID!!! ");
-//            e.printStackTrace();
-//        }
-
-        //System.out.println(calendarListEntry.getSummary());
-
         return cl.getSummary();
     }
 
     public List<Event> getMyEvents() {
+        var currentUser = userService.findCurrentUser();
+        String accessToken = currentUser.getAccessToken();
+        if(currentUser.getExpiresAt()< System.currentTimeMillis()){
+            try {
+                accessToken = refreshAccessToken(currentUser.getRefreshToken());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        Calendar myCalendar = getCalendar(authService.getAccessToken());
-
-    /*
-            List the next 10 events from the primary calendar.
-        Instead of printing these with System out, you should of course store them in a database or in-memory variable to use for your application.
-*/
-
-            // End-date (without time) of event
-
+        Calendar myCalendar = getCalendar(accessToken);
 
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = null;
@@ -115,7 +114,7 @@ public class EventService {
 
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
 
-        List<User> friends = userRepo.findAll();
+        List<User> friends = userService.getAll();
         List<User> availableFriends = new ArrayList<>();
 
         for(int i= 0; i<friends.size(); i++){
@@ -213,10 +212,12 @@ public class EventService {
 
 
     public Event createNewEvent(MovieEvent movieEvent) {
-        String accessToken = authService.getAccessToken();
-        if(authService.getExpiresAt()< System.currentTimeMillis()){
+        var currentUser = userService.findCurrentUser();
+
+        String accessToken = currentUser.getAccessToken();
+        if(currentUser.getExpiresAt()< System.currentTimeMillis()){
             try {
-                accessToken = refreshAccessToken(authService.getRefreshToken());
+                accessToken = refreshAccessToken(currentUser.getRefreshToken());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -236,8 +237,8 @@ public class EventService {
         // set Event attendees
         List<EventAttendee> eventAttendees = new ArrayList<>();
         eventAttendees.add(new EventAttendee()
-                .setEmail(authService.getEmail())
-                .setDisplayName(authService.getName()));
+                .setEmail(currentUser.getEmail())
+                .setDisplayName(currentUser.getName()));
         if(!movieEvent.getAttendees().isEmpty()){
             movieEvent.getAttendees().forEach(user -> {
                 EventAttendee e = new EventAttendee();
