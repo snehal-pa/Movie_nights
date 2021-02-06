@@ -1,7 +1,7 @@
 //import logo from './logo.svg';
 import React, { useState, createContext, useEffect } from "react";
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 //import'./Main.js';
 import Login from "./components/Login";
 import "./sass/style.scss";
@@ -38,16 +38,15 @@ export default function App() {
     updateContext({ loggedInUser: user });
   };
 
+
   return (
     <Context.Provider value={[contextVal, updateContext]}>
       <Router>
         <TopBar />
-        <Route path="/" exact>
-          <Login />
-        </Route>
-        <Route path="/home" exact>
-          <Home />
-        </Route>
+        <Switch>
+        <Route exact path="/" component={Login}/>
+        <Route exact path="/home" component={Home}/>
+        </Switch>
       </Router>
     </Context.Provider>
   );

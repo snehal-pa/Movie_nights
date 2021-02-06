@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 //import GoogleLogin from "react-google-login";
 import { Button, CardTitle } from "reactstrap";
 import { Context } from "../App";
-
 import { Container, Row, CardBody, CardText, Card } from "reactstrap";
+import { useHistory } from 'react-router-dom'
+
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
@@ -11,7 +12,8 @@ const CLIENT_ID =
 export default function Login() {
   const [auth2, setAuth2] = useState(null);
   const [context, updateContext] = useContext(Context);
-  //let auth2;
+  const history = useHistory()
+
 
   const whoamI = async () => {
     let res = await fetch("/rest/whoami");
@@ -30,12 +32,14 @@ export default function Login() {
         window.gapi.auth2.init({
           client_id: CLIENT_ID,
           scope: "https://www.googleapis.com/auth/calendar",
+          fetch_basic_profile: true,
         })
       );
     });
 
     console.log("auth2:");
     console.log(auth2);
+   
   }, []);
 
   async function signInCallback(authResult) {
@@ -52,17 +56,10 @@ export default function Login() {
 
       if (result.status == 200) {
         whoamI();
-        //console.log(result.status);
-        // var auth2 = window.gapi.auth2.getAuthInstance();
-        // var profile = auth2.currentUser.get().getBasicProfile();
-        // console.log(profile);
-        // console.log(profile.getName());
-        // console.log(profile.getEmail());
+        history.push('/home')
+  
       }
-
-      // etc...
     } else {
-      // There was an error.
     }
   }
 
@@ -80,6 +77,7 @@ export default function Login() {
             <Button
               className="login-button mt-3"
               onClick={() => auth2.grantOfflineAccess().then(signInCallback)}
+            
             >
               <img
                 className="icon-button"
