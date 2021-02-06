@@ -125,11 +125,11 @@ public class AuthService {
 
     @SneakyThrows
     private JwtToken securityLogin(String email, String password, HttpServletRequest req) {
-        Authentication auth = null;
+        //Authentication auth = null;
         try {
             UsernamePasswordAuthenticationToken authReq
                     = new UsernamePasswordAuthenticationToken(email, password);
-            auth = authenticationManager.authenticate(authReq);
+            authenticationManager.authenticate(authReq);
         } catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password",e);
         }
@@ -137,10 +137,10 @@ public class AuthService {
         final UserDetails userDetails = myUserDetailsService.loadUserByUsername(email);
         final String jwt= jwtUtil.generateToken(userDetails);
 
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        HttpSession session = req.getSession(true);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+//        SecurityContext sc = SecurityContextHolder.getContext();
+//        sc.setAuthentication(auth);
+//        HttpSession session = req.getSession(true);
+//        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return new JwtToken(jwt);
 
 

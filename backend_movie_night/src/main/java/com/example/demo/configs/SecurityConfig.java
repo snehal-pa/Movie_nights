@@ -35,25 +35,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
+        http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/rest/whoami", "/").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/api/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .logout().invalidateHttpSession(true).deleteCookies("JSESSIONID")
+
+
+                .logout()
+                //.invalidateHttpSession(true).deleteCookies("JSESSIONID")
                 //.logoutUrl("/perform-logout")
                 //.and()
                 //.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
                 //.and()
                 //.defaultSuccessUrl("/homepage.html", true)
-
-                .and()
-                .csrf().disable();
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        .and()
+        .addFilterBefore(jwtRequestFilter,UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }

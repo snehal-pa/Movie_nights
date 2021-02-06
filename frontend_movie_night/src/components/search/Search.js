@@ -10,7 +10,7 @@ import {
 import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
-const { header } = require("../header");
+//const { header } = require("../header");
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +19,9 @@ export default function Search() {
   const [selectedMovie, setSelectedMovie] = useState();
 
   async function fetchAllMovies() {
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
     let movies = await (await fetch("/rest/movies", header)).json();
     if (movies.error) {
       movies = [];

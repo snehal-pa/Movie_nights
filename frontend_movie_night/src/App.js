@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import "./sass/style.scss";
 import Home from "./components/Home";
 import TopBar from "./components/TopBar";
+//const { header } = require("./components/header");
 
 // create and export the context
 export const Context = createContext();
@@ -28,13 +29,17 @@ export default function App() {
   }, []);
 
   const whoamI = async () => {
-    let res = await fetch("/rest/whoami");
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+    let res = await fetch("/rest/whoami", header);
     let user = await res.json();
 
     if (res.status == 404) {
       updateContext({ loggedInUser: false });
       return;
     }
+    console.log(user);
     updateContext({ loggedInUser: user });
   };
 

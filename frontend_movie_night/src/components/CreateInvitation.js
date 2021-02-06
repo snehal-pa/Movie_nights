@@ -20,7 +20,7 @@ import moment from "moment";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-const { header } = require("./header");
+//const { header } = require("./header");
 
 export default function CreateInvitation(props) {
   let [context, updateContext] = useContext(Context);
@@ -88,7 +88,12 @@ export default function CreateInvitation(props) {
     console.log("enddate: ", endDate);
     let result = await (
       await fetch(
-        "/api/availablefriends?startdate=" + start + "&enddate=" + endDate
+        "/api/availablefriends?startdate=" + start + "&enddate=" + endDate,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
       )
     ).json();
     console.log(result);

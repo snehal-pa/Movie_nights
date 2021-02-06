@@ -53,6 +53,7 @@ public class AuthController {
         }
 
         var jwtToken = authService.saveUserToDb(tokenResponse, req);
+        System.out.println("jwt: " + jwtToken.getJwt());
 
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 

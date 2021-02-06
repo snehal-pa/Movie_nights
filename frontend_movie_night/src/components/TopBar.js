@@ -2,15 +2,19 @@ import React, { useContext } from "react";
 import { NavItem, NavLink, Nav, Badge, Navbar, NavbarBrand } from "reactstrap";
 import { NavLink as RRNavLink, Link } from "react-router-dom";
 import { Context } from "../App";
-const { header } = require("./header");
+//const { header } = require("./header");
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
 
   const logout = async () => {
-    const res = await (await fetch("/logout")).json;
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+    const res = await (await fetch("/logout", header)).json;
     if (!res.error) {
       updateContext({ loggedInUser: false });
+      localStorage.removeItem("jwtToken");
     }
 
     console.log("logingout");
