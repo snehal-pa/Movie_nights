@@ -1,22 +1,23 @@
 package com.example.demo.services;
 
 import com.example.demo.configs.MyUserDetailsService;
+import com.example.demo.model.JwtToken;
 import com.example.demo.model.User;
+import com.example.demo.util.JwtUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +35,9 @@ public class AuthService {
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -69,7 +73,7 @@ public class AuthService {
     }
 
 
-    public void saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
+    public JwtToken saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
         if(tokenResponse == null){
             name = null;
@@ -104,11 +108,11 @@ public class AuthService {
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
         System.out.println("userId: " + userId);
         System.out.println("email: " + email);
-        System.out.println("emailVerified: " + emailVerified);
-        System.out.println("name: " + name);
-        System.out.println("pictureUrl: " + pictureUrl);
-        System.out.println("locale: " + locale);
-        System.out.println("acccestoken: " + accessToken);
+//        System.out.println("emailVerified: " + emailVerified);
+//        System.out.println("name: " + name);
+//        System.out.println("pictureUrl: " + pictureUrl);
+//        System.out.println("locale: " + locale);
+//        System.out.println("acccestoken: " + accessToken);
 
 
         String pass = email + "passwordSalt" + userId;
@@ -116,18 +120,28 @@ public class AuthService {
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
-        securityLogin(email, pass, req);
+        return securityLogin(email, pass, req);
     }
 
-    private void securityLogin(String email, String password, HttpServletRequest req) {
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication auth = authenticationManager.authenticate(authReq);
+    @SneakyThrows
+    private JwtToken securityLogin(String email, String password, HttpServletRequest req) {
+        Authentication auth = null;
+        try {
+            UsernamePasswordAuthenticationToken authReq
+                    = new UsernamePasswordAuthenticationToken(email, password);
+            auth = authenticationManager.authenticate(authReq);
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password",e);
+        }
+
+        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(email);
+        final String jwt= jwtUtil.generateToken(userDetails);
 
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+        return new JwtToken(jwt);
 
 
     }

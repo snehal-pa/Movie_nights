@@ -64,16 +64,16 @@ public class MovieService {
             String backdropPath = (String) "https://image.tmdb.org/t/p/original" + movieMap.get("backdrop_path");
             String releaseDate = (String) movieMap.get("release_date");
 
-            System.out.println("id - " + id);
-            System.out.println("title - " + title);
-            System.out.print("genres - ");
-            genre.forEach(System.out::println);
-            System.out.println("length - " + length);
-            System.out.println("desc - " + description);
-            //System.out.println("postpath - " + postPath);
-            System.out.println("laguage - " + language);
-            //System.out.println(postPahth2);
-            //System.out.println(backdropPath2);
+//            System.out.println("id - " + id);
+//            System.out.println("title - " + title);
+//            System.out.print("genres - ");
+//            genre.forEach(System.out::println);
+//            System.out.println("length - " + length);
+//            System.out.println("desc - " + description);
+//            //System.out.println("postpath - " + postPath);
+//            System.out.println("laguage - " + language);
+//            //System.out.println(postPahth2);
+//            //System.out.println(backdropPath2);
 
             Movie movie = new Movie(id, title, genre, length, description, postpath, language , backdropPath, releaseDate);
             return movie;

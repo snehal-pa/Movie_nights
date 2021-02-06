@@ -4,6 +4,7 @@ import { Button, CardTitle } from "reactstrap";
 import { Context } from "../App";
 
 import { Container, Row, CardBody, CardText, Card } from "reactstrap";
+const { header } = require("./header");
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
@@ -14,7 +15,10 @@ export default function Login() {
   //let auth2;
 
   const whoamI = async () => {
-    let res = await fetch("/rest/whoami");
+    // const header = {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    // };
+    let res = await fetch("/rest/whoami", header);
     let user = await res.json();
     if (res.status == 404) {
       updateContext({ loggedInUser: false });
@@ -47,7 +51,11 @@ export default function Login() {
         body: authResult["code"],
       });
 
+      const data = await result.json();
+
       if (result.status == 200) {
+        console.log(data);
+        localStorage.setItem("jwtToken", data.jwt);
         whoamI();
         //console.log(result.status);
         // var auth2 = window.gapi.auth2.getAuthInstance();

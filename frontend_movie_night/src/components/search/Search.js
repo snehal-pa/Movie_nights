@@ -1,7 +1,7 @@
 import {
   Container,
   InputGroup,
-  Input,  
+  Input,
   Col,
   Row,
   Card,
@@ -10,8 +10,7 @@ import {
 import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
-
-
+const { header } = require("../header");
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,31 +18,29 @@ export default function Search() {
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
 
-
-   
-
   async function fetchAllMovies() {
-    let movies = await (
-      await fetch("/rest/movies")
-    ).json();
+    let movies = await (await fetch("/rest/movies", header)).json();
     if (movies.error) {
       movies = [];
     }
     setAllMovies(movies);
-    console.log(movies)
+    console.log(movies);
   }
 
-  async function postMovies(){
+  async function postMovies() {
     let result = await (
       await fetch("/rest/movies/1/10", {
-        method: "POST",               
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
       })
-    ).json();    
+    ).json();
   }
 
   useEffect(() => {
-    fetchAllMovies(); 
-    postMovies();   
+    fetchAllMovies();
+    postMovies();
   }, []);
 
   function filter() {
@@ -71,7 +68,6 @@ export default function Search() {
     updateContext({ showCreateInvitation: true });
   }
 
-  
   return (
     <Container className="container-search mt-4">
       {context.showCreateInvitation ? (
@@ -80,8 +76,10 @@ export default function Search() {
         /* Search Box*/
         <Container className="searchBox">
           <Row>
-              <Col lg="12" md="12" sm="12">
-                <h4 className="sidebox-title">Find a movie and invite friends for a movie night!</h4>
+            <Col lg="12" md="12" sm="12">
+              <h4 className="sidebox-title">
+                Find a movie and invite friends for a movie night!
+              </h4>
               <InputGroup>
                 <Input
                   id="movie-search"
@@ -92,11 +90,8 @@ export default function Search() {
                 />
               </InputGroup>
             </Col>
-            </Row>
-            
-
-            {/* Movie List Box */}
-            
+          </Row>
+          {/* Movie List Box */}
           <Container className="movielist-box">
             <Row className="mx-auto">
               {allMovies.map((movie) => (
@@ -109,9 +104,13 @@ export default function Search() {
                     >
                       <CardImg
                         className="movie-poster"
-                        src={`${movie.postPath}` } 
+                        src={`${movie.postPath}`}
                         alt={movie.title}
-                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
+                        onError={(e) => (
+                          (e.target.onError = null),
+                          (e.target.src =
+                            "https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png")
+                        )}
                       />
                     </Card>
                   </Col>
@@ -125,5 +124,3 @@ export default function Search() {
     </Container>
   );
 }
-
-
