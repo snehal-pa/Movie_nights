@@ -120,6 +120,8 @@ public class AuthService {
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
+
+
         securityLogin(email, pass, req);
     }
 
@@ -132,8 +134,6 @@ public class AuthService {
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-
-
     }
 
 

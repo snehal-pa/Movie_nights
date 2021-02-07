@@ -70,5 +70,10 @@ public class UserService {
         }
     }
 
+    public Collection<User> getFriends(){
+        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepo.getAllFriends(currentUserEmail);
+    }
+
 
 }

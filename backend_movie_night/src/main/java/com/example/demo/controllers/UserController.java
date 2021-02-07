@@ -32,6 +32,13 @@ public class UserController {
         return userService.findCurrentUser();
     }
 
+
+    @GetMapping("/firends")
+    ResponseEntity<Collection<User>> getFriends(){
+        //check so it do not return password!
+        return ResponseEntity.ok(userService.getFriends());
+    }
+
     @PostMapping("/addfriends")
     ResponseEntity addFriends(@RequestBody List<User> friends){
         userService.saveFriends(friends);
