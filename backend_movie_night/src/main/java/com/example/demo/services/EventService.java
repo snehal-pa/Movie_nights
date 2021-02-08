@@ -88,6 +88,7 @@ public class EventService {
 
         List<Event> myEvents = events.getItems();
 
+
         if (myEvents.isEmpty()) {
             System.out.println("No upcoming events found.");
         } else {
@@ -104,8 +105,7 @@ public class EventService {
                     end = event.getStart().getDate();
                 }
 
-                event.getSummary();            // Title of calendar event
-
+                event.getSummary();// Title of calendar event
 
                 System.out.printf("EVENTS!!! %s (%s) -> (%s)\n", event.getSummary(), start, end);
             }
