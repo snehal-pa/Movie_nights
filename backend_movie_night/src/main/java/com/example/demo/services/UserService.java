@@ -64,7 +64,6 @@ public class UserService {
         for (int i = 0; i < friends.size(); i++) {
             if (user != null) {
                 user.setFriends(friends);
-                user.setPassword(user.getPassword());
                 userRepo.save(user);
             }
         }
