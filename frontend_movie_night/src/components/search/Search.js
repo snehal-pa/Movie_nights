@@ -35,7 +35,7 @@ export default function Search() {
   
  async function postMovies(){
   let result = await (
-    await fetch("/rest/movies/10/100", {
+    await fetch("/rest/movies/1/100", {
       method: "POST",               
     })
   ).json();    
@@ -46,34 +46,35 @@ export default function Search() {
       await fetch("/rest/movies")
     ).json();
     if (movies.error) {
+      console.log('error', movies.error)
       movies = [];
     }
 
     setAllMovies(movies)
     console.log('set all movies ', allMovies);
 
-    setCurrentPageMovies(allMovies
-
-    .slice(offset, offset + perPage)
-    .map((movie) => (
-      <Row sm="2" md="3" lg="3">
-        <Col>
-      <Card
-        className="media-item"
-        key={movie.id}
-        onClick={selectMovie(movie)
-        }>
-        <CardImg
-          className="movie-poster"
-          src={`${movie.postPath}` } 
-          alt={movie.title}
-          onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
-        />
-        </Card>
-        </Col>
-      </Row>
-    ))
-    );
+    const movieData = allMovies
+      .slice(offset, offset + perPage)
+      .map((movie) => (
+        <Row sm="2" md="3" lg="3">
+          <Col>
+            <Card
+              className="media-item"
+              key={movie.id}
+              onClick={selectMovie(movie)
+              }>
+              <CardImg
+                className="movie-poster"
+                src={`${movie.postPath}`}
+                alt={movie.title}
+                onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')}
+              />
+            </Card>
+          </Col>
+        </Row>
+      ));
+    
+    setCurrentPageMovies(movieData)
 
     console.log('all movies length: ', allMovies.length, 'per page: ', perPage);
     setPageCount(Math.ceil(allMovies.length / perPage));
