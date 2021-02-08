@@ -21,7 +21,7 @@ export default function Search() {
 
   //for pagination
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(9);
+  const [perPage] = useState(8);
   const [pageCount, setPageCount] = useState(0);
   //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
@@ -110,10 +110,10 @@ export default function Search() {
             </Col>
           </Row>
           <Container className="movielist-box">
-              <Row className="mx-auto">
+              <Row className="ml-3">
                 {searchResults.length > 0 ? (
                   searchResults.slice(offset, offset + perPage).map((movie) => (
-                    <Row sm="2" md="3" lg="3">
+                    <Row sm="2" md="3">
                       <Col>
                         <Card
                           className="media-item"
