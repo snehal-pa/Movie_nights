@@ -115,7 +115,6 @@ public class EventService {
 
 
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
-        
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Collection<User> collectionFriends = userRepo.getAllFriends(userEmail);
         List<User> friends = new ArrayList<>(collectionFriends);
