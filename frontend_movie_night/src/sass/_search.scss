@@ -23,18 +23,21 @@
 
 .movielist-box{
     margin-top: 30px;
+    padding: none;
 }
 
 
-.movie-poster{
-    width: 180px;
+@include media-breakpoint-up(md) { 
+    .movie-poster{
+        width: 180px;
     max-height: 240px;
-}
+    }
+ }
 
 @include media-breakpoint-down(xs) { 
     .movie-poster{
-        width: 120px;
-        max-height: 180px;
+        width: 110px;
+        max-height: 150px;
     }
  }
 
