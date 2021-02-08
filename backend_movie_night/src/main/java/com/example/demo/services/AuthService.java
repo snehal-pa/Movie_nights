@@ -6,9 +6,15 @@ import com.example.demo.model.User;
 import com.example.demo.util.JwtUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+
+import org.apache.tomcat.util.http.parser.Authorization;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +25,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -66,7 +74,9 @@ public class AuthService {
         return refreshToken;
     }
 
-    public Long getExpiresAt() { return expiresAt; }
+    public Long getExpiresAt() {
+        return expiresAt;
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -75,12 +85,12 @@ public class AuthService {
 
     public JwtToken saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
-        if(tokenResponse == null){
+        if (tokenResponse == null) {
             name = null;
-            email=null;
-            pictureUrl=null;
-            accessToken= null;
-            refreshToken= null;
+            email = null;
+            pictureUrl = null;
+            accessToken = null;
+            refreshToken = null;
             expiresAt = null;
             locale = null;
         }
@@ -120,7 +130,9 @@ public class AuthService {
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
+
         return securityLogin(email, pass, req);
+
     }
 
     @SneakyThrows
@@ -131,11 +143,11 @@ public class AuthService {
                     = new UsernamePasswordAuthenticationToken(email, password);
             authenticationManager.authenticate(authReq);
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password",e);
+            throw new Exception("Incorrect username or password", e);
         }
 
         final UserDetails userDetails = myUserDetailsService.loadUserByUsername(email);
-        final String jwt= jwtUtil.generateToken(userDetails);
+        final String jwt = jwtUtil.generateToken(userDetails);
 
 //        SecurityContext sc = SecurityContextHolder.getContext();
 //        sc.setAuthentication(auth);
@@ -143,11 +155,7 @@ public class AuthService {
 //        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
         return new JwtToken(jwt);
 
-
     }
-
-
-
 
 
 }

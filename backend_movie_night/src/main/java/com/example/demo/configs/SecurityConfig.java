@@ -1,7 +1,6 @@
 package com.example.demo.configs;
 
 
-
 import com.example.demo.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,13 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/rest/whoami", "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/rest/whoami", "/", "/rest/firends").permitAll()
+                .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/api/**").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/storeauthcode").permitAll()
                 .anyRequest().authenticated()
                 .and()
-
-
                 .logout()
                 //.invalidateHttpSession(true).deleteCookies("JSESSIONID")
                 //.logoutUrl("/perform-logout")
@@ -53,10 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
                 //.and()
                 //.defaultSuccessUrl("/homepage.html", true)
-        .and()
-        .addFilterBefore(jwtRequestFilter,UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
 
     }
 
@@ -66,8 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(myUserDetailsService)
                 .passwordEncoder(myUserDetailsService.getEncoder());
     }
-
-
 
 
 }

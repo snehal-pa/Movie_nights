@@ -3,6 +3,7 @@ import { NavItem, NavLink, Nav, Badge, Navbar, NavbarBrand } from "reactstrap";
 import { NavLink as RRNavLink, Link } from "react-router-dom";
 import { Context } from "../App";
 //const { header } = require("./header");
+import Friends from "./Friends";
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
@@ -50,6 +51,12 @@ export default function Topbar() {
                   }
                 ></img>
                 {context.loggedInUser ? context.loggedInUser.name : "Username"}
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink tag={Link} to={"/home"}>
+                <Friends></Friends>
               </NavLink>
             </NavItem>
 

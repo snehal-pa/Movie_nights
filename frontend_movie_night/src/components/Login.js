@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 //import GoogleLogin from "react-google-login";
 import { Button, CardTitle } from "reactstrap";
 import { Context } from "../App";
-
 import { Container, Row, CardBody, CardText, Card } from "reactstrap";
 //const { header } = require("./header");
+import { useHistory } from "react-router-dom";
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
@@ -12,7 +12,7 @@ const CLIENT_ID =
 export default function Login() {
   const [auth2, setAuth2] = useState(null);
   const [context, updateContext] = useContext(Context);
-  //let auth2;
+  const history = useHistory();
 
   const whoamI = async () => {
     const header = {
@@ -34,6 +34,7 @@ export default function Login() {
         window.gapi.auth2.init({
           client_id: CLIENT_ID,
           scope: "https://www.googleapis.com/auth/calendar",
+          fetch_basic_profile: true,
         })
       );
     });
@@ -57,17 +58,9 @@ export default function Login() {
         //console.log(data);
         localStorage.setItem("jwtToken", data.jwt);
         whoamI();
-        //console.log(result.status);
-        // var auth2 = window.gapi.auth2.getAuthInstance();
-        // var profile = auth2.currentUser.get().getBasicProfile();
-        // console.log(profile);
-        // console.log(profile.getName());
-        // console.log(profile.getEmail());
+        history.push("/home");
       }
-
-      // etc...
     } else {
-      // There was an error.
     }
   }
 
