@@ -48,9 +48,10 @@ export default function AddFriends() {
           })
           .then(result => result.text())
           .then(data => console.log(data))
-        
+
          
-          toggle(!modal);
+         getAllFriends();
+        
        
       }
     
