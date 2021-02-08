@@ -17,6 +17,7 @@ export default function Search() {
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
   const [selectedMovie, setSelectedMovie] = useState();
+  const [searchResults, setSearchResults] = useState([]);
 
   //for pagination
   const [offset, setOffset] = useState(0);
@@ -48,38 +49,7 @@ export default function Search() {
     setAllMovies(movies);
 
     console.log("set all movies ", allMovies);
-    //renderMovies();
   };
-
-  // function renderMovies() {
-  //   const movieData = allMovies.slice(offset, offset + perPage).map((movie) => (
-  //     <Row sm="2" md="3" lg="3">
-  //       <Col>
-  //         <Card
-  //           className="media-item"
-  //           key={movie.id}
-  //           onClick={selectMovie(movie)}
-  //         >
-  //           <CardImg
-  //             className="movie-poster"
-  //             src={`${movie.postPath}`}
-  //             alt={movie.title}
-  //             onError={(e) => (
-  //               (e.target.onError = null),
-  //               (e.target.src =
-  //                 "https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png")
-  //             )}
-  //           />
-  //           <div class="card-img-overlay"></div>
-  //         </Card>
-  //       </Col>
-  //     </Row>
-  //   ));
-
-  //   //setCurrentPageMovies(movieData);
-
-  // }
-
 
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
@@ -90,9 +60,10 @@ export default function Search() {
     let movieResults = allMovies.filter((movie) =>
       movie.title.toLowerCase().includes(searchTerm)
     );
-    setAllMovies(movieResults);
-    handlePageClick(1);
-    console.log('all movies search ', allMovies)
+    setSearchResults(movieResults);
+    //setAllMovies(movieResults);
+    //handlePageClick(1);
+    console.log('all found movies from search ', searchResults)
   };
 
   const selectMovie = (movie) => (e) => {
@@ -102,6 +73,7 @@ export default function Search() {
   };
 
   const handleSearchInput = (e) => {
+    setSearchResults([]);
     setSearchTerm(e.target.value);
     if (e.target.value !== "") {
       filter();
@@ -139,7 +111,7 @@ export default function Search() {
           </Row>
           <Container className="movielist-box">
               <Row className="mx-auto">
-              {allMovies.slice(offset, offset + perPage).map((movie) => (
+              {(searchResults.length > 0 ? searchResults : allMovies).slice(offset, offset + perPage).map((movie) => (
                 <Row sm="2" md="3" lg="3">
                   <Col>
                     <Card
