@@ -94,7 +94,7 @@ export default function AddFriends() {
                   {friendsA.map((friend) => (
                     <Row key={friend.id}>
                       <Col lg="1">
-                        <img className="user-img" src={friend.profileUrl}></img>
+                        <img className="user-img" src={friend.profileUrl} alt="user-img"></img>
                       </Col>
                       <Col>
                         <p>{friend.name}</p>
@@ -110,7 +110,7 @@ export default function AddFriends() {
                      {friendsB.map((friend) => (
                       <Row key={friend.id}>
                         <Col lg="1">
-                          <img className="user-img" src={friend.profileUrl}></img>
+                          <img className="user-img" src={friend.profileUrl} alt="user-img"></img>
                         </Col>
                         <Col>
                           <p>{friend.name}</p>

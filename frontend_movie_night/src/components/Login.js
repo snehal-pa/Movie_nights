@@ -50,7 +50,7 @@ export default function Login() {
         body: authResult["code"],
       });
 
-      if (result.status == 200) {
+      if (result.status === 200) {
         whoamI();
         //console.log(result.status);
         // var auth2 = window.gapi.auth2.getAuthInstance();
