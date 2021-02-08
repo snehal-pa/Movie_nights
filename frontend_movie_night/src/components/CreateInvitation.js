@@ -54,15 +54,14 @@ export default function CreateInvitation(props) {
     console.log("friends: " , friendsValue)
     let movieEvent = { movie : props.sendMovie, start : combStartDate, end : combEndDateTime, attendees : friendsValue }
     console.log(movieEvent);
-    let result = await (
+    await (
       await fetch("/api/create_event", {
         method: "POST",      
         body: JSON.stringify(movieEvent),
-        headers: { "Content-Type": "application/json" } 
+        headers: { 'Content-Type': 'application/json'}     
       })
-    ).json();    
-    console.log(result);
-
+      .then(result => result.text())
+      .then(data => console.log(data)))
     updateContext({ showCreateInvitation: false});
     
   }
