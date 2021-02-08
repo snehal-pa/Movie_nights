@@ -23,12 +23,30 @@
 
 .movielist-box{
     margin-top: 30px;
+    padding: none;
 }
 
-.movie-poster{
-    width: 150px;
-    max-height: 200px;
-}
+
+@include media-breakpoint-up(md) { 
+    .movie-poster{
+        width: 180px;
+    max-height: 240px;
+    }
+ }
+
+@include media-breakpoint-down(xs) { 
+    .movie-poster{
+        width: 110px;
+        max-height: 150px;
+    }
+ }
+
+// @media screen and (max-width: 1588px) {
+//     .movie-poster {
+//         width: 120px;
+//         max-height: 180px;
+//     }
+//   }
 
 .media-heading{
     text-align: left;    
@@ -38,6 +56,39 @@
     background-color: $magenta;
     border-color: $magenta;
 }
+
+.pagination {
+    margin: 30px auto;
+    display: flex;
+    list-style: none;
+    outline: none;
+    border-radius: 0.25rem;
+    font-size: medium;
+    font-weight: 1000;
+  }
+
+  .pagination > li > a{
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+    
+  }
+
+  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    background-color: $pink!important;
+    outline: none;
+    border-radius: 100%;
+  }
+
+  .pagination > li > a, .pagination > li > span{
+    color: $purple!important;   
+
+  }
+  
+  .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+    border-radius: unset;
+  }
+
 
 
 
