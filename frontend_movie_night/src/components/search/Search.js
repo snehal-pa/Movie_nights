@@ -24,7 +24,7 @@ export default function Search() {
 
   //for pagination
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(9);
+  const [perPage] = useState(6);
   const [pageCount, setPageCount] = useState(0);
   const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
@@ -48,12 +48,12 @@ export default function Search() {
     if (movies.error) {
       console.log('error', movies.error)
       movies = [];
-    }
-
+    } 
     setAllMovies(movies)
-    console.log('set all movies ', allMovies);
+      console.log('set all movie ', allMovies);
+    
 
-    const movieData = allMovies
+    const movieData = movies
       .slice(offset, offset + perPage)
       .map((movie) => (
         <Row sm="2" md="3" lg="3">
@@ -141,8 +141,8 @@ export default function Search() {
                 {currentPageMovies}
                 
                 <ReactPaginate
-                    previousLabel={"prev"}
-                    nextLabel={"next"}
+                    previousLabel={"<<"}
+                    nextLabel={">>"}
                     breakLabel={"..."}
                     breakClassName={"break-me"}
                     pageCount={pageCount}
