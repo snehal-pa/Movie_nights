@@ -41,19 +41,17 @@ export default function AddFriends() {
             friendList.push(selectedFriend[i].value)
         }
         
-       let result = await (
           await fetch("/rest/addfriends", {
             method: "POST",           
             body: JSON.stringify(friendList),
             headers: { 'Content-Type': 'application/json'}     
           })
-        ).json();   
+          .then(result => result.text())
+          .then(data => console.log(data))
         
-        console.log(result);
-
+         
           toggle(!modal);
        
-        
       }
     
 
