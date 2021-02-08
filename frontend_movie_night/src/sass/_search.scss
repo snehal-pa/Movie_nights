@@ -25,10 +25,25 @@
     margin-top: 30px;
 }
 
+
 .movie-poster{
-    width: 150px;
-    max-height: 200px;
+    width: 180px;
+    max-height: 240px;
 }
+
+@include media-breakpoint-down(xs) { 
+    .movie-poster{
+        width: 120px;
+        max-height: 180px;
+    }
+ }
+
+// @media screen and (max-width: 1588px) {
+//     .movie-poster {
+//         width: 120px;
+//         max-height: 180px;
+//     }
+//   }
 
 .media-heading{
     text-align: left;    
@@ -40,15 +55,13 @@
 }
 
 .pagination {
-    margin: 40px auto;
+    margin: 30px auto;
     display: flex;
     list-style: none;
     outline: none;
-  }
-
-  .pagination > .active > a {
-    background-color: $purple!important;
-    color: #fff;
+    border-radius: 0.25rem;
+    font-size: medium;
+    font-weight: 1000;
   }
 
   .pagination > li > a{
@@ -60,7 +73,6 @@
 
   .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
     background-color: $pink!important;
-    border-color: #47ccde;
     outline: none;
     border-radius: 100%;
   }

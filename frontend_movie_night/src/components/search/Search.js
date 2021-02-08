@@ -1,7 +1,7 @@
 import {
   Container,
   InputGroup,
-  Input,  
+  Input,
   Col,
   Row,
   Card,
@@ -12,11 +12,7 @@ import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
 import ReactPaginate from "react-paginate";
 
-
-
-
 export default function Search() {
-
   const [searchTerm, setSearchTerm] = useState("");
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
@@ -24,65 +20,68 @@ export default function Search() {
 
   //for pagination
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(6);
+  const [perPage] = useState(9);
   const [pageCount, setPageCount] = useState(0);
-  const [currentPageMovies, setCurrentPageMovies] = useState([]);
+  //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
- useEffect(() => {
-    postMovies();   
-    fetchAllMovies(); 
- }, [offset]);
-  
- async function postMovies(){
-  let result = await (
-    await fetch("/rest/movies/1/100", {
-      method: "POST",               
-    })
-  ).json();    
-}
-   
-  async function fetchAllMovies() {
-    let movies = await (
-      await fetch("/rest/movies")
+  useEffect(() => {
+    fetchAllMovies();
+    postMovies();
+  }, [offset]);
+
+  async function postMovies() {
+    await (
+      await fetch("/rest/movies/1/100", {
+        method: "POST",
+      })
     ).json();
-    if (movies.error) {
-      console.log('error', movies.error)
-      movies = [];
-    } 
-    setAllMovies(movies)
-      console.log('set all movie ', allMovies);
-    
-
-    const movieData = movies
-      .slice(offset, offset + perPage)
-      .map((movie) => (
-        <Row sm="2" md="3" lg="3">
-          <Col>
-            <Card
-              className="media-item"
-              key={movie.id}
-              onClick={selectMovie(movie)
-              }>
-              <CardImg
-                className="movie-poster"
-                src={`${movie.postPath}`}
-                alt={movie.title}
-                onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')}
-              />
-            </Card>
-          </Col>
-        </Row>
-      ));
-    
-    setCurrentPageMovies(movieData)
-
-    console.log('all movies length: ', allMovies.length, 'per page: ', perPage);
-    setPageCount(Math.ceil(allMovies.length / perPage));
-    console.log('page count ', pageCount);
-
   };
-  
- const handlePageClick = (e) => {
+
+  async function fetchAllMovies() {
+    let movies = await (await fetch("/rest/movies")).json();
+    if (movies.error) {
+      console.log("error", movies.error);
+      movies = [];
+    }
+
+    setPageCount(Math.ceil(movies.length / perPage));
+    setAllMovies(movies);
+
+    console.log("set all movies ", allMovies);
+    //renderMovies();
+  };
+
+  // function renderMovies() {
+  //   const movieData = allMovies.slice(offset, offset + perPage).map((movie) => (
+  //     <Row sm="2" md="3" lg="3">
+  //       <Col>
+  //         <Card
+  //           className="media-item"
+  //           key={movie.id}
+  //           onClick={selectMovie(movie)}
+  //         >
+  //           <CardImg
+  //             className="movie-poster"
+  //             src={`${movie.postPath}`}
+  //             alt={movie.title}
+  //             onError={(e) => (
+  //               (e.target.onError = null),
+  //               (e.target.src =
+  //                 "https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png")
+  //             )}
+  //           />
+  //           <div class="card-img-overlay"></div>
+  //         </Card>
+  //       </Col>
+  //     </Row>
+  //   ));
+
+  //   //setCurrentPageMovies(movieData);
+
+  // }
+
+
+  const handlePageClick = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage * perPage);
   };
@@ -92,7 +91,9 @@ export default function Search() {
       movie.title.toLowerCase().includes(searchTerm)
     );
     setAllMovies(movieResults);
-  }
+    handlePageClick(1);
+    console.log('all movies search ', allMovies)
+  };
 
   const selectMovie = (movie) => (e) => {
     e.preventDefault();
@@ -104,15 +105,15 @@ export default function Search() {
     setSearchTerm(e.target.value);
     if (e.target.value !== "") {
       filter();
-      console.log("the search term" + searchTerm);
-    } else fetchAllMovies();
+      console.log('search term ', searchTerm);
+    }
+    else fetchAllMovies();
   };
 
   function sendMovie() {
     updateContext({ showCreateInvitation: true });
   }
 
-  
   return (
     <Container className="container-search mt-4">
       {context.showCreateInvitation ? (
@@ -121,8 +122,10 @@ export default function Search() {
         /* Search Box*/
         <Container className="searchBox">
           <Row>
-              <Col lg="12" md="12" sm="12">
-                <h4 className="sidebox-title">Find a movie and invite friends for a movie night!</h4>
+            <Col lg="12" md="12" sm="12">
+              <h4 className="sidebox-title">
+                Find a movie and invite friends for a movie night!
+              </h4>
               <InputGroup>
                 <Input
                   id="movie-search"
@@ -133,32 +136,46 @@ export default function Search() {
                 />
               </InputGroup>
             </Col>
-            </Row>
-                        
+          </Row>
           <Container className="movielist-box">
               <Row className="mx-auto">
+              {allMovies.slice(offset, offset + perPage).map((movie) => (
+                <Row sm="2" md="3" lg="3">
+                  <Col>
+                    <Card
+                      className="media-item"
+                      key={movie.id}
+                      onClick={selectMovie(movie)}
+                    >
+                      <CardImg
+                        className="movie-poster"
+                        src={`${movie.postPath}` } 
+                        alt={movie.title}
+                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
+                      />
+                    </Card>
+                  </Col>
+                </Row>
+              ))}
                 
-                {currentPageMovies}
+              <ReactPaginate
+                previousLabel={"<<"}
+                nextLabel={">>"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+                />
                 
-                <ReactPaginate
-                    previousLabel={"<<"}
-                    nextLabel={">>"}
-                    breakLabel={"..."}
-                    breakClassName={"break-me"}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageClick}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}
-                  />
             </Row>
           </Container>{" "}
-        </Container> 
+        </Container>
       )}
     </Container>
-  ); 
-
+  );
 }
-
