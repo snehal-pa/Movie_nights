@@ -190,7 +190,7 @@ export default function CreateInvitation(props) {
                     <div class="card-ticket cardRight">
                     <div className="d-flex justify-content-center"><FontAwesomeIcon icon={faUserFriends} /></div>
                       <div class="number">
-                        <h3>{invitesList.length}</h3>
+                        <h3>{invitesList.length + 1}</h3>
                         <span>attendant</span>
                       </div>                      
                   </div>
