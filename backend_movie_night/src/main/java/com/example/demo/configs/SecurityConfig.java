@@ -31,21 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/rest/whoami", "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/rest/whoami", "/", "/rest/firends").permitAll()
+                .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**", "/api/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/storeauthcode").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                //.logoutUrl("/perform-logout")
-
-
-                //.and()
-                //.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400)
-
-                //.and()
-                //.defaultSuccessUrl("/homepage.html", true)
-
                 .and()
                 .csrf().disable()
         ;

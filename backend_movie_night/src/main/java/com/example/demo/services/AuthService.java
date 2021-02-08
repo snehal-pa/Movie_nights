@@ -4,7 +4,9 @@ import com.example.demo.configs.MyUserDetailsService;
 import com.example.demo.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,9 +20,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -116,6 +120,8 @@ public class AuthService {
         User user = new User(name, email, pictureUrl, password, accessToken, refreshToken, expiresAt);
 
         userService.registerUser(user);
+
+
         securityLogin(email, pass, req);
     }
 
@@ -128,8 +134,6 @@ public class AuthService {
         sc.setAuthentication(auth);
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-
-
     }
 
 

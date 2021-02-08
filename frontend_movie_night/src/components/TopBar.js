@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { NavItem, NavLink, Nav, Badge, Navbar, NavbarBrand } from "reactstrap";
 import { NavLink as RRNavLink, Link } from "react-router-dom";
 import { Context } from "../App";
+import Friends from "./Friends";
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
@@ -48,6 +49,14 @@ export default function Topbar() {
               {context.loggedInUser ? context.loggedInUser.name : "Username"}
             </NavLink>
           </NavItem>
+
+          <NavItem>         
+            <NavLink tag={Link} to={"/home"}>   
+              <Friends></Friends>    
+              </NavLink>          
+          </NavItem>
+
+        
 
           <NavItem>
             <NavLink onClick={logout} tag={Link} to={"/"}>

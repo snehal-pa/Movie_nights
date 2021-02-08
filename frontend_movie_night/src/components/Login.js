@@ -50,7 +50,7 @@ export default function Login() {
         body: authResult["code"],
       });
 
-      if (result.status == 200) {
+      if (result.status === 200) {
         whoamI();
         history.push('/home')
   

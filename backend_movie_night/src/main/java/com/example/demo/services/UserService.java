@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,6 +31,7 @@ public class UserService {
 
         if (u != null) {
             u.setAccessToken(user.getAccessToken());
+            u.setPassword(user.getPassword());
             u.setRefreshToken(user.getRefreshToken());
             u.setExpiresAt(user.getExpiresAt());
             u.setProfileUrl(user.getProfileUrl());
@@ -52,4 +55,24 @@ public class UserService {
         return user;
 
     }
+
+    public void saveFriends(List<User> friends) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepo.findByEmail(userEmail);
+        System.out.println(user.getPassword());
+
+        for (int i = 0; i < friends.size(); i++) {
+            if (user != null) {
+                user.setFriends(friends);
+                userRepo.save(user);
+            }
+        }
+    }
+
+    public Collection<User> getFriends(){
+        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepo.getAllFriends(currentUserEmail);
+    }
+
+
 }

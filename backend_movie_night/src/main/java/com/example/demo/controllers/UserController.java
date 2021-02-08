@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
@@ -29,5 +30,18 @@ public class UserController {
     @GetMapping("/whoami")
     public User whoAmI(){
         return userService.findCurrentUser();
+    }
+
+
+    @GetMapping("/friends")
+    ResponseEntity<Collection<User>> getFriends(){
+        //check so it do not return password!
+        return ResponseEntity.ok(userService.getFriends());
+    }
+
+    @PostMapping("/addfriends")
+    ResponseEntity addFriends(@RequestBody List<User> friends){
+        userService.saveFriends(friends);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

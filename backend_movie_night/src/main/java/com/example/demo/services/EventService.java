@@ -16,9 +16,11 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -113,8 +115,10 @@ public class EventService {
 
 
     public List<User> checkFriendsEvents(Date startDate, Date endDate){
-
-        List<User> friends = userService.getAll();
+        
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Collection<User> collectionFriends = userRepo.getAllFriends(userEmail);
+        List<User> friends = new ArrayList<>(collectionFriends);
         List<User> availableFriends = new ArrayList<>();
 
         for(int i= 0; i<friends.size(); i++){
