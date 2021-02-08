@@ -26,13 +26,21 @@ export default function Search() {
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(9);
   const [pageCount, setPageCount] = useState(0);
+  const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
  useEffect(() => {
     postMovies();   
     fetchAllMovies(); 
-  }, [offset]);
+ }, [offset]);
+  
+ async function postMovies(){
+  let result = await (
+    await fetch("/rest/movies/10/100", {
+      method: "POST",               
+    })
+  ).json();    
+}
    
-
   async function fetchAllMovies() {
     let movies = await (
       await fetch("/rest/movies")
@@ -41,9 +49,13 @@ export default function Search() {
       movies = [];
     }
 
-    //const allMovies = res.data;
-    const slice = movies.slice(offset, offset + perPage);
-    const movieData = slice.map((movie) => (
+    setAllMovies(movies)
+    console.log('set all movies ', allMovies);
+
+    setCurrentPageMovies(allMovies
+
+    .slice(offset, offset + perPage)
+    .map((movie) => (
       <Row sm="2" md="3" lg="3">
         <Col>
       <Card
@@ -59,27 +71,20 @@ export default function Search() {
         />
         </Card>
         </Col>
-        </Row>
-    ));
-    setAllMovies(movies);
+      </Row>
+    ))
+    );
+
     console.log('all movies length: ', allMovies.length, 'per page: ', perPage);
     setPageCount(Math.ceil(allMovies.length / perPage));
     console.log('page count ', pageCount);
-  };
-  }
 
+  };
+  
  const handlePageClick = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage * perPage);
   };
-
-  async function postMovies(){
-    let result = await (
-      await fetch("/rest/movies/1/100", {
-        method: "POST",               
-      })
-    ).json();    
-  }
 
   function filter() {
     let movieResults = allMovies.filter((movie) =>
@@ -130,14 +135,29 @@ export default function Search() {
             </Row>
                         
           <Container className="movielist-box">
-            <Row className="mx-auto">
-             {movieData}
+              <Row className="mx-auto">
+                
+                {currentPageMovies}
+                
+                <ReactPaginate
+                    previousLabel={"prev"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}
+                  />
             </Row>
           </Container>{" "}
         </Container> 
       )}
     </Container>
-  );
+  ); 
 
 }
 
