@@ -16,7 +16,7 @@ export default function CreateInvitation(props) {
   const [invitesList, setinvitesList] = useState([]);
   const [show, setShow] = useState(false);
   const [combStartDate, setstartDate] = useState();
-  const [combEndDateTime, setendDateTime] = useState();
+  const [combEndDateTime, setendDateTime] = useState();  
 
  
   function discard(e){
@@ -85,7 +85,7 @@ export default function CreateInvitation(props) {
     const endDate = moment(start).add(props.sendMovie.length, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
     setendDateTime(endDate)
     getAvailableFriends(start, endDate);   
-    setShow(true);
+    setShow(true);    
     }       
   };
 
@@ -147,15 +147,16 @@ export default function CreateInvitation(props) {
                 <Button className="w-100 magenta mt-2" onClick={searchFriends}><FontAwesomeIcon icon={faSearch} /></Button>
                 </Col>
               </Row>                           
+              
+                { show ? (  <div>      
               <Row>
-                { show ? ( <Col lg="12">
+                <Col lg="12">
                   <FormGroup>
                     <Label for="selectFriends">Invite your Friends</Label>                  
                     <Select  options={friends} onChange={handleInvites} isMulti/>             
                   </FormGroup>
-                </Col> ) : null}               
+                </Col>
               </Row>
-                    
                
               <Row>
                 <Col lg="12">
@@ -164,9 +165,8 @@ export default function CreateInvitation(props) {
               </Row> 
 
               <Row>
-                <Col lg="12">
-                <div class="cardWrap mr-auto">
-                  <div class="card-ticket cardLeft">
+                <Col lg="12">                
+                  <div class="cardWrap mr-auto" ><div class="card-ticket cardLeft">
                     <h1>{context.loggedInUser.name + "'s Movie Night"}</h1>
                     <div class="title">
                       <h2>{props.sendMovie.title}</h2>
@@ -194,9 +194,14 @@ export default function CreateInvitation(props) {
                         <span>attendant</span>
                       </div>                      
                   </div>
-                </div>  
+                </div>
+                   
                 </Col>
               </Row>
+              </div> ) : null}               
+              
+
+             
 
               <Row className="mt-5">       
                 <Container className="vbottom"> 
