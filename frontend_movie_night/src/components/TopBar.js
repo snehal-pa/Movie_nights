@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { NavItem, NavLink, Nav, Badge, Navbar, NavbarBrand } from "reactstrap";
 import { NavLink as RRNavLink, Link } from "react-router-dom";
 import { Context } from "../App";
-import AddFriends from "./AddFriends";
+import Friends from "./Friends";
 
 export default function Topbar() {
   const [context, updateContext] = useContext(Context);
@@ -50,10 +50,10 @@ export default function Topbar() {
             </NavLink>
           </NavItem>
 
-          <NavItem>
-            <NavLink tag={Link} to={"/"}>
-              <AddFriends></AddFriends>
-            </NavLink>
+          <NavItem>         
+            <NavLink tag={Link} to={"/home"}>   
+              <Friends></Friends>    
+              </NavLink>          
           </NavItem>
 
         

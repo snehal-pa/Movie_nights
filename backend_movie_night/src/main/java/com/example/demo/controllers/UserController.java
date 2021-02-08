@@ -33,7 +33,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/firends")
+    @GetMapping("/friends")
     ResponseEntity<Collection<User>> getFriends(){
         //check so it do not return password!
         return ResponseEntity.ok(userService.getFriends());
