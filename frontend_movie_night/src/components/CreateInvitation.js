@@ -95,9 +95,9 @@ export default function CreateInvitation(props) {
             <Form onSubmit={save}>
               <Row className="media-item">
                 <Card>
-                  <CardImg src={`${props.sendMovie.backdropPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} ></CardImg>
+                  <CardImg src={`${props.sendMovie.backdropPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://m.gardensbythebay.com.sg/etc/designs/gbb/clientlibs/images/common/not_found.jpg')} ></CardImg>
                   <CardBody className="text-center"> 
-                  <Row><img className="avatar" src={`${props.sendMovie.postPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} ></img>  </Row>     
+                  <Row><img className="avatar" src={`${props.sendMovie.postPath}`} onError={(e) => (e.target.onError = null, e.target.src = 'https://m.gardensbythebay.com.sg/etc/designs/gbb/clientlibs/images/common/not_found.jpg')} ></img>  </Row>     
                   <Row className="off-row">
                     <Col lg="3"></Col>
                     <Col lg="5"><CardTitle className="movie-title text-left">{props.sendMovie.title}</CardTitle></Col>

@@ -20,8 +20,6 @@ export default function Search() {
   const [selectedMovie, setSelectedMovie] = useState();
 
 
-   
-
   async function fetchAllMovies() {
     let movies = await (
       await fetch("/rest/movies")
@@ -111,7 +109,7 @@ export default function Search() {
                         className="movie-poster"
                         src={`${movie.postPath}` } 
                         alt={movie.title}
-                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
+                        onError={(e) => (e.target.onError = null, e.target.src = 'https://m.gardensbythebay.com.sg/etc/designs/gbb/clientlibs/images/common/not_found.jpg')} 
                       />
                     </Card>
                   </Col>
