@@ -1,24 +1,29 @@
 package com.example.demo.services;
 
 import com.example.demo.configs.MyUserDetailsService;
+import com.example.demo.model.JwtToken;
 import com.example.demo.model.User;
+import com.example.demo.util.JwtUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +43,9 @@ public class AuthService {
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -66,21 +74,23 @@ public class AuthService {
         return refreshToken;
     }
 
-    public Long getExpiresAt() { return expiresAt; }
+    public Long getExpiresAt() {
+        return expiresAt;
+    }
 
     public String getAccessToken() {
         return accessToken;
     }
 
 
-    public void saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
+    public JwtToken saveUserToDb(GoogleTokenResponse tokenResponse, HttpServletRequest req) {
         // Get profile info from ID token (Obtained at the last step of OAuth2)
-        if(tokenResponse == null){
+        if (tokenResponse == null) {
             name = null;
-            email=null;
-            pictureUrl=null;
-            accessToken= null;
-            refreshToken= null;
+            email = null;
+            pictureUrl = null;
+            accessToken = null;
+            refreshToken = null;
             expiresAt = null;
             locale = null;
         }
@@ -108,11 +118,11 @@ public class AuthService {
         // Debugging purposes, should probably be stored in the database instead (At least "givenName").
         System.out.println("userId: " + userId);
         System.out.println("email: " + email);
-        System.out.println("emailVerified: " + emailVerified);
-        System.out.println("name: " + name);
-        System.out.println("pictureUrl: " + pictureUrl);
-        System.out.println("locale: " + locale);
-        System.out.println("acccestoken: " + accessToken);
+//        System.out.println("emailVerified: " + emailVerified);
+//        System.out.println("name: " + name);
+//        System.out.println("pictureUrl: " + pictureUrl);
+//        System.out.println("locale: " + locale);
+//        System.out.println("acccestoken: " + accessToken);
 
 
         String pass = email + "passwordSalt" + userId;
@@ -121,23 +131,31 @@ public class AuthService {
 
         userService.registerUser(user);
 
+        return securityLogin(email, pass, req);
 
-        securityLogin(email, pass, req);
     }
 
-    private void securityLogin(String email, String password, HttpServletRequest req) {
-        UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication auth = authenticationManager.authenticate(authReq);
+    @SneakyThrows
+    private JwtToken securityLogin(String email, String password, HttpServletRequest req) {
+        //Authentication auth = null;
+        try {
+            UsernamePasswordAuthenticationToken authReq
+                    = new UsernamePasswordAuthenticationToken(email, password);
+            authenticationManager.authenticate(authReq);
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password", e);
+        }
 
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        HttpSession session = req.getSession(true);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(email);
+        final String jwt = jwtUtil.generateToken(userDetails);
+
+//        SecurityContext sc = SecurityContextHolder.getContext();
+//        sc.setAuthentication(auth);
+//        HttpSession session = req.getSession(true);
+//        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+        return new JwtToken(jwt);
+
     }
-
-
-
 
 
 }

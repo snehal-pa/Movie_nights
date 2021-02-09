@@ -3,6 +3,7 @@ import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+//const { header } = require("../header");
 
 export default function MyCalendar() {
   const [myEvents, setEvents] = useState([]);
@@ -15,16 +16,18 @@ export default function MyCalendar() {
 
   //fetch events
   async function getEvents() {
-    let events = await await (
-      await fetch("/api/myEvents")
-    ).json();
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+    let events = await (await fetch("/api/myEvents", header)).json();
 
     if (!events.error) {
       events.forEach((event) => {
         event.start = convertDate(event.start.dateTime.value);
         event.end = convertDate(event.end.dateTime.value);
-
+        event.title = event.summary;
         setEvents(events);
+        console.log(events);
       });
     } else {
       setEvents([]);

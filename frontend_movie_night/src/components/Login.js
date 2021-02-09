@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Button, CardTitle } from "reactstrap";
 import { Context } from "../App";
 import { Container, Row, CardBody, CardText, Card } from "reactstrap";
-import { useHistory } from 'react-router-dom'
-
+//const { header } = require("./header");
+import { useHistory } from "react-router-dom";
 
 const CLIENT_ID =
   "58233015853-ebr03ggbna9ohtlisggmftjsqpnsnsf0.apps.googleusercontent.com";
@@ -12,11 +12,13 @@ const CLIENT_ID =
 export default function Login() {
   const [auth2, setAuth2] = useState(null);
   const [context, updateContext] = useContext(Context);
-  const history = useHistory()
-
+  const history = useHistory();
 
   const whoamI = async () => {
-    let res = await fetch("/rest/whoami");
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+    let res = await fetch("/rest/whoami", header);
     let user = await res.json();
     if (res.status == 404) {
       updateContext({ loggedInUser: false });
@@ -50,10 +52,13 @@ export default function Login() {
         body: authResult["code"],
       });
 
-      if (result.status === 200) {
+      const data = await result.json();
+
+      if (result.status == 200) {
+        //console.log(data);
+        localStorage.setItem("jwtToken", data.jwt);
         whoamI();
-        history.push('/home')
-  
+        history.push("/home");
       }
     } else {
     }
@@ -73,7 +78,6 @@ export default function Login() {
             <Button
               className="login-button mt-3"
               onClick={() => auth2.grantOfflineAccess().then(signInCallback)}
-            
             >
               <img
                 className="icon-button"
