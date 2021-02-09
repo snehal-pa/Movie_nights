@@ -8,8 +8,8 @@ import {
   CardImg,
 } from "reactstrap";
 import { useState, useEffect, useContext } from "react";
-import CreateInvitation from "../CreateInvitation";
-import { Context } from "../../App";
+import CreateInvitation from "./CreateInvitation";
+import { Context } from "../App";
 import ReactPaginate from "react-paginate";
 
 export default function Search() {

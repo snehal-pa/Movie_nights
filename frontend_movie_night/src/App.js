@@ -3,9 +3,9 @@ import React, { useState, createContext, useEffect } from "react";
 
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 //import'./Main.js';
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import "./sass/style.scss";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import TopBar from "./components/TopBar";
 //const { header } = require("./components/header");
 

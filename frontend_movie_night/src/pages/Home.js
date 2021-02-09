@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import Search from './search/Search';
-import MyCalendar from "./calendar/MyCalendar";
+import Search from '../components/Search';
+import MyCalendar from "../components/MyCalendar";
 
 export default function Home() {
     
