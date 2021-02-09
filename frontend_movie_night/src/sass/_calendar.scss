@@ -1,0 +1,30 @@
+.rbc-row-bg {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0;
+  overflow: hidden;
+  background-color: $grey!important;
+}
+
+.rbc-event-content, .rbc-show-more {
+  background-color: $dark_purple!important;
+  border: none;
+}
+
+.rbc-event{
+  background-color: $dark_purple!important;
+}
+
+.rbc-today{
+  background-color: $pink!important;
+}
+
+.rbc-toolbar button {
+  background: $white!important;
+
+}
+
+.rbc-calendar {
+  background-color: $white!important;
+  margin-top: 30px!important;
+}
