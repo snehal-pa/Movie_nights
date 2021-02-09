@@ -10,7 +10,6 @@ import {
 import { useState, useEffect, useContext } from "react";
 import CreateInvitation from "../CreateInvitation";
 import { Context } from "../../App";
-//const { header } = require("../header");
 import ReactPaginate from "react-paginate";
 
 export default function Search() {
