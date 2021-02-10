@@ -115,7 +115,7 @@ export default function Search() {
             </Col>
           </Row>
           <Container className="movielist-box">
-            <Row className="ml-3">
+            <Row className="justify-content-center">
               {searchResults.length > 0
                 ? searchResults.slice(offset, offset + perPage).map((movie) => (
                     <Row sm="2" md="3">
@@ -140,7 +140,7 @@ export default function Search() {
                     </Row>
                   ))
                 : allMovies.slice(offset, offset + perPage).map((movie) => (
-                    <Row sm="2" md="3" lg="3">
+                    <Row sm="2" md="3" lg="3" >
                       <Col>
                         <Card
                           className="media-item"
@@ -162,7 +162,11 @@ export default function Search() {
                     </Row>
                   ))}
 
-              <ReactPaginate
+              
+              
+              
+            </Row>
+            <Row className="mt-5 justify-content-center"> <ReactPaginate                         
                 previousLabel={"<<"}
                 nextLabel={">>"}
                 breakLabel={"..."}
@@ -174,8 +178,8 @@ export default function Search() {
                 containerClassName={"pagination"}
                 subContainerClassName={"pages pagination"}
                 activeClassName={"active"}
-              />
-            </Row>
+              /></Row>
+           
           </Container>{" "}
         </Container>
       )}

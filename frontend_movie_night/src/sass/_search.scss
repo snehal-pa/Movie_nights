@@ -57,7 +57,9 @@
     border-color: $magenta;
 }
 
-.pagination {
+.pagination {    
+    position: absolute;
+    bottom: 0;
     margin: 30px auto;
     display: flex;
     list-style: none;
