@@ -16,6 +16,7 @@ export default function App() {
   const [contextVal, setContext] = useState({
     showCreateInvitation: false,
     loggedInUser: false,
+    myEvents : []
   });
 
   const updateContext = (updates) =>
@@ -25,10 +26,10 @@ export default function App() {
     });
 
   useEffect(() => {
-    whoamI();
+    fetch();
   }, []);
 
-  const whoamI = async () => {
+ /* const whoamI = async () => {
     const header = {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
     };
@@ -41,8 +42,31 @@ export default function App() {
     }
     console.log(user);
     updateContext({ loggedInUser: user });
-  };
+  };*/
 
+  async function fetch() {
+
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+
+    let res = await fetch("/rest/whoami", header);
+    let user = await res.json();
+
+    if (res.status == 404) {
+      updateContext({ loggedInUser: false });
+      return;
+    }
+    console.log(user);
+
+    let events = await (await fetch("/api/myEvents", header)).json();
+    if(events.error){
+      events = []
+    }
+    updateContext({ myEvents : events, loggedInUser: user });
+    console.log("events from app", events);
+    console.log("events from context" , contextVal.myEvents)
+  }
 
   return (
     <Context.Provider value={[contextVal, updateContext]}>

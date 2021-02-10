@@ -40,6 +40,18 @@ export default function Login() {
     });
   }, []);
 
+  async function getEvents() {
+    const header = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+    };
+    let events = await (await fetch("/api/myEvents", header)).json();
+    if(events.error){
+      events = []
+    }
+    updateContext({ myEvents: events });
+    console.log("events", events);
+  }
+
   async function signInCallback(authResult) {
     if (authResult["code"]) {
       // Send the code to the server
@@ -58,6 +70,7 @@ export default function Login() {
         //console.log(data);
         localStorage.setItem("jwtToken", data.jwt);
         whoamI();
+        getEvents();
         history.push("/home");
       }
     } else {

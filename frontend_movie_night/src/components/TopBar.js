@@ -26,20 +26,8 @@ export default function Topbar() {
       {!context.loggedInUser === false ? (
         <Navbar className="navbar-custom" light expand="md">
           <NavbarBrand href="/home">MovieNights</NavbarBrand>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink tag={Link} to={"/home"}>
-                Home
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink tag={Link} to={"/"}>
-                <Badge className="mr-2 top-bar-badge">0</Badge>
-                Invitations
-              </NavLink>
-            </NavItem>
-
+          <Nav className="ml-auto" navbar>            
+            
             <NavItem>
               <NavLink tag={Link} to={"/"}>
                 <img
