@@ -7,26 +7,10 @@ import { Context } from "../App";
 //const { header } = require("../header");
 
 export default function MyCalendar() {
-  const [context, updateContext] = useContext(Context);
-  const [myEvents, setEvents] = useState([]);
+  const [context, updateContext] = useContext(Context); 
   moment.locale("en-GB");
   const localizer = momentLocalizer(moment);
-
-  useEffect(() => {
-    getEvents();
-  }, []);
-
-  //fetch events
-  function getEvents() {
-    let events = context.myEvents;
-    console.log("from my calendar :", events);
-    events.forEach((event) => {
-      event.start = convertDate(event.start.dateTime.value);
-      event.end = convertDate(event.end.dateTime.value);
-      event.title = event.summary;
-      setEvents(events);
-    });
-  }
+  
 
   function convertDate(date) {
     return new Date(moment.utc(date).toDate());
@@ -35,7 +19,11 @@ export default function MyCalendar() {
   return (
     <Calendar
       localizer={localizer}
-      events={myEvents}
+      events={context.myEvents.map((event) => ({
+        start : convertDate(event.start.dateTime.value),
+        end : convertDate(event.end.dateTime.value),
+        title : event.summary
+      }))}
       startAccessor="start"
       endAccessor="end"
     />
