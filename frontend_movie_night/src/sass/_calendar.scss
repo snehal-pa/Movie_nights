@@ -16,7 +16,7 @@
 }
 
 .rbc-today{
-  background-color: $pink!important;
+  background-color: $pink_opaque!important;
 }
 
 .rbc-toolbar button {
@@ -27,4 +27,12 @@
 .rbc-calendar {
   background-color: $white!important;
   margin-top: 30px!important;
+}
+
+.rbc-toolbar button:active{
+  background-color: $pink_opaque!important;
+}
+
+.rbc-active{
+  border-color: $purple!important;
 }
