@@ -14,6 +14,41 @@ export default function Login() {
   const [context, updateContext] = useContext(Context);
   const history = useHistory();
 
+  useEffect(() => {
+    window.gapi.load("auth2", function () {
+      setAuth2(
+        window.gapi.auth2.init({
+          client_id: CLIENT_ID,
+          scope: "https://www.googleapis.com/auth/calendar",
+          fetch_basic_profile: true,
+        })
+      );
+    });
+  }, []);
+
+  async function fetchData() {
+    const header = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    };
+    let res = await fetch("/rest/whoami", header);
+    let user = await res.json();
+    if (res.status == 404) {
+      updateContext({ loggedInUser: false });
+      return;
+    }
+    let events = await (await fetch("/api/myEvents", header)).json();
+    if (events.error) {
+      events = [];
+    }
+
+    updateContext({
+      loggedInUser: user,
+      myEvents: events,
+    });
+  }
+
   const whoamI = async () => {
     const header = {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
@@ -28,31 +63,6 @@ export default function Login() {
 
     updateContext({ loggedInUser: user });
   };
-
-  useEffect(() => {
-    window.gapi.load("auth2", function () {
-      setAuth2(
-        window.gapi.auth2.init({
-          client_id: CLIENT_ID,
-          scope: "https://www.googleapis.com/auth/calendar",
-          fetch_basic_profile: true,
-        })
-      );
-    });
-  }, []);
-
-  async function getEvents() {
-    const header = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-    };
-    let events = await (await fetch("/api/myEvents", header)).json();
-    if (events.error) {
-      events = [];
-    }
-    console.log("events from login", events);
-
-    updateContext({ myEvents: events });
-  }
 
   async function signInCallback(authResult) {
     if (authResult["code"]) {
@@ -72,30 +82,8 @@ export default function Login() {
         //console.log(data);
         localStorage.setItem("jwtToken", data.jwt);
 
-        const header = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        };
-        let res = await fetch("/rest/whoami", header);
-        let user = await res.json();
-        if (res.status == 404) {
-          updateContext({ loggedInUser: false });
-          return;
-        }
-        let events = await (await fetch("/api/myEvents", header)).json();
-        if (events.error) {
-          events = [];
-        }
+        fetchData();
 
-        updateContext({
-          loggedInUser: user,
-          myEvents: events,
-        });
-        console.log("from login context events", context.myEvents);
-
-        //whoamI();
-        //getEvents();
         history.push("/home");
       }
     } else {

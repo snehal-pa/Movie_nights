@@ -12,7 +12,6 @@ import Login from "./pages/Login";
 import "./sass/style.scss";
 import Home from "./pages/Home";
 import TopBar from "./components/TopBar";
-//const { header } = require("./components/header");
 
 // create and export the context
 export const Context = createContext();
@@ -31,46 +30,8 @@ export default function App() {
     });
 
   useEffect(() => {
-    //whoamI();
-    //fetchData();
-    (async () => {
-      const header = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      };
-      let res = await fetch("/rest/whoami", header);
-      let user = await res.json();
-      if (res.status == 404) {
-        updateContext({ loggedInUser: false });
-        return;
-      }
-      let events = await (await fetch("/api/myEvents", header)).json();
-      if (events.error) {
-        events = [];
-      }
-
-      updateContext({
-        loggedInUser: user,
-        myEvents: events,
-      });
-    })();
+    fetchData();
   }, []);
-
-  const whoamI = async () => {
-    const header = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-    };
-    let res = await fetch("/rest/whoami", header);
-    let user = await res.json();
-
-    if (res.status == 404) {
-      updateContext({ loggedInUser: false });
-      return;
-    }
-    console.log(user);
-    updateContext({ loggedInUser: user });
-  };
 
   async function fetchData() {
     const header = {
@@ -91,8 +52,6 @@ export default function App() {
       events = [];
     }
     updateContext({ myEvents: events, loggedInUser: user });
-    console.log("events from app", events);
-    console.log("events from context", contextVal.myEvents);
   }
 
   return (
