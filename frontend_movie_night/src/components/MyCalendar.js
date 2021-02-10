@@ -18,16 +18,14 @@ export default function MyCalendar() {
 
   //fetch events
   function getEvents() {
-    
-    let events = context.myEvents   
+    let events = context.myEvents;
+    console.log("from my calendar :", events);
     events.forEach((event) => {
       event.start = convertDate(event.start.dateTime.value);
       event.end = convertDate(event.end.dateTime.value);
       event.title = event.summary;
       setEvents(events);
-      console.log(events);
     });
-   
   }
 
   function convertDate(date) {

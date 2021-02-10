@@ -25,6 +25,7 @@ export default function Login() {
       return;
     }
     console.log(user);
+
     updateContext({ loggedInUser: user });
   };
 
@@ -45,11 +46,12 @@ export default function Login() {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
     };
     let events = await (await fetch("/api/myEvents", header)).json();
-    if(events.error){
-      events = []
+    if (events.error) {
+      events = [];
     }
+    console.log("events from login", events);
+
     updateContext({ myEvents: events });
-    console.log("events", events);
   }
 
   async function signInCallback(authResult) {
@@ -69,8 +71,31 @@ export default function Login() {
       if (result.status == 200) {
         //console.log(data);
         localStorage.setItem("jwtToken", data.jwt);
-        whoamI();
-        getEvents();
+
+        const header = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        };
+        let res = await fetch("/rest/whoami", header);
+        let user = await res.json();
+        if (res.status == 404) {
+          updateContext({ loggedInUser: false });
+          return;
+        }
+        let events = await (await fetch("/api/myEvents", header)).json();
+        if (events.error) {
+          events = [];
+        }
+
+        updateContext({
+          loggedInUser: user,
+          myEvents: events,
+        });
+        console.log("from login context events", context.myEvents);
+
+        //whoamI();
+        //getEvents();
         history.push("/home");
       }
     } else {
