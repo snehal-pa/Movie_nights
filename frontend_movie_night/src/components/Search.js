@@ -26,8 +26,10 @@ export default function Search() {
   //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
   useEffect(() => {
+    
     fetchAllMovies();
-    postMovies();
+    checkMovies();
+    //postMovies();
   }, [offset]);
 
   async function postMovies() {
@@ -42,6 +44,7 @@ export default function Search() {
   }
 
   async function fetchAllMovies() {
+    
     const header = {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
     };
@@ -55,6 +58,13 @@ export default function Search() {
     setAllMovies(movies);
 
     console.log("set all movies ", allMovies);
+  }
+
+  function checkMovies(){
+    if(allMovies === null){
+      postMovies();
+      fetchAllMovies();
+    }
   }
 
   const handlePageClick = (e) => {
