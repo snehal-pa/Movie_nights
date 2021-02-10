@@ -13,6 +13,7 @@ import { Context } from "../../App";
 import ReactPaginate from "react-paginate";
 
 export default function Search() {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
@@ -21,7 +22,7 @@ export default function Search() {
 
   //for pagination
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(8);
+  const [perPage] = useState(9);
   const [pageCount, setPageCount] = useState(0);
   //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
@@ -110,10 +111,10 @@ export default function Search() {
             </Col>
           </Row>
           <Container className="movielist-box">
-              <Row className="ml-3">
+          <Row className="justify-content-center">
                 {searchResults.length > 0 ? (
                   searchResults.slice(offset, offset + perPage).map((movie) => (
-                    <Row sm="2" md="3">
+                    <Row lg="2" >
                       <Col>
                         <Card
                           className="media-item"
@@ -132,7 +133,7 @@ export default function Search() {
                   ))
                 )
               : ( allMovies.slice(offset, offset + perPage).map((movie) => (
-                <Row sm="2" md="3" lg="3">
+                <Row xs="2"  lg="3">
                   <Col>
                     <Card
                       className="media-item"
