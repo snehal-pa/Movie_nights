@@ -132,7 +132,7 @@ export default function Search() {
                             onError={(e) => (
                               (e.target.onError = null),
                               (e.target.src =
-                                "https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png")
+                                "https://via.placeholder.com/160x220")
                             )}
                           />
                         </Card>
@@ -154,7 +154,7 @@ export default function Search() {
                             onError={(e) => (
                               (e.target.onError = null),
                               (e.target.src =
-                                "https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png")
+                                "https://via.placeholder.com/160x220/d4c2da/560bad/?text=No+image+found")
                             )}
                           />
                         </Card>
