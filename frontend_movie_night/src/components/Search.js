@@ -21,7 +21,7 @@ export default function Search() {
 
   //for pagination
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(8);
+  const [perPage] = useState(9);
   const [pageCount, setPageCount] = useState(0);
   //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
