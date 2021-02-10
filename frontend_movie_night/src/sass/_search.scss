@@ -29,8 +29,8 @@
 
 @include media-breakpoint-up(md) { 
     .movie-poster{
-        width: 180px;
-    max-height: 240px;
+        width: 160px;
+    max-height: 220px;
     }
  }
 
@@ -57,7 +57,9 @@
     border-color: $magenta;
 }
 
-.pagination {
+.pagination {    
+    position: absolute;
+    bottom: 0;
     margin: 30px auto;
     display: flex;
     list-style: none;

@@ -8,11 +8,12 @@ import {
   CardImg,
 } from "reactstrap";
 import { useState, useEffect, useContext } from "react";
-import CreateInvitation from "./CreateInvitation";
-import { Context } from "../App";
+import CreateInvitation from "../CreateInvitation";
+import { Context } from "../../App";
 import ReactPaginate from "react-paginate";
 
 export default function Search() {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [allMovies, setAllMovies] = useState([]);
   let [context, updateContext] = useContext(Context);
@@ -26,29 +27,20 @@ export default function Search() {
   //const [currentPageMovies, setCurrentPageMovies] = useState([]);
 
   useEffect(() => {
-    
     fetchAllMovies();
-    checkMovies();
-    //postMovies();
+    postMovies();
   }, [offset]);
 
   async function postMovies() {
     await (
       await fetch("/rest/movies/1/100", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
       })
     ).json();
-  }
+  };
 
   async function fetchAllMovies() {
-    
-    const header = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-    };
-    let movies = await (await fetch("/rest/movies", header)).json();
+    let movies = await (await fetch("/rest/movies")).json();
     if (movies.error) {
       console.log("error", movies.error);
       movies = [];
@@ -58,14 +50,7 @@ export default function Search() {
     setAllMovies(movies);
 
     console.log("set all movies ", allMovies);
-  }
-
-  function checkMovies(){
-    if(allMovies === null){
-      postMovies();
-      fetchAllMovies();
-    }
-  }
+  };
 
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
@@ -79,8 +64,8 @@ export default function Search() {
     setSearchResults(movieResults);
     setPageCount(Math.ceil(movieResults.length / perPage));
     //setAllMovies(movieResults);
-    console.log("all found movies from search ", searchResults);
-  }
+    console.log('all found movies from search ', searchResults)
+  };
 
   const selectMovie = (movie) => (e) => {
     e.preventDefault();
@@ -93,8 +78,9 @@ export default function Search() {
     setSearchTerm(e.target.value);
     if (e.target.value !== "") {
       filter();
-      console.log("search term ", searchTerm);
-    } else fetchAllMovies();
+      console.log('search term ', searchTerm);
+    }
+    else fetchAllMovies();
   };
 
   function sendMovie() {
@@ -125,10 +111,10 @@ export default function Search() {
             </Col>
           </Row>
           <Container className="movielist-box">
-            <Row className="justify-content-center">
-              {searchResults.length > 0
-                ? searchResults.slice(offset, offset + perPage).map((movie) => (
-                    <Row sm="2" md="3">
+          <Row className="justify-content-center">
+                {searchResults.length > 0 ? (
+                  searchResults.slice(offset, offset + perPage).map((movie) => (
+                    <Row lg="2" >
                       <Col>
                         <Card
                           className="media-item"
@@ -139,44 +125,35 @@ export default function Search() {
                             className="movie-poster"
                             src={`${movie.postPath}`}
                             alt={movie.title}
-                            onError={(e) => (
-                              (e.target.onError = null),
-                              (e.target.src =
-                                "https://via.placeholder.com/160x220")
-                            )}
+                            onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')}
                           />
                         </Card>
                       </Col>
                     </Row>
                   ))
-                : allMovies.slice(offset, offset + perPage).map((movie) => (
-                    <Row sm="2" md="3" lg="3" >
-                      <Col>
-                        <Card
-                          className="media-item"
-                          key={movie.id}
-                          onClick={selectMovie(movie)}
-                        >
-                          <CardImg
-                            className="movie-poster"
-                            src={`${movie.postPath}`}
-                            alt={movie.title}
-                            onError={(e) => (
-                              (e.target.onError = null),
-                              (e.target.src =
-                                "https://via.placeholder.com/160x220/d4c2da/560bad/?text=No+image+found")
-                            )}
-                          />
-                        </Card>
-                      </Col>
-                    </Row>
-                  ))}
-
-              
-              
-              
-            </Row>
-            <Row className="mt-5 justify-content-center"> <ReactPaginate                         
+                )
+              : ( allMovies.slice(offset, offset + perPage).map((movie) => (
+                <Row xs="2"  lg="3">
+                  <Col>
+                    <Card
+                      className="media-item"
+                      key={movie.id}
+                      onClick={selectMovie(movie)}
+                    >
+                      <CardImg
+                        className="movie-poster"
+                        src={`${movie.postPath}` } 
+                        alt={movie.title}
+                        onError={(e) => (e.target.onError = null, e.target.src = 'https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_400,h_264/https://psykologisk-metod.se/wp-content/themes/unbound/images/No-Image-Found-400x264.png')} 
+                      />
+                    </Card>
+                  </Col>
+                </Row>
+              ))
+                  )
+              }
+                
+              <ReactPaginate
                 previousLabel={"<<"}
                 nextLabel={">>"}
                 breakLabel={"..."}
@@ -188,8 +165,9 @@ export default function Search() {
                 containerClassName={"pagination"}
                 subContainerClassName={"pages pagination"}
                 activeClassName={"active"}
-              /></Row>
-           
+                />
+                
+            </Row>
           </Container>{" "}
         </Container>
       )}
